@@ -25,6 +25,13 @@ Em **SQL Editor > New query**, cole e rode um arquivo por vez, **nesta ordem**:
 Rode `seed.sql` para preencher agendamentos e avaliações **fictícios**.
 **Nunca rode no projeto real.** As datas são relativas ao dia em que o seed roda.
 
+### Conferir se está tudo certo: `testes.sql`
+
+Rode `testes.sql` inteiro no SQL Editor. Ele testa as regras de segurança e de
+agendamento como se fosse uma visitante do site e desfaz tudo no final, sem gravar
+nada. Se tudo estiver certo, aparece "✅ Todos os testes passaram". Se algo falhar,
+aparece "❌ Teste X FALHOU", com o resultado esperado e o obtido.
+
 ## 4. Fechar o cadastro público
 
 Em **Authentication > Sign In / Providers**, desative **Allow new users to sign up**.
