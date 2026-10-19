@@ -1,0 +1,308 @@
+/* Estrutura das páginas: cabeçalho, menu, rodapé e painel admin. */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.layout__conteudo {
+  flex: 1;
+}
+
+/* ---------- Cabeçalho público ---------- */
+.cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgb(252 236 236 / 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.cabecalho__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 var(--espaco-4);
+  min-height: 4rem;
+}
+
+.marca {
+  font-family: var(--fonte-titulo);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--cor-texto);
+  text-decoration: none;
+  line-height: 1;
+}
+
+.marca span {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: var(--fonte-texto);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cor-texto-suave);
+}
+
+.cabecalho__acoes {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+}
+
+.botao-menu {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  min-height: var(--altura-toque);
+  padding: 0 var(--espaco-3);
+  background: none;
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio-pilula);
+  font-weight: 600;
+}
+
+.botao-menu__icone {
+  position: relative;
+  width: 1rem;
+  height: 2px;
+  background: currentColor;
+}
+
+.botao-menu__icone::before,
+.botao-menu__icone::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transition: transform var(--transicao);
+}
+
+.botao-menu__icone::before {
+  top: -5px;
+}
+
+.botao-menu__icone::after {
+  top: 5px;
+}
+
+.botao-menu[aria-expanded="true"] .botao-menu__icone {
+  background: transparent;
+}
+
+.botao-menu[aria-expanded="true"] .botao-menu__icone::before {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.botao-menu[aria-expanded="true"] .botao-menu__icone::after {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* Menu no celular: lista que abre abaixo do cabeçalho */
+.menu {
+  display: none;
+  order: 3; /* no celular, abre numa linha própria abaixo da marca */
+  width: 100%;
+  padding-bottom: var(--espaco-4);
+}
+
+.menu--aberto {
+  display: block;
+}
+
+.menu__lista {
+  display: grid;
+}
+
+.menu__link {
+  display: block;
+  padding: var(--espaco-3) 0;
+  border-bottom: 1px solid var(--cor-borda);
+  color: var(--cor-texto);
+  font-size: var(--texto-medio);
+  text-decoration: none;
+}
+
+.menu__link.active {
+  color: var(--cor-destaque);
+  font-weight: 600;
+}
+
+/* A partir do tablet: menu sempre visível, na mesma linha da marca */
+@media (min-width: 52rem) {
+  .cabecalho__barra {
+    min-height: 4.5rem;
+  }
+
+  .botao-menu {
+    display: none;
+  }
+
+  .menu {
+    display: block;
+    order: 0;
+    width: auto;
+    padding: 0;
+    margin-left: auto;
+  }
+
+  .menu__lista {
+    display: flex;
+    gap: var(--espaco-5);
+  }
+
+  .menu__link {
+    padding: var(--espaco-2) 0;
+    border: 0;
+    font-size: var(--texto-base);
+    border-bottom: 2px solid transparent;
+  }
+
+  .menu__link:hover,
+  .menu__link.active {
+    border-bottom-color: currentColor;
+  }
+
+  .menu__link.active {
+    font-weight: 500;
+  }
+
+  /* No computador, o menu fica entre a marca e o botão */
+  .cabecalho__barra {
+    flex-wrap: nowrap;
+  }
+}
+
+/* O <main> recebe foco pelo link "Pular para o conteúdo"; não precisa de contorno */
+.layout__conteudo:focus {
+  outline: none;
+}
+
+/* ---------- Rodapé ---------- */
+.rodape {
+  margin-top: var(--espaco-8);
+  padding-block: var(--espaco-7) var(--espaco-5);
+  background: var(--cor-texto);
+  color: #f6dfe2;
+  font-size: var(--texto-pequeno);
+}
+
+.rodape a {
+  color: #fff;
+}
+
+.rodape address {
+  font-style: normal;
+}
+
+.rodape__grade {
+  display: grid;
+  gap: var(--espaco-6);
+}
+
+.rodape__marca {
+  font-family: var(--fonte-titulo);
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.rodape__titulo {
+  margin-bottom: var(--espaco-2);
+  font-family: var(--fonte-texto);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e9b9c0;
+}
+
+.rodape__lista {
+  display: grid;
+  gap: var(--espaco-1);
+}
+
+.rodape__base {
+  margin-top: var(--espaco-6);
+  padding-top: var(--espaco-4);
+  border-top: 1px solid rgb(255 255 255 / 0.15);
+  color: #d9b4ba;
+}
+
+@media (min-width: 48rem) {
+  .rodape__grade {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+}
+
+/* ---------- Painel admin ---------- */
+.admin__topo {
+  background: var(--cor-texto);
+  color: var(--cor-fundo);
+}
+
+.admin__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-4);
+  min-height: 3.5rem;
+}
+
+.admin__marca {
+  font-family: var(--fonte-titulo);
+  font-size: 1.1rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.admin__topo a {
+  color: #fff;
+}
+
+.admin__nav {
+  background: var(--cor-superficie);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+/* No celular, a navegação do painel rola para o lado */
+.admin__nav-lista {
+  display: flex;
+  gap: var(--espaco-1);
+  overflow-x: auto;
+  padding-block: var(--espaco-2);
+  scrollbar-width: thin;
+}
+
+.admin__nav-link {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0 var(--espaco-3);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.admin__nav-link:hover {
+  background: var(--cor-fundo);
+}
+
+.admin__nav-link.active {
+  background: var(--cor-texto);
+  color: #fff;
+}
+
+.carregando {
+  padding: var(--espaco-7) 0;
+  text-align: center;
+  color: var(--cor-texto-suave);
+}

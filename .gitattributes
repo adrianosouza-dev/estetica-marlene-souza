@@ -1,0 +1,5 @@
+# Padroniza quebras de linha (LF) entre Windows, Mac e Linux
+* text=auto eol=lf
+*.webp binary
+*.jpg binary
+*.png binary
