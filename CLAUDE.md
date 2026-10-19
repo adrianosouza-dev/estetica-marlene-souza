@@ -118,7 +118,7 @@ Se tiver dúvida sobre alguma regra do negócio, me pergunte em vez de inventar.
 ## Andamento
 
 - [x] Fase 1: Configuração
-- [ ] Fase 2: Banco
+- [x] Fase 2: Banco
 - [ ] Fase 3: Páginas públicas
 - [ ] Fase 4: Agendamento
 - [ ] Fase 5: Login
