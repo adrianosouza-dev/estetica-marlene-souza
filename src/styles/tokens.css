@@ -1,0 +1,53 @@
+/*
+ * Tokens de design: cores, fontes, espaçamentos e medidas do projeto.
+ * Mude aqui e o site inteiro acompanha.
+ */
+:root {
+  /* Cores da identidade */
+  --cor-fundo: #fcecec;          /* rosado */
+  --cor-superficie: #fff8f7;     /* áreas que precisam se destacar do fundo */
+  --cor-texto: #3a0f1e;          /* vinho */
+  --cor-texto-suave: #6b3646;    /* textos de apoio (contraste > 7:1 no fundo) */
+  --cor-destaque: #c8233a;       /* vermelho guaraná */
+  --cor-destaque-escuro: #a01b2f;
+  --cor-sucesso: #2e5b45;        /* verde para confirmações */
+  --cor-sucesso-fundo: #e3efe8;
+  --cor-erro: #a01b2f;
+  --cor-erro-fundo: #fbdde0;
+  --cor-semente: #2a0a14;        /* semente do guaraná, usada na ilustração */
+  --cor-borda: rgb(58 15 30 / 0.16);
+  --cor-borda-forte: rgb(58 15 30 / 0.4);
+
+  /* Fontes */
+  --fonte-titulo: "Fraunces", Georgia, "Times New Roman", serif;
+  --fonte-texto: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Tamanhos de texto fluidos: crescem do celular para o computador */
+  --texto-pequeno: 0.875rem;
+  --texto-base: 1rem;
+  --texto-medio: 1.125rem;
+  --titulo-3: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --titulo-2: clamp(1.6rem, 1.3rem + 1.4vw, 2.25rem);
+  --titulo-1: clamp(2.1rem, 1.5rem + 3vw, 3.75rem);
+
+  /* Espaçamentos */
+  --espaco-1: 0.25rem;
+  --espaco-2: 0.5rem;
+  --espaco-3: 0.75rem;
+  --espaco-4: 1rem;
+  --espaco-5: 1.5rem;
+  --espaco-6: 2rem;
+  --espaco-7: 3rem;
+  --espaco-8: 4.5rem;
+
+  /* Medidas */
+  --raio: 0.5rem;
+  --raio-grande: 1.25rem;
+  --raio-pilula: 999px;
+  --largura-max: 72rem;
+  --largura-texto: 40rem;
+  --margem-lateral: clamp(1rem, 4vw, 2rem);
+  --altura-toque: 2.75rem; /* área mínima confortável para o dedo */
+
+  --transicao: 160ms ease;
+}

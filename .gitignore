@@ -1,0 +1,27 @@
+# Dependências e build
+node_modules
+dist
+dist-ssr
+
+# Variáveis de ambiente (chaves do Supabase nunca vão para o GitHub)
+.env
+.env.local
+.env.*.local
+*.local
+
+# Fotos originais da cliente (só as versões otimizadas entram no projeto)
+fotos-originais/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor e sistema
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel

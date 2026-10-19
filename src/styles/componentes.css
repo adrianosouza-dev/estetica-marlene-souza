@@ -1,0 +1,79 @@
+/* Componentes de interface reutilizáveis (src/components/ui). */
+
+/* ---------- Botao ---------- */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-2);
+  min-height: var(--altura-toque);
+  padding: var(--espaco-2) var(--espaco-5);
+  border: 2px solid transparent;
+  border-radius: var(--raio-pilula);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color var(--transicao), color var(--transicao),
+    border-color var(--transicao);
+}
+
+.botao:disabled,
+.botao[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.botao--primario {
+  background: var(--cor-destaque);
+  color: #fff;
+}
+
+.botao--primario:hover:not(:disabled) {
+  background: var(--cor-destaque-escuro);
+}
+
+.botao--secundario {
+  background: transparent;
+  border-color: var(--cor-texto);
+  color: var(--cor-texto);
+}
+
+.botao--secundario:hover:not(:disabled) {
+  background: var(--cor-texto);
+  color: var(--cor-fundo);
+}
+
+.botao--discreto {
+  background: transparent;
+  color: var(--cor-texto);
+  padding-inline: var(--espaco-3);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.botao--bloco {
+  width: 100%;
+}
+
+/* ---------- Aviso ---------- */
+.aviso {
+  padding: var(--espaco-3) var(--espaco-4);
+  border-left: 4px solid currentColor;
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+
+.aviso--sucesso {
+  color: var(--cor-sucesso);
+  background: var(--cor-sucesso-fundo);
+}
+
+.aviso--erro {
+  color: var(--cor-erro);
+  background: var(--cor-erro-fundo);
+}
+
+.aviso--info {
+  color: var(--cor-texto);
+}
