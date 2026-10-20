@@ -1,0 +1,404 @@
+/* Estilos específicos das páginas públicas. */
+
+/* ---------- Seções da página inicial ---------- */
+.secao {
+  padding-block: var(--espaco-7);
+}
+
+.secao__topo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--espaco-2) var(--espaco-5);
+  margin-bottom: var(--espaco-5);
+}
+
+/* Conteúdo de leitura: coluna mais estreita, alinhada à esquerda como o resto */
+.secao--estreita > * {
+  max-width: 46rem;
+}
+
+/* ---------- Abertura (início) ---------- */
+.abertura {
+  padding-block: var(--espaco-5) var(--espaco-7);
+  overflow: hidden;
+}
+
+.abertura__grade {
+  display: grid;
+}
+
+/* No celular, o guaraná fica à direita, acima do título */
+.abertura__guarana {
+  justify-self: end;
+  width: min(60%, 16rem);
+  margin-bottom: var(--espaco-3);
+}
+
+.abertura__texto {
+  position: relative;
+}
+
+.abertura__titulo {
+  max-width: 11ch;
+  font-size: clamp(2.6rem, 1.5rem + 5.4vw, 5.25rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 144, "SOFT" 100;
+}
+
+.abertura__descricao {
+  max-width: 34rem;
+  margin-top: var(--espaco-5);
+  font-size: var(--texto-medio);
+  color: var(--cor-texto-suave);
+}
+
+.abertura__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-4) var(--espaco-5);
+  margin-top: var(--espaco-6);
+}
+
+@media (min-width: 56rem) {
+  .abertura {
+    padding-block: var(--espaco-7) var(--espaco-8);
+  }
+
+  .abertura__grade {
+    grid-template-columns: 1.2fr 0.8fr;
+    align-items: center;
+    gap: var(--espaco-6);
+  }
+
+  .abertura__guarana {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    max-width: 26rem;
+    margin: 0;
+  }
+
+  .abertura__texto {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+/* ---------- Faixa de fotos recentes (início) ---------- */
+/* Celular: desliza para o lado. Computador: as 4 lado a lado, em degraus. */
+.faixa-fotos {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 62%;
+  gap: var(--espaco-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--espaco-3);
+  margin-inline: calc(-1 * var(--margem-lateral));
+  padding-inline: var(--margem-lateral);
+  scroll-padding-inline: var(--margem-lateral);
+}
+
+.faixa-fotos__item {
+  scroll-snap-align: start;
+}
+
+.faixa-fotos img,
+.galeria__item img {
+  width: 100%;
+  aspect-ratio: 3 / 5;
+  object-fit: cover;
+  border-radius: var(--raio-grande);
+  background: var(--cor-superficie);
+}
+
+@media (min-width: 48rem) {
+  .faixa-fotos {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--espaco-5);
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  .faixa-fotos__item:nth-child(even) {
+    margin-top: var(--espaco-7);
+  }
+}
+
+/* ---------- Avaliações (início): faixa vinho ---------- */
+.secao--avaliacoes {
+  margin-block: var(--espaco-5);
+  padding-block: var(--espaco-8);
+  background: var(--cor-texto);
+  color: #fbe6e9;
+}
+
+.secao--avaliacoes h2 {
+  color: #fff;
+}
+
+.secao--avaliacoes .link-simples {
+  color: #fff;
+}
+
+.secao--avaliacoes .texto-suave {
+  color: #e2b8bf;
+}
+
+.secao--avaliacoes .estrelas {
+  color: #f59aa8;
+}
+
+.secao--avaliacoes :focus-visible {
+  outline-color: #f59aa8;
+}
+
+/* ---------- Serviços: como a tabela de preços de um salão ---------- */
+.cardapio {
+  margin-top: var(--espaco-5);
+  border-top: 1px solid var(--cor-borda-forte);
+}
+
+.cardapio__item {
+  display: grid;
+  gap: var(--espaco-1);
+  padding-block: var(--espaco-5);
+  border-bottom: 1px solid var(--cor-borda-forte);
+}
+
+.cardapio__linha {
+  display: flex;
+  align-items: baseline;
+  gap: var(--espaco-2);
+}
+
+.cardapio__nome {
+  font-size: var(--titulo-3);
+}
+
+/* Linha pontilhada entre o nome e o preço */
+.cardapio__pontos {
+  flex: 1;
+  min-width: var(--espaco-4);
+  border-bottom: 2px dotted var(--cor-borda-forte);
+  transform: translateY(-0.3em);
+}
+
+.cardapio__preco {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cardapio__duracao {
+  font-weight: 600;
+  color: var(--cor-destaque-escuro);
+}
+
+.cardapio__descricao {
+  max-width: var(--largura-texto);
+  color: var(--cor-texto-suave);
+}
+
+.cardapio__item .link-simples {
+  justify-self: start;
+  margin-top: var(--espaco-2);
+}
+
+/* ---------- Galeria ---------- */
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--espaco-5) var(--espaco-4);
+  margin-block: var(--espaco-5) var(--espaco-6);
+}
+
+.galeria__item figcaption {
+  margin-top: var(--espaco-2);
+  font-size: var(--texto-pequeno);
+  color: var(--cor-texto-suave);
+}
+
+@media (min-width: 48rem) {
+  .galeria {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .galeria {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---------- Sobre ---------- */
+.sobre {
+  display: grid;
+  gap: var(--espaco-6);
+}
+
+/* Foto em formato de arco */
+.sobre__foto {
+  width: 100%;
+  max-width: 24rem;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 999px 999px var(--raio-grande) var(--raio-grande);
+}
+
+.sobre__texto {
+  max-width: var(--largura-texto);
+}
+
+.sobre__texto > * + * {
+  margin-top: var(--espaco-4);
+}
+
+.sobre__texto .botao {
+  margin-top: var(--espaco-6);
+}
+
+@media (min-width: 52rem) {
+  .sobre {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--espaco-8);
+  }
+}
+
+/* ---------- Contato ---------- */
+.contato > * + * {
+  margin-top: var(--espaco-7);
+}
+
+.contato__grade {
+  display: grid;
+  gap: var(--espaco-7);
+}
+
+.contato__bloco > * + * {
+  margin-top: var(--espaco-3);
+}
+
+.contato__bloco h2 {
+  font-size: var(--titulo-3);
+}
+
+.contato__endereco,
+.contato__telefone {
+  font-family: var(--fonte-titulo);
+  font-size: 1.5rem;
+  font-style: normal;
+  line-height: 1.3;
+}
+
+@media (min-width: 48rem) {
+  .contato__grade {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.horarios {
+  width: 100%;
+  max-width: 34rem;
+  border-collapse: collapse;
+}
+
+.horarios th,
+.horarios td {
+  padding: var(--espaco-3) 0;
+  border-bottom: 1px solid var(--cor-borda);
+  text-align: left;
+  vertical-align: top;
+}
+
+.horarios th {
+  width: 7rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.horarios--fechado {
+  color: var(--cor-texto-suave);
+}
+
+/* ---------- Perguntas ---------- */
+.perguntas__ajuda {
+  margin-top: var(--espaco-7);
+}
+
+.perguntas__ajuda > * + * {
+  margin-top: var(--espaco-3);
+}
+
+/* ---------- Formulário de avaliação ---------- */
+.formulario {
+  display: grid;
+  gap: var(--espaco-5);
+  max-width: 32rem;
+  margin-top: var(--espaco-6);
+}
+
+.formulario > .botao {
+  justify-self: start;
+}
+
+.nota {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.nota__opcoes {
+  display: flex;
+  gap: var(--espaco-1);
+  margin-top: var(--espaco-1);
+}
+
+.nota__estrela {
+  display: block;
+  padding: 0 0.15rem;
+  font-size: 2.5rem;
+  line-height: 1.1;
+  color: var(--cor-texto-suave);
+  cursor: pointer;
+  transition: color var(--transicao);
+}
+
+.nota__estrela--ativa {
+  color: var(--cor-destaque);
+}
+
+.nota__estrela:hover {
+  color: var(--cor-destaque-escuro);
+}
+
+/* O rádio fica invisível; o foco do teclado aparece na estrela */
+.nota__opcao input:focus-visible + .nota__estrela {
+  outline: 3px solid var(--cor-destaque);
+  outline-offset: 2px;
+  border-radius: var(--raio);
+}
+
+.nota__rotulo {
+  min-height: 1.5em;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+}
+
+/* Campo-armadilha contra robôs: fora da tela */
+.armadilha {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

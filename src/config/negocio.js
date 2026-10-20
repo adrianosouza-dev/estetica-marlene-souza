@@ -1,11 +1,18 @@
 /*
  * Dados fixos do negócio.
- * Servem de valor padrão enquanto a tabela "perfil" do Supabase não estiver pronta.
- * Depois, o que a Marlene editar no painel tem prioridade sobre estes valores.
+ * Endereço, WhatsApp, Instagram, texto do Sobre e horários vêm da tabela "perfil"
+ * e "horarios_funcionamento" do Supabase (editáveis no painel). Os valores daqui
+ * são a reserva para quando o banco estiver vazio ou fora do ar.
  */
 export const negocio = {
   nome: 'Marlene Souza',
   especialidade: 'Unhas e sobrancelhas',
+
+  // Página inicial
+  frase: 'Seu momento de cuidado, com hora marcada',
+  descricao:
+    'Manicure, pedicure e design de sobrancelhas com a Marlene Souza, em Maués. ' +
+    'Escolha o serviço, veja os horários livres e agende pelo celular.',
 
   endereco: {
     bairro: 'Donga Micheles', // CONFIRMAR: grafia do bairro

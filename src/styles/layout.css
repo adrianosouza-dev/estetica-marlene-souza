@@ -25,7 +25,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0 var(--espaco-4);
+  gap: 0 var(--espaco-3);
   min-height: 4rem;
 }
 
@@ -42,10 +42,8 @@
   display: block;
   margin-top: 0.2rem;
   font-family: var(--fonte-texto);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--cor-texto-suave);
 }
 
@@ -53,6 +51,33 @@
   display: flex;
   align-items: center;
   gap: var(--espaco-2);
+}
+
+/* No celular, botões mais compactos para caberem na mesma linha da marca */
+.cabecalho__acoes .botao {
+  padding-inline: var(--espaco-4);
+}
+
+/* Telas bem estreitas (ex.: 360px): só o ícone do menu; a palavra fica para o leitor de tela */
+@media (max-width: 24.5rem) {
+  .marca {
+    font-size: 1.2rem;
+  }
+
+  .botao-menu__texto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .botao-menu {
+    width: var(--altura-toque);
+    justify-content: center;
+    padding: 0;
+  }
 }
 
 .botao-menu {
@@ -216,11 +241,9 @@
 .rodape__titulo {
   margin-bottom: var(--espaco-2);
   font-family: var(--fonte-texto);
-  font-size: 0.75rem;
+  font-size: var(--texto-base);
   font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #e9b9c0;
+  color: #f2c4cb;
 }
 
 .rodape__lista {
@@ -301,8 +324,3 @@
   color: #fff;
 }
 
-.carregando {
-  padding: var(--espaco-7) 0;
-  text-align: center;
-  color: var(--cor-texto-suave);
-}

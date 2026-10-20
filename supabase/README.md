@@ -19,6 +19,7 @@ Em **SQL Editor > New query**, cole e rode um arquivo por vez, **nesta ordem**:
 | `migrations/003_seguranca_rls.sql` | Ativa o Row Level Security e define quem pode o quê |
 | `migrations/004_storage.sql` | Cria o bucket `galeria` para as fotos |
 | `migrations/005_dados_iniciais.sql` | Serviços, horário de funcionamento e perfil iniciais |
+| `migrations/006_perfil_foto.sql` | Coluna da foto da profissional no perfil (página Sobre) |
 
 ## 3. Só no projeto de demonstração: `seed.sql`
 
@@ -58,6 +59,61 @@ Em **Project Settings > API**, copie a **Project URL** e a chave **anon / publis
 para o arquivo `.env.local` na raiz do projeto (use `.env.example` como modelo).
 
 > A chave `service_role` / `secret` **nunca** vai para o site nem para o GitHub.
+
+## 7. Fotos iniciais da galeria
+
+As fotos ficam no Storage (bucket `galeria`) e são listadas na tabela `fotos`.
+A partir da Fase 7, a Marlene envia e remove fotos pelo painel. As 4 fotos atuais
+entram uma única vez, à mão. **Repita este passo nos dois projetos** (real e demonstração).
+
+Os arquivos já otimizados (.webp, sem dados de localização) estão em
+`fotos-otimizadas/galeria/`. Essa pasta não vai para o GitHub.
+
+**Enviar os arquivos**
+
+1. No painel do projeto, abra **Storage** e clique no bucket **galeria**.
+2. Clique em **Upload files** e selecione os 4 arquivos de `fotos-otimizadas/galeria/`.
+   Envie na **raiz** do bucket (sem criar pasta) e **sem renomear**:
+   - `pedicure-branca-com-flor-rosa.webp`
+   - `pedicure-rosa-com-flores-delicadas.webp`
+   - `pedicure-branca-com-flores-coloridas.webp`
+   - `pedicure-branca-com-detalhe-azul.webp`
+
+O envio pelo painel usa o seu login de dono do projeto. Nenhuma chave
+(`service_role` ou outra) é necessária.
+
+**Cadastrar na tabela**
+
+1. Abra `fotos-iniciais.sql` e troque a URL na linha marcada com `TROQUE AQUI`
+   pela **Project URL** do projeto (**Project Settings > API**).
+2. Cole no **SQL Editor** e rode.
+3. O resultado lista as 4 fotos com a URL de cada uma. Abra uma delas no navegador
+   para conferir.
+
+Se aparecer erro, a mensagem diz o que corrigir: a URL não foi trocada, ou algum
+arquivo não está no bucket com o nome exato. Rodar de novo não duplica fotos.
+
+> Atenção: depois de rodar, **não salve a URL trocada no arquivo do projeto**. Desfaça
+> a troca para o arquivo continuar servindo para os dois projetos.
+
+## 8. Foto da Marlene (página Sobre)
+
+A foto fica no mesmo bucket `galeria`, numa pasta `perfil`, separada dos trabalhos.
+A Marlene autorizou o uso da foto e do nome no site e no portfólio, então
+**repita este passo nos dois projetos**. Antes, confira se a migration
+`006_perfil_foto.sql` já foi rodada.
+
+**Enviar o arquivo**
+
+1. Em **Storage > galeria**, clique em **Create folder** e crie a pasta `perfil`.
+2. Entre na pasta `perfil`, clique em **Upload files** e envie
+   `fotos-otimizadas/sobre/marlene-souza.webp`, **sem renomear**.
+
+**Ligar ao perfil**
+
+1. Abra `foto-perfil.sql` e troque a URL na linha `TROQUE AQUI` pela **Project URL**.
+2. Rode no **SQL Editor**. O resultado mostra a URL da foto. Abra no navegador para conferir.
+3. Desfaça a troca da URL no arquivo, como no passo 7.
 
 ## Como as regras funcionam
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { negocio } from '../../config/negocio'
 import { Botao } from '../ui/Botao'
+import { ProvedorNegocio } from './ProvedorNegocio'
 import { Rodape } from './Rodape'
 
 const LINKS = [
@@ -35,57 +36,59 @@ export function LayoutPublico() {
   }, [menuAberto])
 
   return (
-    <div className="layout">
-      <a href="#conteudo" className="pular-conteudo">
-        Pular para o conteúdo
-      </a>
+    <ProvedorNegocio>
+      <div className="layout">
+        <a href="#conteudo" className="pular-conteudo">
+          Pular para o conteúdo
+        </a>
 
-      <header className="cabecalho">
-        <div className="container">
-          <div className="cabecalho__barra">
-            <Link to="/" className="marca">
-              {negocio.nome}
-              <span>{negocio.especialidade}</span>
-            </Link>
+        <header className="cabecalho">
+          <div className="container">
+            <div className="cabecalho__barra">
+              <Link to="/" className="marca">
+                {negocio.nome}
+                <span>{negocio.especialidade}</span>
+              </Link>
 
-            <nav
-              id="menu-principal"
-              className={`menu ${menuAberto ? 'menu--aberto' : ''}`}
-              aria-label="Principal"
-            >
-              <ul className="menu__lista" role="list">
-                {LINKS.map((link) => (
-                  <li key={link.para}>
-                    <NavLink to={link.para} end className="menu__link">
-                      {link.rotulo}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-
-            <div className="cabecalho__acoes">
-              <Botao para="/agendar">Agendar</Botao>
-              <button
-                type="button"
-                className="botao-menu"
-                aria-expanded={menuAberto}
-                aria-controls="menu-principal"
-                onClick={() => setMenuAberto(!menuAberto)}
+              <nav
+                id="menu-principal"
+                className={`menu ${menuAberto ? 'menu--aberto' : ''}`}
+                aria-label="Principal"
               >
-                <span className="botao-menu__icone" aria-hidden="true" />
-                Menu
-              </button>
+                <ul className="menu__lista" role="list">
+                  {LINKS.map((link) => (
+                    <li key={link.para}>
+                      <NavLink to={link.para} end className="menu__link">
+                        {link.rotulo}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+
+              <div className="cabecalho__acoes">
+                <Botao para="/agendar">Agendar</Botao>
+                <button
+                  type="button"
+                  className="botao-menu"
+                  aria-expanded={menuAberto}
+                  aria-controls="menu-principal"
+                  onClick={() => setMenuAberto(!menuAberto)}
+                >
+                  <span className="botao-menu__icone" aria-hidden="true" />
+                  <span className="botao-menu__texto">Menu</span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main id="conteudo" className="layout__conteudo" tabIndex={-1}>
-        <Outlet />
-      </main>
+        <main id="conteudo" className="layout__conteudo" tabIndex={-1}>
+          <Outlet />
+        </main>
 
-      <Rodape />
-    </div>
+        <Rodape />
+      </div>
+    </ProvedorNegocio>
   )
 }
