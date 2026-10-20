@@ -29,6 +29,7 @@ src/lib               cliente do Supabase, cálculo de disponibilidade, formatad
 src/hooks             useAuth e outros hooks
 src/components/ui     Botao, Campo, Modal, Aviso
 src/components/layout LayoutPublico, LayoutAdmin, RotaProtegida, Rodape
+src/components/secoes blocos usados em mais de uma página (FAQ, avaliações)
 src/pages/publico     páginas das clientes
 src/pages/admin       páginas do painel
 src/styles            tokens.css, global.css
@@ -119,7 +120,7 @@ Se tiver dúvida sobre alguma regra do negócio, me pergunte em vez de inventar.
 
 - [x] Fase 1: Configuração
 - [x] Fase 2: Banco
-- [ ] Fase 3: Páginas públicas
+- [x] Fase 3: Páginas públicas
 - [ ] Fase 4: Agendamento
 - [ ] Fase 5: Login
 - [ ] Fase 6: Painel parte 1

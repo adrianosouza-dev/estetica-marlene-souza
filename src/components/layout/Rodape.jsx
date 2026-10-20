@@ -1,40 +1,37 @@
 import { Link } from 'react-router-dom'
-import { enderecoCompleto, negocio } from '../../config/negocio'
+import { useNegocio } from '../../hooks/useNegocio'
 import { linkWhatsApp } from '../../lib/whatsapp'
 
 const ano = new Date().getFullYear()
 
 export function Rodape() {
-  const whatsapp = linkWhatsApp()
+  const { nome, especialidade, endereco, horarioResumo, whatsapp, instagram } = useNegocio()
+  const linkZap = linkWhatsApp(whatsapp, 'Olá, Marlene! Vim pelo site.')
 
   return (
     <footer className="rodape">
       <div className="container">
         <div className="rodape__grade">
           <div>
-            <p className="rodape__marca">{negocio.nome}</p>
-            <p>{negocio.especialidade}</p>
-            <address>{enderecoCompleto()}</address>
-            <p>{negocio.horarioResumo}</p>
+            <p className="rodape__marca">{nome}</p>
+            <p>{especialidade}</p>
+            <address>{endereco}</address>
+            <p>{horarioResumo}</p>
           </div>
 
           <div>
-            <h2 className="rodape__titulo">Fale comigo</h2>
+            <h2 className="rodape__titulo">Contato</h2>
             <ul className="rodape__lista" role="list">
-              {whatsapp && (
+              {linkZap && (
                 <li>
-                  <a href={whatsapp} target="_blank" rel="noopener noreferrer">
+                  <a href={linkZap} target="_blank" rel="noopener noreferrer">
                     WhatsApp
                   </a>
                 </li>
               )}
-              {negocio.instagram && (
+              {instagram && (
                 <li>
-                  <a
-                    href={`https://instagram.com/${negocio.instagram}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={`https://instagram.com/${instagram}`} target="_blank" rel="noopener noreferrer">
                     Instagram
                   </a>
                 </li>
@@ -62,7 +59,7 @@ export function Rodape() {
         </div>
 
         <p className="rodape__base">
-          © {ano} {negocio.nome}. Todos os direitos reservados.
+          © {ano} {nome}. Todos os direitos reservados.
         </p>
       </div>
     </footer>

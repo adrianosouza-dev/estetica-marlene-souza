@@ -1,13 +1,28 @@
+import { ListaFaq } from '../../components/secoes/ListaFaq'
+import { Botao } from '../../components/ui/Botao'
+import { perguntasFrequentes } from '../../config/faq'
+import { useNegocio } from '../../hooks/useNegocio'
 import { useTituloPagina } from '../../hooks/useTituloPagina'
+import { linkWhatsApp } from '../../lib/whatsapp'
 
-// Conteúdo completo na Fase 3.
 export default function Perguntas() {
   useTituloPagina('Dúvidas frequentes')
+  const { whatsapp } = useNegocio()
+  const linkZap = linkWhatsApp(whatsapp, 'Olá, Marlene! Tenho uma dúvida.')
 
   return (
-    <section className="container pagina">
+    <section className="container pagina secao--estreita">
       <h1>Dúvidas frequentes</h1>
-      <p className="texto-suave">Respostas para as perguntas mais comuns.</p>
+      <ListaFaq perguntas={perguntasFrequentes} />
+
+      {linkZap && (
+        <div className="perguntas__ajuda">
+          <p>Não achou sua dúvida? Pergunte direto para a Marlene.</p>
+          <Botao href={linkZap} variante="secundario">
+            Perguntar no WhatsApp
+          </Botao>
+        </div>
+      )}
     </section>
   )
 }

@@ -9,8 +9,11 @@ dist-ssr
 .env.*.local
 *.local
 
-# Fotos originais da cliente (só as versões otimizadas entram no projeto)
+# Fotos originais da cliente
 fotos-originais/
+
+# Fotos já otimizadas, prontas para subir no Supabase Storage (não vão para o GitHub)
+fotos-otimizadas/
 
 # Logs
 *.log
