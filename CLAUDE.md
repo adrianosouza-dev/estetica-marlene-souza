@@ -123,7 +123,7 @@ Se tiver dúvida sobre alguma regra do negócio, me pergunte em vez de inventar.
 - [x] Fase 2: Banco
 - [x] Fase 3: Páginas públicas
 - [x] Fase 4: Agendamento
-- [ ] Fase 5: Login
+- [x] Fase 5: Login
 - [ ] Fase 6: Painel parte 1
 - [ ] Fase 7: Painel parte 2
 - [ ] Fase 8: Portfólio

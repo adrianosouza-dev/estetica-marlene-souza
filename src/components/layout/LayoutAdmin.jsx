@@ -1,6 +1,7 @@
-import { Suspense } from 'react'
-import { Link, NavLink, Outlet } from 'react-router-dom'
-import { negocio } from '../../config/negocio'
+import { Suspense, useState } from 'react'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth'
+import { sair } from '../../lib/auth'
 
 const LINKS = [
   { para: '/admin', rotulo: 'Início' },
@@ -14,6 +15,20 @@ const LINKS = [
 ]
 
 export function LayoutAdmin() {
+  const { usuario } = useAuth()
+  const navegar = useNavigate()
+  const [saindo, setSaindo] = useState(false)
+
+  async function aoSair() {
+    setSaindo(true)
+    try {
+      await sair()
+    } catch (erro) {
+      console.error(erro) // mesmo com erro, a sessão local é apagada pelo Supabase
+    }
+    navegar('/admin/login', { replace: true })
+  }
+
   return (
     <div className="layout">
       <a href="#conteudo" className="pular-conteudo">
@@ -23,9 +38,15 @@ export function LayoutAdmin() {
       <header className="admin__topo">
         <div className="container admin__barra">
           <Link to="/admin" className="admin__marca">
-            Painel · {negocio.nome}
+            Painel da Marlene
           </Link>
-          <Link to="/">Ver site</Link>
+          <div className="admin__conta">
+            <span className="admin__email">{usuario?.email}</span>
+            <Link to="/">Ver site</Link>
+            <button type="button" className="admin__sair" onClick={aoSair} disabled={saindo}>
+              {saindo ? 'Saindo…' : 'Sair'}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -42,7 +63,7 @@ export function LayoutAdmin() {
       </nav>
 
       <main id="conteudo" className="layout__conteudo" tabIndex={-1}>
-        <Suspense fallback={<p className="carregando">Carregando…</p>}>
+        <Suspense fallback={<p className="carregando container">Carregando…</p>}>
           <Outlet />
         </Suspense>
       </main>
