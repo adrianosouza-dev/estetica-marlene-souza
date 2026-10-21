@@ -118,6 +118,13 @@ Se tiver dúvida sobre alguma regra do negócio, me pergunte em vez de inventar.
 8. **Portfólio:** README com descrição, prints, tecnologias, como rodar e link do deploy; revisão de responsividade; checagem de que nenhuma chave secreta vai para o GitHub
    - No projeto Supabase real, configurar um serviço de e-mail próprio (SMTP, como o Resend). Sem isso, o "Esqueci minha senha" não chega para a Marlene: o e-mail padrão do Supabase só envia para a equipe do projeto.
 
+## Melhorias futuras
+
+Fora do escopo das fases atuais; anotadas para depois.
+
+- **Agenda em tempo real (Supabase Realtime):** hoje o painel recarrega ao voltar para ele e tem o botão "Atualizar". Com Realtime, um agendamento feito pelo site apareceria na hora (exige migration ativando a publicação da tabela e mais configuração).
+- **Guardar o preço no agendamento:** gravar o preço do serviço no momento do agendamento, para o histórico e os valores não mudarem quando a Marlene atualizar os preços. Depois disso, mostrar o total em reais dos atendimentos concluídos no histórico.
+
 ## Andamento
 
 - [x] Fase 1: Configuração

@@ -85,6 +85,11 @@ export function formatarDataLonga(data) {
   return formatoDataLonga.format(emUtc(data))
 }
 
+/** 'quarta-feira, 21 de outubro' → 'Quarta-feira, 21 de outubro' (só a primeira letra) */
+export function maiusculaInicial(texto) {
+  return texto.charAt(0).toUpperCase() + texto.slice(1)
+}
+
 /** '2026-10-23' → { semana: 'sex', diaMes: '23/10' } */
 export function formatarDataCurta(data) {
   return {

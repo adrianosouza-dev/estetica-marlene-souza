@@ -8,6 +8,7 @@ import './styles/componentes.css'
 import './styles/paginas.css'
 import './styles/agendamento.css'
 import './styles/admin.css'
+import './styles/painel.css'
 
 import App from './App'
 
