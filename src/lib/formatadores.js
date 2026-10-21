@@ -118,3 +118,11 @@ export function mascararTelefone(valor) {
 export function enderecoSemQuebra(endereco) {
   return endereco.replace(/-(?=[A-Z]{2}$)/, '\u2011')
 }
+
+/** Linha de horarios_funcionamento → "8h às 17h, com pausa das 12h às 13h" ou "Fechado" */
+export function descreverHorarioDia(h) {
+  if (!h.aberto) return 'Fechado'
+  const expediente = `${formatarHora(h.abre)} às ${formatarHora(h.fecha)}`
+  if (!h.almoco_inicio) return expediente
+  return `${expediente}, com pausa das ${formatarHora(h.almoco_inicio)} às ${formatarHora(h.almoco_fim)}`
+}

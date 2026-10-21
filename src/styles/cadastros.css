@@ -1,0 +1,246 @@
+/* Telas de cadastro do painel: serviços, horários, fotos, avaliações e perfil. */
+
+.painel__explicacao {
+  margin-top: var(--espaco-1);
+  font-size: var(--texto-pequeno);
+}
+
+/* ---------- Lista de cadastro (serviços, dias, folgas, avaliações) ---------- */
+.cadastro {
+  margin-top: var(--espaco-4);
+  border-top: 1px solid var(--cor-borda-forte);
+}
+
+.cadastro__item {
+  padding-block: var(--espaco-4);
+  border-bottom: 1px solid var(--cor-borda-forte);
+}
+
+/* Itens curtos: informação à esquerda, botão à direita */
+.cadastro__item--linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--espaco-3);
+}
+
+.cadastro__item--inativo .cadastro__titulo,
+.cadastro__item--inativo .cadastro__detalhe {
+  color: var(--cor-texto-suave);
+}
+
+.cadastro__info > * + * {
+  margin-top: var(--espaco-1);
+}
+
+.cadastro__titulo {
+  font-weight: 700;
+}
+
+.cadastro__detalhe {
+  font-size: var(--texto-pequeno);
+  color: var(--cor-texto-suave);
+}
+
+.cadastro__item > .cadastro__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+  margin-top: var(--espaco-3);
+}
+
+.cadastro__ordem {
+  display: inline-flex;
+  gap: var(--espaco-1);
+}
+
+.cadastro__nota {
+  margin-top: var(--espaco-2);
+  font-size: var(--texto-pequeno);
+  color: var(--cor-texto-suave);
+}
+
+/* Botão só com seta: quadrado, do tamanho do dedo */
+.botao-acao--icone {
+  justify-content: center;
+  width: var(--altura-toque);
+  min-height: var(--altura-toque);
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+
+/* ---------- Caixas de marcar e opções (rótulo inteiro é clicável) ---------- */
+.interruptor {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  min-height: var(--altura-toque);
+  cursor: pointer;
+}
+
+.interruptor input {
+  flex-shrink: 0;
+  width: 1.35rem;
+  height: 1.35rem;
+  accent-color: var(--cor-destaque);
+}
+
+.opcoes-tipo {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* ---------- Fotos ---------- */
+.grade-fotos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--espaco-5) var(--espaco-3);
+  margin-top: var(--espaco-5);
+}
+
+.grade-fotos__item img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+
+.grade-fotos__legenda {
+  margin-top: var(--espaco-1);
+  font-size: var(--texto-pequeno);
+  line-height: 1.35;
+}
+
+.grade-fotos__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-1);
+  margin-top: var(--espaco-2);
+}
+
+.grade-fotos__acoes .botao-acao:not(.botao-acao--icone) {
+  padding-inline: var(--espaco-3);
+}
+
+@media (min-width: 48rem) {
+  .grade-fotos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .grade-fotos {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Área de escolher foto: grande, fácil de tocar */
+.seletor-foto {
+  display: grid;
+  place-items: center;
+  min-height: 11rem;
+  border: 2px dashed var(--cor-borda-forte);
+  border-radius: var(--raio-grande);
+  background: var(--cor-superficie);
+  color: var(--cor-texto-suave);
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.seletor-foto img {
+  width: 100%;
+  max-height: 18rem;
+  object-fit: contain;
+}
+
+/* O input fica escondido; o foco do teclado aparece na área de escolher */
+.campo:focus-within .seletor-foto {
+  outline: 3px solid var(--cor-destaque);
+  outline-offset: 2px;
+}
+
+.seletor-foto__trocar {
+  justify-self: start;
+  margin-top: var(--espaco-2);
+  font-size: var(--texto-pequeno);
+}
+
+.previa-pequena {
+  width: 6rem;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--raio);
+}
+
+/* ---------- Abas (avaliações) ---------- */
+.abas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espaco-1);
+  margin-top: var(--espaco-4);
+  padding: var(--espaco-1);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+}
+
+.abas__botao {
+  min-height: var(--altura-toque);
+  border: 0;
+  border-radius: var(--raio-pilula);
+  background: none;
+  color: var(--cor-texto);
+  font-weight: 600;
+}
+
+.abas__botao[aria-pressed="true"] {
+  background: var(--cor-texto);
+  color: #fff;
+}
+
+.abas__contagem {
+  display: inline-block;
+  min-width: 1.5rem;
+  margin-left: var(--espaco-1);
+  padding: 0 var(--espaco-1);
+  border-radius: var(--raio-pilula);
+  background: rgb(58 15 30 / 0.1);
+  font-size: var(--texto-pequeno);
+}
+
+.abas__botao[aria-pressed="true"] .abas__contagem {
+  background: rgb(255 255 255 / 0.2);
+}
+
+.avaliacao-admin__texto {
+  font-family: var(--fonte-titulo);
+  font-style: italic;
+}
+
+/* ---------- Perfil ---------- */
+.perfil-foto > * + * {
+  margin-top: var(--espaco-3);
+}
+
+.perfil-foto__imagem {
+  width: 9rem;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 999px 999px var(--raio) var(--raio);
+}
+
+.janela-confirmacao > * + * {
+  margin-top: var(--espaco-3);
+}
+
+/* Regras do agendamento: campos numéricos não precisam ocupar a largura toda */
+.formulario--regras .campo {
+  max-width: 18rem;
+}

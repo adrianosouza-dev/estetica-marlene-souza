@@ -59,7 +59,7 @@
 }
 
 .botao--pequeno {
-  min-height: 2.5rem;
+  min-height: var(--altura-toque); /* 44px: bom para o dedo, mesmo sendo "pequeno" */
   padding-inline: var(--espaco-4);
   font-size: var(--texto-pequeno);
 }
@@ -229,7 +229,7 @@
 .botao-acao {
   display: inline-flex;
   align-items: center;
-  min-height: 2.5rem;
+  min-height: var(--altura-toque);
   padding: 0 var(--espaco-4);
   border: 1.5px solid var(--cor-borda-forte);
   border-radius: var(--raio-pilula);
