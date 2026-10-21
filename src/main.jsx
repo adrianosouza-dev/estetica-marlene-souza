@@ -9,6 +9,7 @@ import './styles/paginas.css'
 import './styles/agendamento.css'
 import './styles/admin.css'
 import './styles/painel.css'
+import './styles/cadastros.css'
 
 import App from './App'
 

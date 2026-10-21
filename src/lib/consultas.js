@@ -31,14 +31,15 @@ export function buscarServicosAtivos() {
 }
 
 /** Fotos da galeria, das mais recentes para as mais antigas */
+/**
+ * Fotos dos trabalhos.
+ *   - com limite (página inicial): as mais recentes;
+ *   - sem limite (galeria): na ordem escolhida pela Marlene no painel.
+ */
 export function buscarFotos(limite) {
-  let consulta = cliente()
-    .from('fotos')
-    .select('id, url, legenda')
-    .order('criado_em', { ascending: false })
-    .order('ordem')
-  if (limite) consulta = consulta.limit(limite)
-  return executar(consulta)
+  const consulta = cliente().from('fotos').select('id, url, legenda')
+  if (limite) return executar(consulta.order('criado_em', { ascending: false }).order('ordem').limit(limite))
+  return executar(consulta.order('ordem').order('criado_em', { ascending: false }))
 }
 
 export function buscarAvaliacoesAprovadas(limite) {

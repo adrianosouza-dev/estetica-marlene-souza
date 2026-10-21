@@ -2,20 +2,13 @@ import { Botao } from '../../components/ui/Botao'
 import { useNegocio } from '../../hooks/useNegocio'
 import { useTituloPagina } from '../../hooks/useTituloPagina'
 import {
+  descreverHorarioDia,
   enderecoSemQuebra,
-  formatarHora,
   formatarTelefone,
   nomeDoDia,
   ordenarSemana,
 } from '../../lib/formatadores'
 import { linkWhatsApp } from '../../lib/whatsapp'
-
-function faixaDoDia(h) {
-  if (!h.aberto) return 'Fechado'
-  const expediente = `${formatarHora(h.abre)} às ${formatarHora(h.fecha)}`
-  if (!h.almoco_inicio) return expediente
-  return `${expediente}, com pausa das ${formatarHora(h.almoco_inicio)} às ${formatarHora(h.almoco_fim)}`
-}
 
 export default function Contato() {
   useTituloPagina('Contato e localização')
@@ -65,7 +58,7 @@ export default function Contato() {
               {semana.map((h) => (
                 <tr key={h.dia_semana} className={h.aberto ? '' : 'horarios--fechado'}>
                   <th scope="row">{nomeDoDia(h.dia_semana)}</th>
-                  <td>{faixaDoDia(h)}</td>
+                  <td>{descreverHorarioDia(h)}</td>
                 </tr>
               ))}
             </tbody>

@@ -21,6 +21,7 @@ Em **SQL Editor > New query**, cole e rode um arquivo por vez, **nesta ordem**:
 | `migrations/005_dados_iniciais.sql` | Serviços, horário de funcionamento e perfil iniciais |
 | `migrations/006_perfil_foto.sql` | Coluna da foto da profissional no perfil (página Sobre) |
 | `migrations/007_whatsapp_opcional_no_painel.sql` | WhatsApp opcional nos agendamentos criados pelo painel (no site continua obrigatório) |
+| `migrations/008_limites_regras_agendamento.sql` | Limites das regras editáveis no painel: antecedência de 0 a 48h, agenda aberta de 7 a 90 dias |
 
 ## 3. Só no projeto de demonstração: `seed.sql`
 
