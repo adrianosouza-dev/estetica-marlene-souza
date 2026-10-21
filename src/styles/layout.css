@@ -294,23 +294,29 @@
   border-bottom: 1px solid var(--cor-borda);
 }
 
-/* No celular, a navegação do painel rola para o lado */
+/*
+ * No celular, o menu do painel é uma grade de 4 colunas: os 8 itens ficam
+ * sempre à vista, sem precisar deslizar, cada um com altura boa para o dedo.
+ * A partir do tablet, vira uma linha só.
+ */
 .admin__nav-lista {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--espaco-1);
-  overflow-x: auto;
   padding-block: var(--espaco-2);
-  scrollbar-width: thin;
 }
 
 .admin__nav-link {
-  flex-shrink: 0;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  min-height: 2.5rem;
-  padding: 0 var(--espaco-3);
-  border-radius: var(--raio-pilula);
+  justify-content: center;
+  min-height: var(--altura-toque);
+  padding: 0 2px;
+  border-radius: var(--raio);
   color: var(--cor-texto);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-align: center;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -322,5 +328,18 @@
 .admin__nav-link.active {
   background: var(--cor-texto);
   color: #fff;
+}
+
+@media (min-width: 48rem) {
+  .admin__nav-lista {
+    display: flex;
+  }
+
+  .admin__nav-link {
+    padding: 0 var(--espaco-3);
+    border-radius: var(--raio-pilula);
+    font-size: var(--texto-base);
+    font-weight: 400;
+  }
 }
 

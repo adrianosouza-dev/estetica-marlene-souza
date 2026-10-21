@@ -61,24 +61,31 @@
 
 /* ---------- Cabeçalho do painel ---------- */
 .admin__barra {
-  flex-wrap: wrap;
-  padding-block: var(--espaco-2);
+  padding-block: var(--espaco-1);
 }
 
 .admin__conta {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: var(--espaco-2) var(--espaco-4);
+  gap: var(--espaco-2);
   font-size: var(--texto-pequeno);
 }
 
 .admin__email {
+  margin-right: var(--espaco-2);
   color: #e9c4ca;
 }
 
+/* "Ver site" e "Sair" com altura boa para o dedo */
+.admin__conta a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--altura-toque);
+  padding-inline: var(--espaco-2);
+}
+
 .admin__sair {
-  min-height: 2.25rem;
+  min-height: var(--altura-toque);
   padding: 0 var(--espaco-4);
   border: 1px solid rgb(255 255 255 / 0.5);
   border-radius: var(--raio-pilula);
@@ -95,8 +102,8 @@
   outline-color: #f59aa8;
 }
 
-/* No celular, o e-mail ocupa espaço demais: some (continua no leitor de tela) */
-@media (max-width: 30rem) {
+/* Até o tablet, o e-mail ocupa espaço demais: some (continua no leitor de tela) */
+@media (max-width: 47.99rem) {
   .admin__email {
     position: absolute;
     width: 1px;
