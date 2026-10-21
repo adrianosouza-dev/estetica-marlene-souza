@@ -1,7 +1,13 @@
 import { Botao } from '../../components/ui/Botao'
 import { useNegocio } from '../../hooks/useNegocio'
 import { useTituloPagina } from '../../hooks/useTituloPagina'
-import { formatarHora, formatarTelefone, nomeDoDia, ordenarSemana } from '../../lib/formatadores'
+import {
+  enderecoSemQuebra,
+  formatarHora,
+  formatarTelefone,
+  nomeDoDia,
+  ordenarSemana,
+} from '../../lib/formatadores'
 import { linkWhatsApp } from '../../lib/whatsapp'
 
 function faixaDoDia(h) {
@@ -24,8 +30,7 @@ export default function Contato() {
       <div className="contato__grade">
         <div className="contato__bloco">
           <h2>Onde fica</h2>
-          {/* Hífen que não quebra linha: evita "Maués-" numa linha e "AM" na outra */}
-          <address className="contato__endereco">{endereco.replace(/-(?=[A-Z]{2}$)/, '‑')}</address>
+          <address className="contato__endereco">{enderecoSemQuebra(endereco)}</address>
           <Botao href={linkMapa} variante="secundario">
             Abrir no mapa
           </Botao>

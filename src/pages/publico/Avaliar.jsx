@@ -23,7 +23,12 @@ export default function Avaliar() {
   const [erros, setErros] = useState({})
   const [situacao, setSituacao] = useState('preenchendo') // preenchendo | enviando | enviada | falhou
 
-  const alterar = (campo) => (evento) => setDados((d) => ({ ...d, [campo]: evento.target.value }))
+  // Ao editar um campo, o erro dele some (a validação completa roda de novo ao enviar)
+  function definir(campo, valor) {
+    setDados((d) => ({ ...d, [campo]: valor }))
+    setErros((e) => ({ ...e, [campo]: undefined }))
+  }
+  const alterar = (campo) => (evento) => definir(campo, evento.target.value)
 
   async function aoEnviar(evento) {
     evento.preventDefault()
@@ -91,7 +96,7 @@ export default function Avaliar() {
                     value={valor}
                     className="sr-only"
                     checked={dados.nota === valor}
-                    onChange={() => setDados((d) => ({ ...d, nota: valor }))}
+                    onChange={() => definir('nota', valor)}
                   />
                   <label
                     htmlFor={`nota-${valor}`}

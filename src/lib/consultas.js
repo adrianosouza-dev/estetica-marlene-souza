@@ -57,13 +57,50 @@ export async function buscarDadosNegocio() {
     executar(
       cliente()
         .from('perfil')
-        .select('sobre, whatsapp, instagram, endereco, link_mapa, foto_url')
+        .select(
+          'sobre, whatsapp, instagram, endereco, link_mapa, foto_url, dias_maximos_agendamento, antecedencia_minima_minutos',
+        )
         .eq('id', 1)
         .maybeSingle(),
     ),
     executar(cliente().from('horarios_funcionamento').select('*').order('dia_semana')),
   ])
   return { perfil, horarios }
+}
+
+/**
+ * Folgas e feriados que ainda não terminaram a partir de uma data 'AAAA-MM-DD'.
+ * Serve para fechar dias e tirar horários no agendamento.
+ */
+export function buscarBloqueiosAPartirDe(data) {
+  return executar(
+    cliente().from('bloqueios').select('inicio, fim, motivo').gt('fim', `${data}T00:00:00`).order('inicio'),
+  )
+}
+
+/**
+ * Início e fim dos horários já ocupados num dia (sem nome nem telefone).
+ * Usa a função do banco horarios_ocupados, a única forma de o público saber
+ * o que está ocupado.
+ */
+export function buscarHorariosOcupados(data) {
+  return executar(cliente().rpc('horarios_ocupados', { dia: data }))
+}
+
+/**
+ * Cria um agendamento. O banco calcula o fim, grava como "pendente" e confere
+ * as regras da agenda. Erros que a tela trata:
+ *   23P01: o horário acabou de ser ocupado por outra cliente
+ *   P0001: regra da agenda (a mensagem já vem em português)
+ */
+export async function criarAgendamento({ servicoId, inicio, nome, whatsapp }) {
+  const { error } = await cliente().from('agendamentos').insert({
+    servico_id: servicoId,
+    inicio,
+    cliente_nome: nome.trim(),
+    cliente_whatsapp: whatsapp,
+  })
+  if (error) throw error
 }
 
 /**
