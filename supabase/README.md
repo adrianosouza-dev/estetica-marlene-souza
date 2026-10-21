@@ -20,6 +20,7 @@ Em **SQL Editor > New query**, cole e rode um arquivo por vez, **nesta ordem**:
 | `migrations/004_storage.sql` | Cria o bucket `galeria` para as fotos |
 | `migrations/005_dados_iniciais.sql` | Serviços, horário de funcionamento e perfil iniciais |
 | `migrations/006_perfil_foto.sql` | Coluna da foto da profissional no perfil (página Sobre) |
+| `migrations/007_whatsapp_opcional_no_painel.sql` | WhatsApp opcional nos agendamentos criados pelo painel (no site continua obrigatório) |
 
 ## 3. Só no projeto de demonstração: `seed.sql`
 

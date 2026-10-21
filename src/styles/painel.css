@@ -1,0 +1,436 @@
+/* Páginas do painel: início, agenda, histórico e janelas. */
+
+.painel h1 {
+  font-size: var(--titulo-2);
+}
+
+.painel__topo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--espaco-3);
+}
+
+.painel__data {
+  margin-top: var(--espaco-1);
+}
+
+.painel__botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+}
+
+.painel__bloco {
+  margin-top: var(--espaco-7);
+}
+
+.painel__bloco h2 {
+  margin-bottom: var(--espaco-3);
+  font-size: var(--titulo-3);
+}
+
+.painel__titulo-linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--espaco-3);
+}
+
+.painel__lembrete {
+  padding: var(--espaco-3) var(--espaco-4);
+  border-left: 4px solid var(--cor-destaque);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  font-weight: 600;
+}
+
+.painel__vazio {
+  padding-block: var(--espaco-5);
+}
+
+.painel__alternar {
+  margin-top: var(--espaco-4);
+}
+
+.painel__mais {
+  margin-top: var(--espaco-5);
+}
+
+.botao--pequeno {
+  min-height: 2.5rem;
+  padding-inline: var(--espaco-4);
+  font-size: var(--texto-pequeno);
+}
+
+.botao--perigo {
+  background: var(--cor-erro);
+  color: #fff;
+}
+
+.botao--perigo:hover {
+  background: #7d1424;
+}
+
+/* ---------- Números do início: uma linha simples, sem cartões ---------- */
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-block: var(--espaco-5);
+  border-block: 1px solid var(--cor-borda-forte);
+}
+
+.numeros__item {
+  padding: var(--espaco-3) var(--espaco-2);
+}
+
+.numeros__item + .numeros__item {
+  border-left: 1px solid var(--cor-borda);
+}
+
+.numeros dt {
+  font-size: var(--texto-pequeno);
+  line-height: 1.3;
+  color: var(--cor-texto-suave);
+}
+
+.numeros dd {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.numeros__item--atencao dd {
+  color: var(--cor-destaque);
+}
+
+/* ---------- Lista de agendamentos ---------- */
+.lista-agendamentos {
+  border-top: 1px solid var(--cor-borda-forte);
+}
+
+.agendamento {
+  display: grid;
+  grid-template-columns: 4.25rem 1fr;
+  gap: var(--espaco-3);
+  padding-block: var(--espaco-4);
+  border-bottom: 1px solid var(--cor-borda-forte);
+}
+
+.agendamento--destaque {
+  margin-inline: calc(-1 * var(--espaco-3));
+  padding-inline: var(--espaco-3);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  box-shadow: inset 4px 0 0 var(--cor-destaque);
+}
+
+.agendamento__hora {
+  display: grid;
+  align-content: start;
+}
+
+.agendamento__data {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+  text-transform: capitalize;
+}
+
+.agendamento__inicio {
+  font-family: var(--fonte-titulo);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.agendamento__fim {
+  font-size: 0.75rem;
+  color: var(--cor-texto-suave);
+}
+
+.agendamento__info > * + * {
+  margin-top: 2px;
+}
+
+.agendamento__selo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--cor-destaque);
+}
+
+.agendamento__cliente {
+  font-weight: 700;
+}
+
+.agendamento__servico,
+.agendamento__obs {
+  font-size: var(--texto-pequeno);
+  color: var(--cor-texto-suave);
+}
+
+.agendamento__obs {
+  font-style: italic;
+}
+
+.agendamento__info > .agendamento__estado {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-1);
+  margin-top: var(--espaco-2);
+}
+
+.agendamento--cancelado .agendamento__inicio,
+.agendamento--cancelado .agendamento__cliente {
+  text-decoration: line-through;
+  color: var(--cor-texto-suave);
+}
+
+.agendamento__info > .agendamento__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+  margin-top: var(--espaco-3);
+}
+
+/* Etiquetas de status: texto + cor, nunca só a cor */
+.status {
+  display: inline-block;
+  padding: 1px var(--espaco-2);
+  border: 1px solid currentColor;
+  border-radius: var(--raio-pilula);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status--pendente {
+  color: var(--cor-destaque-escuro);
+}
+
+.status--confirmado {
+  color: var(--cor-sucesso);
+}
+
+.status--concluido,
+.status--cancelado {
+  color: var(--cor-texto-suave);
+}
+
+.status--alerta {
+  border-color: var(--cor-destaque);
+  background: var(--cor-destaque);
+  color: #fff;
+}
+
+/* Botões de ação: altura confortável para o dedo */
+.botao-acao {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0 var(--espaco-4);
+  border: 1.5px solid var(--cor-borda-forte);
+  border-radius: var(--raio-pilula);
+  background: #fff;
+  color: var(--cor-texto);
+  font-size: var(--texto-pequeno);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.botao-acao:hover:not(:disabled) {
+  border-color: var(--cor-texto);
+}
+
+.botao-acao:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.botao-acao--confirmar {
+  border-color: var(--cor-sucesso);
+  background: var(--cor-sucesso);
+  color: #fff;
+}
+
+.botao-acao--confirmar:hover:not(:disabled) {
+  border-color: #234735;
+  background: #234735;
+}
+
+.botao-acao--zap {
+  border-color: var(--cor-sucesso);
+  color: var(--cor-sucesso);
+}
+
+.botao-acao--cancelar {
+  color: var(--cor-erro);
+}
+
+/* ---------- Navegação entre dias (agenda) ---------- */
+.navegador-dia {
+  display: grid;
+  grid-template-columns: var(--altura-toque) 1fr var(--altura-toque);
+  align-items: center;
+  gap: var(--espaco-2);
+  margin-block: var(--espaco-5);
+  padding: var(--espaco-2);
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+
+.navegador-dia__seta {
+  width: var(--altura-toque);
+  height: var(--altura-toque);
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.navegador-dia__seta:hover {
+  background: var(--cor-fundo);
+}
+
+.navegador-dia__centro {
+  text-align: center;
+}
+
+.navegador-dia__data {
+  font-family: var(--fonte-titulo);
+  font-size: 1.15rem;
+}
+
+.navegador-dia__extra {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--espaco-1) var(--espaco-3);
+  margin-top: var(--espaco-1);
+  font-size: var(--texto-pequeno);
+}
+
+.navegador-dia__escolher input {
+  padding: 2px var(--espaco-2);
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio);
+  background: #fff;
+  font-size: var(--texto-pequeno);
+}
+
+/* ---------- Histórico ---------- */
+.filtros {
+  display: grid;
+  gap: var(--espaco-4);
+  margin-block: var(--espaco-5);
+  padding: var(--espaco-4);
+  border: 1px solid var(--cor-borda-forte);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+
+.filtros__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-4);
+}
+
+@media (min-width: 48rem) {
+  .filtros {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: end;
+  }
+
+  .filtros .formulario__linha,
+  .filtros__acoes {
+    grid-column: 1 / -1;
+  }
+}
+
+.historico__resumo {
+  margin-bottom: var(--espaco-3);
+  font-weight: 600;
+}
+
+/* ---------- Formulário do painel ---------- */
+.formulario--painel {
+  max-width: none;
+  margin-top: 0;
+  gap: var(--espaco-4);
+}
+
+.formulario__linha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espaco-3);
+}
+
+.formulario__nota {
+  font-size: var(--texto-pequeno);
+}
+
+/* ---------- Janela (Modal) ---------- */
+.modal {
+  width: min(100% - 2 * var(--margem-lateral), 32rem);
+  max-height: calc(100dvh - 2rem);
+  margin: auto; /* o reset global (* { margin: 0 }) tirava a centralização do <dialog> */
+  overflow-y: auto; /* formulário comprido rola dentro da janela */
+  padding: 0;
+  border: 0;
+  border-radius: var(--raio-grande);
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+}
+
+.modal::backdrop {
+  background: rgb(58 15 30 / 0.55);
+}
+
+.modal__caixa {
+  padding: var(--espaco-5);
+}
+
+.modal__caixa > * + * {
+  margin-top: var(--espaco-3);
+}
+
+.modal__topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--espaco-3);
+}
+
+.modal__topo h2 {
+  font-size: var(--titulo-3);
+}
+
+.modal__fechar {
+  flex-shrink: 0;
+  width: var(--altura-toque);
+  height: var(--altura-toque);
+  margin: calc(-1 * var(--espaco-2));
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.modal__fechar:hover {
+  background: var(--cor-superficie);
+}
+
+.modal__caixa .modal__acoes,
+.formulario .modal__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-3);
+  margin-top: var(--espaco-5);
+}
