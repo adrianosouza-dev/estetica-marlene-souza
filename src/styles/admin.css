@@ -1,0 +1,108 @@
+/* Telas de acesso (login, nova senha) e cabeçalho do painel. */
+
+/* ---------- Login e nova senha ---------- */
+.acesso {
+  display: grid;
+  place-items: start center;
+  min-height: 100dvh;
+  padding: var(--espaco-7) var(--margem-lateral);
+}
+
+.acesso__caixa {
+  width: 100%;
+  max-width: 24rem;
+}
+
+.acesso__caixa > * + * {
+  margin-top: var(--espaco-4);
+}
+
+.acesso__marca {
+  width: 4.5rem;
+}
+
+.acesso h1 {
+  font-size: var(--titulo-2);
+}
+
+.acesso .formulario {
+  margin-top: var(--espaco-5);
+}
+
+.acesso__link {
+  display: inline-block;
+  margin-top: var(--espaco-5);
+}
+
+.acesso__site {
+  display: block;
+  margin-top: var(--espaco-7);
+  font-size: var(--texto-pequeno);
+  color: var(--cor-texto-suave);
+}
+
+@media (min-width: 48rem) {
+  .acesso {
+    place-items: center;
+  }
+}
+
+/* "Mostrar senha" na mesma linha do rótulo, à direita */
+.campo-senha {
+  position: relative;
+}
+
+.campo-senha__alternar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: var(--texto-pequeno);
+}
+
+/* ---------- Cabeçalho do painel ---------- */
+.admin__barra {
+  flex-wrap: wrap;
+  padding-block: var(--espaco-2);
+}
+
+.admin__conta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-2) var(--espaco-4);
+  font-size: var(--texto-pequeno);
+}
+
+.admin__email {
+  color: #e9c4ca;
+}
+
+.admin__sair {
+  min-height: 2.25rem;
+  padding: 0 var(--espaco-4);
+  border: 1px solid rgb(255 255 255 / 0.5);
+  border-radius: var(--raio-pilula);
+  background: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.admin__sair:hover:not(:disabled) {
+  background: rgb(255 255 255 / 0.12);
+}
+
+.admin__topo :focus-visible {
+  outline-color: #f59aa8;
+}
+
+/* No celular, o e-mail ocupa espaço demais: some (continua no leitor de tela) */
+@media (max-width: 30rem) {
+  .admin__email {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}

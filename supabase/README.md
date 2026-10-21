@@ -115,6 +115,51 @@ A Marlene autorizou o uso da foto e do nome no site e no portfólio, então
 2. Rode no **SQL Editor**. O resultado mostra a URL da foto. Abra no navegador para conferir.
 3. Desfaça a troca da URL no arquivo, como no passo 7.
 
+## 9. Recuperação de senha ("Esqueci minha senha")
+
+A tela de login tem "Esqueci minha senha". O Supabase envia um e-mail com um link
+para `/admin/nova-senha`, onde a profissional cria uma senha nova. **Faça nos dois
+projetos**, cada um com o endereço do seu site.
+
+**1. Endereços permitidos**
+
+Em **Authentication > URL Configuration**:
+
+- **Site URL**: o endereço do site na Vercel, ex.: `https://seu-site.vercel.app`
+- **Redirect URLs**: clique em **Add URL** e adicione:
+  - `https://seu-site.vercel.app/admin/nova-senha`
+  - `http://localhost:5173/admin/nova-senha` (para testar no computador)
+
+Sem isso, o link do e-mail é recusado ou leva para a página errada.
+
+**2. E-mail em português**
+
+Em **Authentication > Emails > Reset Password**, troque:
+
+- **Subject**: `Crie uma nova senha para o painel`
+- **Body** (mantenha o `{{ .ConfirmationURL }}` exatamente assim):
+
+```html
+<h2>Criar nova senha</h2>
+<p>Recebemos um pedido para criar uma nova senha para o painel da Marlene Souza.</p>
+<p><a href="{{ .ConfirmationURL }}">Criar nova senha</a></p>
+<p>Se não foi você, ignore este e-mail. A senha atual continua valendo.</p>
+```
+
+**3. Tamanho mínimo da senha**
+
+Em **Authentication > Sign In / Providers > Email**, coloque **Minimum password length**
+em `8`, igual ao que a tela pede.
+
+**4. Atenção ao envio de e-mails**
+
+O serviço de e-mail que vem pronto no Supabase serve só para testes: envia poucos
+e-mails por hora e **só para endereços da equipe do projeto** no Supabase. Para a
+Marlene receber o link no projeto real, configure um serviço de e-mail próprio
+(SMTP) em **Authentication > Emails > SMTP Settings**. Existem opções gratuitas para
+poucos envios, como Resend ou Brevo. Enquanto isso não for feito, a senha pode ser
+redefinida por você em **Authentication > Users**.
+
 ## Como as regras funcionam
 
 **Quem pode o quê**
