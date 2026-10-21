@@ -133,7 +133,7 @@ Fora do escopo das fases atuais; anotadas para depois.
 - [x] Fase 4: Agendamento
 - [x] Fase 5: Login
 - [x] Fase 6: Painel parte 1
-- [ ] Fase 7: Painel parte 2
+- [x] Fase 7: Painel parte 2
 - [ ] Fase 8: Portfólio
 
 Ao terminar uma fase, marque com [x] aqui.
