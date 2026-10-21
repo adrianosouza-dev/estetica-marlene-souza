@@ -116,6 +116,7 @@ Se tiver dúvida sobre alguma regra do negócio, me pergunte em vez de inventar.
 6. **Painel parte 1:** dashboard, agenda e histórico
 7. **Painel parte 2:** serviços, horários, fotos, avaliações e perfil
 8. **Portfólio:** README com descrição, prints, tecnologias, como rodar e link do deploy; revisão de responsividade; checagem de que nenhuma chave secreta vai para o GitHub
+   - No projeto Supabase real, configurar um serviço de e-mail próprio (SMTP, como o Resend). Sem isso, o "Esqueci minha senha" não chega para a Marlene: o e-mail padrão do Supabase só envia para a equipe do projeto.
 
 ## Andamento
 
