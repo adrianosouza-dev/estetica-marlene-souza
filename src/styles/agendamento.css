@@ -1,0 +1,297 @@
+/* Fluxo de agendamento (/agendar). */
+
+/* Barra de progresso: 4 partes, preenchidas até o passo atual */
+.progresso {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--espaco-1);
+  margin-top: var(--espaco-4);
+}
+
+.progresso__parte {
+  height: 4px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-borda);
+}
+
+.progresso__parte--feita {
+  background: var(--cor-destaque);
+}
+
+.agendar__titulo {
+  margin-top: var(--espaco-6);
+  font-size: var(--titulo-2);
+}
+
+.agendar__titulo:focus {
+  outline: none;
+}
+
+.agendar__contador {
+  display: block;
+  margin-bottom: var(--espaco-1);
+  font-family: var(--fonte-texto);
+  font-size: var(--texto-pequeno);
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+}
+
+.agendar .aviso {
+  margin-top: var(--espaco-4);
+}
+
+/* Botão com cara de link (ações secundárias) */
+.botao-texto {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--cor-texto);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+}
+
+.botao-texto:hover {
+  color: var(--cor-destaque-escuro);
+}
+
+/* ---------- Resumo das escolhas ---------- */
+.resumo {
+  margin-top: var(--espaco-5);
+  padding: var(--espaco-2) var(--espaco-4);
+  border: 1px dashed var(--cor-borda-forte);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+
+.resumo__linha {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  gap: var(--espaco-3);
+  align-items: baseline;
+  padding-block: var(--espaco-2);
+}
+
+.resumo__linha + .resumo__linha {
+  border-top: 1px solid var(--cor-borda);
+}
+
+.resumo dt {
+  font-size: var(--texto-pequeno);
+  color: var(--cor-texto-suave);
+}
+
+.resumo dd {
+  margin: 0;
+}
+
+.resumo dd:nth-of-type(1) {
+  font-weight: 600;
+}
+
+.resumo .botao-texto {
+  font-size: var(--texto-pequeno);
+}
+
+/* ---------- Passo 1: serviços ---------- */
+.opcoes-servico {
+  margin-top: var(--espaco-4);
+  border-top: 1px solid var(--cor-borda-forte);
+}
+
+.opcao-servico {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 var(--espaco-4);
+  width: 100%;
+  min-height: 4rem;
+  padding: var(--espaco-4) var(--espaco-2);
+  border: 0;
+  border-bottom: 1px solid var(--cor-borda-forte);
+  background: none;
+  text-align: left;
+  transition: background-color var(--transicao);
+}
+
+.opcao-servico:hover {
+  background: var(--cor-superficie);
+}
+
+.opcao-servico[aria-pressed="true"] {
+  background: var(--cor-superficie);
+  box-shadow: inset 4px 0 0 var(--cor-destaque);
+}
+
+.opcao-servico__nome {
+  font-family: var(--fonte-titulo);
+  font-size: var(--titulo-3);
+  font-weight: 600;
+}
+
+.opcao-servico__detalhe {
+  grid-row: 2;
+  font-size: var(--texto-pequeno);
+  font-weight: 600;
+  color: var(--cor-destaque-escuro);
+}
+
+.opcao-servico__preco {
+  grid-row: 1 / 3;
+  align-self: center;
+  font-weight: 700;
+}
+
+/* ---------- Passo 2: dias ---------- */
+.faixa-dias {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 4.75rem;
+  gap: var(--espaco-2);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--margem-lateral); /* o encaixe respeita a margem da tela */
+  margin: var(--espaco-4) calc(-1 * var(--margem-lateral)) 0;
+  padding: var(--espaco-1) var(--margem-lateral) var(--espaco-3);
+}
+
+.faixa-dias li {
+  scroll-snap-align: start;
+}
+
+.dia {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 2px;
+  width: 100%;
+  min-height: 5.25rem;
+  padding: var(--espaco-3) var(--espaco-1);
+  border: 1.5px solid var(--cor-borda-forte);
+  border-radius: var(--raio);
+  background: #fff;
+}
+
+.dia__semana {
+  font-size: var(--texto-pequeno);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.dia__data {
+  font-family: var(--fonte-titulo);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.dia__motivo {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.dia:hover:not(:disabled) {
+  border-color: var(--cor-destaque);
+}
+
+.dia[aria-pressed="true"] {
+  border-color: var(--cor-destaque);
+  background: var(--cor-destaque);
+  color: #fff;
+}
+
+.dia:disabled {
+  border-style: dashed;
+  background: transparent;
+  color: var(--cor-texto-suave);
+  cursor: not-allowed;
+}
+
+/* No computador, todos os dias em grade, sem rolar para o lado */
+@media (min-width: 48rem) {
+  .faixa-dias {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(auto-fill, minmax(4.75rem, 1fr));
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+}
+
+/* ---------- Passo 3: horários ---------- */
+.turno {
+  margin-top: var(--espaco-5);
+}
+
+.turno__nome {
+  margin-bottom: var(--espaco-2);
+  font-family: var(--fonte-texto);
+  font-size: var(--texto-base);
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+}
+
+.grade-horarios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: var(--espaco-2);
+}
+
+.horario {
+  width: 100%;
+  min-height: var(--altura-toque);
+  border: 1.5px solid var(--cor-borda-forte);
+  border-radius: var(--raio-pilula);
+  background: #fff;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.horario:hover {
+  border-color: var(--cor-destaque);
+}
+
+.horario[aria-pressed="true"] {
+  border-color: var(--cor-destaque);
+  background: var(--cor-destaque);
+  color: #fff;
+}
+
+.sem-horarios {
+  margin-top: var(--espaco-5);
+}
+
+.sem-horarios > * + * {
+  margin-top: var(--espaco-3);
+}
+
+/* ---------- Confirmação ---------- */
+.confirmacao h1 {
+  color: var(--cor-sucesso);
+}
+
+.confirmacao h1:focus {
+  outline: none;
+}
+
+.confirmacao__aviso {
+  font-size: var(--texto-medio);
+}
+
+.resumo--final {
+  margin-top: var(--espaco-6);
+  border-style: solid;
+  border-color: var(--cor-sucesso);
+}
+
+.resumo--final .resumo__linha {
+  grid-template-columns: 4.5rem 1fr;
+}
+
+.confirmacao__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-4) var(--espaco-5);
+  margin-top: var(--espaco-6);
+}

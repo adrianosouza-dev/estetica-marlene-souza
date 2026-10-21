@@ -81,7 +81,8 @@ a:hover {
   text-decoration-thickness: 2px;
 }
 
-ul[role="list"] {
+/* :where() deixa a regra fraca, para classes como .faixa-dias poderem dar espaçamento */
+:where(ul[role="list"]) {
   list-style: none;
   padding: 0;
 }

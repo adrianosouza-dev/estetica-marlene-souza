@@ -28,6 +28,9 @@ function montarNegocio(perfil, horarios) {
     fotoUrl: perfil?.foto_url || null,
     horarios: horarios ?? [],
     horarioResumo: temHorarios ? resumirHorarios(horarios) : negocio.horarioResumo,
+    // Regras do agendamento online (mesmos padrões do banco)
+    diasMaximos: perfil?.dias_maximos_agendamento ?? 30,
+    antecedenciaMinutos: perfil?.antecedencia_minima_minutos ?? 60,
   }
 }
 

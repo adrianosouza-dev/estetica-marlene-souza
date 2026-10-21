@@ -69,3 +69,47 @@ export function formatarTelefone(numero) {
   const m = local.match(/^(\d{2})(\d{4,5})(\d{4})$/)
   return m ? `(${m[1]}) ${m[2]}-${m[3]}` : numero
 }
+
+/*
+ * Datas e horas do agendamento.
+ * As datas chegam como texto 'AAAA-MM-DD' e são formatadas em UTC de propósito:
+ * assim o fuso do celular não muda o dia exibido.
+ */
+const emUtc = (data) => new Date(`${data}T12:00:00Z`)
+const formatoDataLonga = new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' })
+const formatoSemanaCurta = new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC', weekday: 'short' })
+const formatoDiaMes = new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC', day: '2-digit', month: '2-digit' })
+
+/** '2026-10-23' → 'sexta-feira, 23 de outubro' */
+export function formatarDataLonga(data) {
+  return formatoDataLonga.format(emUtc(data))
+}
+
+/** '2026-10-23' → { semana: 'sex', diaMes: '23/10' } */
+export function formatarDataCurta(data) {
+  return {
+    semana: formatoSemanaCurta.format(emUtc(data)).replace('.', ''),
+    diaMes: formatoDiaMes.format(emUtc(data)),
+  }
+}
+
+/** Minutos desde a meia-noite → '9h' ou '9h30' */
+export function formatarMinutos(minutos) {
+  const h = Math.floor(minutos / 60)
+  const m = minutos % 60
+  return `${h}h${m ? String(m).padStart(2, '0') : ''}`
+}
+
+/** Formata o WhatsApp enquanto a cliente digita: '9299123' → '(92) 99123' */
+export function mascararTelefone(valor) {
+  const d = valor.replace(/\D/g, '').slice(0, 11)
+  if (d.length <= 2) return d.length ? `(${d}` : ''
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`
+  const meio = d.length === 11 ? 7 : 6
+  return `(${d.slice(0, 2)}) ${d.slice(2, meio)}-${d.slice(meio)}`
+}
+
+/** Troca o hífen antes da sigla do estado por um que não quebra: evita "Maués-" / "AM" */
+export function enderecoSemQuebra(endereco) {
+  return endereco.replace(/-(?=[A-Z]{2}$)/, '\u2011')
+}
