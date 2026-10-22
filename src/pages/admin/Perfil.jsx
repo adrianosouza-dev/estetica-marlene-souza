@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { EnviarFoto } from '../../components/painel/EnviarFoto'
+import { FormTrocarSenha } from '../../components/painel/FormTrocarSenha'
 import { Aviso } from '../../components/ui/Aviso'
 import { Campo } from '../../components/ui/Campo'
 import { EstadoConsulta } from '../../components/ui/EstadoConsulta'
 import { Modal } from '../../components/ui/Modal'
 import { useAcao } from '../../hooks/useAcao'
+import { useAuth } from '../../hooks/useAuth'
 import { useConsulta } from '../../hooks/useConsulta'
 import { useTituloPagina } from '../../hooks/useTituloPagina'
 import { buscarPerfilAdmin, salvarPerfil, trocarFotoPerfil } from '../../lib/consultasCadastros'
@@ -19,6 +22,7 @@ function FormPerfil({ perfil, executar, ocupado, aoSalvar }) {
     instagram: perfil.instagram ? `@${perfil.instagram}` : '',
     endereco: perfil.endereco ?? '',
     link_mapa: perfil.link_mapa ?? '',
+    aviso_cancelamento: perfil.aviso_cancelamento ?? '',
   })
   const [erros, setErros] = useState({})
 
@@ -44,6 +48,7 @@ function FormPerfil({ perfil, executar, ocupado, aoSalvar }) {
           instagram: limparInstagram(dados.instagram) || null,
           endereco: dados.endereco.trim() || null,
           link_mapa: dados.link_mapa.trim() || null,
+          aviso_cancelamento: dados.aviso_cancelamento.trim() || null,
         }),
       'Perfil salvo. O site já mostra os dados novos.',
     )
@@ -90,6 +95,16 @@ function FormPerfil({ perfil, executar, ocupado, aoSalvar }) {
         onChange={(e) => alterar('link_mapa', e.target.value)}
         erro={erros.link_mapa}
       />
+      <Campo
+        rotulo="Aviso na confirmação do agendamento"
+        opcional
+        dica="Aparece para a cliente depois que ela agenda. Ex.: Se precisar cancelar, há taxa de R$ 5,00. Remarcar é grátis. Vazio: não aparece."
+        multilinha
+        rows={2}
+        maxLength={300}
+        value={dados.aviso_cancelamento}
+        onChange={(e) => alterar('aviso_cancelamento', e.target.value)}
+      />
       <div>
         <button type="submit" className="botao botao--primario" disabled={ocupado}>
           {ocupado ? 'Salvando…' : 'Salvar perfil'}
@@ -104,7 +119,16 @@ export default function Perfil() {
   useTituloPagina('Perfil')
   const perfil = useConsulta(buscarPerfilAdmin)
   const { ocupado, retorno, executar, avisar } = useAcao()
+  const senha = useAcao()
+  const { usuario } = useAuth()
   const [trocandoFoto, setTrocandoFoto] = useState(false)
+  const { hash } = useLocation()
+  const carregou = Boolean(perfil.dados)
+
+  // Vindo do lembrete do início (/admin/perfil#senha): rola até "Trocar minha senha"
+  useEffect(() => {
+    if (carregou && hash === '#senha') document.getElementById('senha')?.scrollIntoView({ block: 'start' })
+  }, [carregou, hash])
 
   return (
     <section className="container pagina painel">
@@ -136,6 +160,12 @@ export default function Perfil() {
                 ocupado={ocupado}
                 aoSalvar={perfil.recarregar}
               />
+            </section>
+
+            <section id="senha" className="painel__bloco" aria-labelledby="titulo-senha">
+              <h2 id="titulo-senha">Trocar minha senha</h2>
+              {senha.retorno && <Aviso tipo={senha.retorno.tipo}>{senha.retorno.texto}</Aviso>}
+              <FormTrocarSenha email={usuario?.email ?? ''} executar={senha.executar} ocupado={senha.ocupado} />
             </section>
           </>
         )}

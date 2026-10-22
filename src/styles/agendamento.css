@@ -295,3 +295,12 @@
   gap: var(--espaco-4) var(--espaco-5);
   margin-top: var(--espaco-6);
 }
+
+/* Aviso de cancelamento (Perfil > Aviso na confirmação) */
+.confirmacao__politica {
+  margin-top: var(--espaco-4);
+  padding-left: var(--espaco-3);
+  border-left: 3px solid var(--cor-borda-forte);
+  font-size: var(--texto-pequeno);
+  color: var(--cor-texto-suave);
+}

@@ -4,11 +4,10 @@ import { ListaFaq } from '../../components/secoes/ListaFaq'
 import { Botao } from '../../components/ui/Botao'
 import { EstadoConsulta } from '../../components/ui/EstadoConsulta'
 import { Guarana } from '../../components/ui/Guarana'
-import { perguntasFrequentes } from '../../config/faq'
 import { useConsulta } from '../../hooks/useConsulta'
 import { useNegocio } from '../../hooks/useNegocio'
 import { useTituloPagina } from '../../hooks/useTituloPagina'
-import { buscarAvaliacoesAprovadas, buscarFotos } from '../../lib/consultas'
+import { buscarAvaliacoesAprovadas, buscarFotos, buscarPerguntas } from '../../lib/consultas'
 
 const QTD_FOTOS = 4
 const QTD_AVALIACOES = 4
@@ -19,6 +18,7 @@ export default function Inicio() {
   const negocio = useNegocio()
   const fotos = useConsulta(buscarFotos, QTD_FOTOS)
   const avaliacoes = useConsulta(buscarAvaliacoesAprovadas, QTD_AVALIACOES)
+  const perguntas = useConsulta(buscarPerguntas, QTD_PERGUNTAS)
 
   return (
     <>
@@ -83,17 +83,20 @@ export default function Inicio() {
         </div>
       </section>
 
-      <section className="secao" aria-labelledby="titulo-duvidas">
-        <div className="container secao--estreita">
-          <div className="secao__topo">
-            <h2 id="titulo-duvidas">Dúvidas frequentes</h2>
-            <Link to="/perguntas" className="link-simples">
-              Ver todas as dúvidas
-            </Link>
+      {/* Resumo das dúvidas: só aparece quando há perguntas cadastradas no painel */}
+      {perguntas.dados?.length > 0 && (
+        <section className="secao" aria-labelledby="titulo-duvidas">
+          <div className="container secao--estreita">
+            <div className="secao__topo">
+              <h2 id="titulo-duvidas">Dúvidas frequentes</h2>
+              <Link to="/perguntas" className="link-simples">
+                Ver todas as dúvidas
+              </Link>
+            </div>
+            <ListaFaq perguntas={perguntas.dados} />
           </div>
-          <ListaFaq perguntas={perguntasFrequentes.slice(0, QTD_PERGUNTAS)} />
-        </div>
-      </section>
+        </section>
+      )}
     </>
   )
 }

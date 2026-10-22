@@ -6,8 +6,8 @@
 export function ListaFaq({ perguntas }) {
   return (
     <div className="faq">
-      {perguntas.map(({ pergunta, resposta }) => (
-        <details key={pergunta} className="faq__item">
+      {perguntas.map(({ id, pergunta, resposta }) => (
+        <details key={id ?? pergunta} className="faq__item">
           <summary className="faq__pergunta">{pergunta}</summary>
           <p className="faq__resposta">{resposta}</p>
         </details>

@@ -11,6 +11,7 @@ const LINKS = [
   { para: '/admin/horarios', rotulo: 'Horários' },
   { para: '/admin/fotos', rotulo: 'Fotos' },
   { para: '/admin/avaliacoes', rotulo: 'Avaliações' },
+  { para: '/admin/perguntas', rotulo: 'Dúvidas' },
   { para: '/admin/perfil', rotulo: 'Perfil' },
 ]
 

@@ -193,6 +193,7 @@ textarea.campo__entrada {
 
 .faq__resposta {
   max-width: var(--largura-texto);
+  white-space: pre-line; /* mantém as quebras de linha digitadas no painel */
   padding-bottom: var(--espaco-5);
   color: var(--cor-texto-suave);
 }

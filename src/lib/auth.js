@@ -1,3 +1,4 @@
+import { erroAmigavel } from './erros'
 import { supabase } from './supabase'
 
 /*
@@ -36,10 +37,10 @@ export function traduzirErroAuth(erro) {
   return 'Não foi possível concluir agora. Tente de novo em instantes.'
 }
 
-/** Lança o erro já traduzido, para a tela só precisar mostrar erro.message */
+/** Lança o erro já traduzido (e marcado como amigável), para a tela só mostrar erro.message */
 function falhar(erro) {
   console.error(erro)
-  throw new Error(traduzirErroAuth(erro))
+  throw erroAmigavel(traduzirErroAuth(erro))
 }
 
 export async function entrar(email, senha) {
@@ -60,10 +61,29 @@ export async function pedirNovaSenha(email) {
   if (error) falhar(error)
 }
 
-/** Troca a senha da conta logada (usada depois de abrir o link do e-mail) */
+/**
+ * Troca a senha da conta logada (usada depois de abrir o link do e-mail).
+ * senha_definida: marca na conta que a senha provisória já foi trocada
+ * (o lembrete do painel some).
+ */
 export async function definirNovaSenha(senha) {
-  const { error } = await cliente().auth.updateUser({ password: senha })
+  const { error } = await cliente().auth.updateUser({ password: senha, data: { senha_definida: true } })
   if (error) falhar(error)
+}
+
+/**
+ * "Trocar minha senha" no Perfil. Antes de trocar, confere a senha atual
+ * entrando de novo com ela: quem pegar o celular já logado não troca a senha.
+ */
+export async function trocarSenha(email, senhaAtual, novaSenha) {
+  const { error: erroAtual } = await cliente().auth.signInWithPassword({ email, password: senhaAtual })
+  if (erroAtual) {
+    if (erroAtual.code === 'invalid_credentials' || /invalid login credentials/i.test(erroAtual.message ?? '')) {
+      throw erroAmigavel('A senha atual não confere.')
+    }
+    falhar(erroAtual)
+  }
+  await definirNovaSenha(novaSenha)
 }
 
 /** Pergunta ao banco se a conta logada é a profissional ligada ao perfil */

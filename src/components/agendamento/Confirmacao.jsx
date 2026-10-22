@@ -6,7 +6,7 @@ import { Botao } from '../ui/Botao'
 
 /** Tela final: o horário já está reservado (status pendente no banco) */
 export function Confirmacao({ servico, data, minutos, nome, aoAgendarOutro }) {
-  const { whatsapp, endereco, linkMapa } = useNegocio()
+  const { whatsapp, endereco, linkMapa, avisoCancelamento } = useNegocio()
   const titulo = useRef(null)
 
   // Leva o foco (e o leitor de tela) direto para a confirmação
@@ -46,6 +46,9 @@ export function Confirmacao({ servico, data, minutos, nome, aoAgendarOutro }) {
           </dd>
         </div>
       </dl>
+
+      {/* Texto editável no Perfil do painel; vazio = não aparece */}
+      {avisoCancelamento && <p className="confirmacao__politica">{avisoCancelamento}</p>}
 
       <div className="confirmacao__acoes">
         {linkZap && <Botao href={linkZap}>Avisar a Marlene no WhatsApp</Botao>}

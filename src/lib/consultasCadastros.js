@@ -221,3 +221,26 @@ export async function aprovarAvaliacao(id) {
 export async function removerAvaliacao(id) {
   exigirAlteracao(await executar(cliente().from('avaliacoes').delete().eq('id', id).select('id')))
 }
+
+// ============================================================================
+// Perguntas frequentes
+// ============================================================================
+
+export function buscarPerguntasAdmin() {
+  return executar(
+    cliente().from('perguntas_frequentes').select('id, pergunta, resposta, ordem, ativa').order('ordem').order('criado_em'),
+  )
+}
+
+/** Cria (sem id) ou atualiza (com id) uma pergunta */
+export async function salvarPergunta({ id, pergunta, resposta, ativa, ordem }) {
+  const campos = { pergunta: pergunta.trim(), resposta: resposta.trim(), ativa }
+  if (id) {
+    return exigirAlteracao(await executar(cliente().from('perguntas_frequentes').update(campos).eq('id', id).select('id')))
+  }
+  return executar(cliente().from('perguntas_frequentes').insert({ ...campos, ordem }).select('id'))
+}
+
+export async function removerPergunta(id) {
+  exigirAlteracao(await executar(cliente().from('perguntas_frequentes').delete().eq('id', id).select('id')))
+}

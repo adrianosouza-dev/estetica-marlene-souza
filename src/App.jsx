@@ -30,6 +30,7 @@ const Horarios = lazy(() => import('./pages/admin/Horarios'))
 const Fotos = lazy(() => import('./pages/admin/Fotos'))
 const Avaliacoes = lazy(() => import('./pages/admin/Avaliacoes'))
 const Perfil = lazy(() => import('./pages/admin/Perfil'))
+const AdminPerguntas = lazy(() => import('./pages/admin/Perguntas'))
 
 export default function App() {
   return (
@@ -64,6 +65,7 @@ export default function App() {
               <Route path="horarios" element={<Horarios />} />
               <Route path="fotos" element={<Fotos />} />
               <Route path="avaliacoes" element={<Avaliacoes />} />
+              <Route path="perguntas" element={<AdminPerguntas />} />
               <Route path="perfil" element={<Perfil />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>

@@ -295,13 +295,13 @@
 }
 
 /*
- * No celular, o menu do painel é uma grade de 4 colunas: os 8 itens ficam
+ * No celular, o menu do painel é uma grade de 3 colunas: os 9 itens ficam
  * sempre à vista, sem precisar deslizar, cada um com altura boa para o dedo.
  * A partir do tablet, vira uma linha só.
  */
 .admin__nav-lista {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--espaco-1);
   padding-block: var(--espaco-2);
 }
