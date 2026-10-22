@@ -4,7 +4,9 @@ import { Aviso } from '../../components/ui/Aviso'
 import { Botao } from '../../components/ui/Botao'
 import { Campo } from '../../components/ui/Campo'
 import { CampoSenha } from '../../components/ui/CampoSenha'
+import { FaixaDemonstracao } from '../../components/layout/FaixaDemonstracao'
 import { Guarana } from '../../components/ui/Guarana'
+import { ACESSO_DEMO, MODO_DEMO } from '../../config/demo'
 import { useAuth } from '../../hooks/useAuth'
 import { useTituloPagina } from '../../hooks/useTituloPagina'
 import { entrar, pedirNovaSenha } from '../../lib/auth'
@@ -78,94 +80,125 @@ export default function Login() {
   }
 
   return (
-    <main className="acesso">
-      <div className="acesso__caixa">
-        <Guarana className="acesso__marca" />
+    <>
+      <FaixaDemonstracao />
+      <main className="acesso">
+        <div className="acesso__caixa">
+          <Guarana className="acesso__marca" />
 
-        {modo === 'entrar' && (
-          <>
-            <h1>Painel da Marlene</h1>
-            <p className="texto-suave">Entre com o e-mail e a senha da sua conta.</p>
+          {modo === 'entrar' && (
+            <>
+              <h1>Painel da Marlene</h1>
+              <p className="texto-suave">Entre com o e-mail e a senha da sua conta.</p>
 
-            {erroAcesso && <Aviso tipo="erro">{erroAcesso}</Aviso>}
+              {erroAcesso && <Aviso tipo="erro">{erroAcesso}</Aviso>}
 
-            <form className="formulario" onSubmit={aoEntrar} noValidate>
-              <Campo
-                rotulo="E-mail"
-                type="email"
-                autoComplete="username"
-                inputMode="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                erro={erros.email}
-                required
-              />
-              <CampoSenha
-                rotulo="Senha"
-                autoComplete="current-password"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                erro={erros.senha}
-                required
-              />
-              {erroEnvio && <Aviso tipo="erro">{erroEnvio}</Aviso>}
-              <Botao type="submit" disabled={entrando} bloco>
-                {entrando ? 'Entrando…' : 'Entrar'}
-              </Botao>
-            </form>
+              {/* Site de demonstração: credenciais públicas, para quem visita o portfólio */}
+              {MODO_DEMO && ACESSO_DEMO.email && (
+                <div className="acesso__demo">
+                  <p>
+                    <strong>Acesso de demonstração</strong>
+                  </p>
+                  <p>
+                    E-mail: <code>{ACESSO_DEMO.email}</code>
+                    <br />
+                    Senha: <code>{ACESSO_DEMO.senha}</code>
+                  </p>
+                  <button
+                    type="button"
+                    className="botao-texto"
+                    onClick={() => {
+                      setEmail(ACESSO_DEMO.email)
+                      setSenha(ACESSO_DEMO.senha)
+                      setErros({})
+                    }}
+                  >
+                    Preencher para mim
+                  </button>
+                </div>
+              )}
 
-            <button type="button" className="botao-texto acesso__link" onClick={() => trocarModo('esqueci')}>
-              Esqueci minha senha
-            </button>
-          </>
-        )}
+              <form className="formulario" onSubmit={aoEntrar} noValidate>
+                <Campo
+                  rotulo="E-mail"
+                  type="email"
+                  autoComplete="username"
+                  inputMode="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  erro={erros.email}
+                  required
+                />
+                <CampoSenha
+                  rotulo="Senha"
+                  autoComplete="current-password"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                  erro={erros.senha}
+                  required
+                />
+                {erroEnvio && <Aviso tipo="erro">{erroEnvio}</Aviso>}
+                <Botao type="submit" disabled={entrando} bloco>
+                  {entrando ? 'Entrando…' : 'Entrar'}
+                </Botao>
+              </form>
 
-        {modo === 'esqueci' && (
-          <>
-            <h1>Esqueci minha senha</h1>
-            <p className="texto-suave">Digite o e-mail da conta. Vamos enviar um link para você criar uma senha nova.</p>
+              {/* Na demonstração não há recuperação de senha (a senha é pública) */}
+              {!MODO_DEMO && (
+                <button type="button" className="botao-texto acesso__link" onClick={() => trocarModo('esqueci')}>
+                  Esqueci minha senha
+                </button>
+              )}
+            </>
+          )}
 
-            <form className="formulario" onSubmit={aoPedirLink} noValidate>
-              <Campo
-                rotulo="E-mail"
-                type="email"
-                autoComplete="username"
-                inputMode="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                erro={erros.email}
-                required
-              />
-              {erroEnvio && <Aviso tipo="erro">{erroEnvio}</Aviso>}
-              <Botao type="submit" disabled={enviando} bloco>
-                {enviando ? 'Enviando…' : 'Enviar link'}
-              </Botao>
-            </form>
+          {modo === 'esqueci' && (
+            <>
+              <h1>Esqueci minha senha</h1>
+              <p className="texto-suave">Digite o e-mail da conta. Vamos enviar um link para você criar uma senha nova.</p>
 
-            <button type="button" className="botao-texto acesso__link" onClick={() => trocarModo('entrar')}>
-              Voltar para o login
-            </button>
-          </>
-        )}
+              <form className="formulario" onSubmit={aoPedirLink} noValidate>
+                <Campo
+                  rotulo="E-mail"
+                  type="email"
+                  autoComplete="username"
+                  inputMode="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  erro={erros.email}
+                  required
+                />
+                {erroEnvio && <Aviso tipo="erro">{erroEnvio}</Aviso>}
+                <Botao type="submit" disabled={enviando} bloco>
+                  {enviando ? 'Enviando…' : 'Enviar link'}
+                </Botao>
+              </form>
 
-        {modo === 'link-enviado' && (
-          <>
-            <h1>Confira seu e-mail</h1>
-            {/* Mesma mensagem exista ou não a conta: não revela quais e-mails estão cadastrados */}
-            <Aviso tipo="sucesso">
-              Se esse e-mail tiver uma conta, o link para criar uma senha nova chega em alguns minutos. Olhe também a
-              caixa de spam.
-            </Aviso>
-            <button type="button" className="botao-texto acesso__link" onClick={() => trocarModo('entrar')}>
-              Voltar para o login
-            </button>
-          </>
-        )}
+              <button type="button" className="botao-texto acesso__link" onClick={() => trocarModo('entrar')}>
+                Voltar para o login
+              </button>
+            </>
+          )}
 
-        <Link to="/" className="acesso__site">
-          Ir para o site
-        </Link>
-      </div>
-    </main>
+          {modo === 'link-enviado' && (
+            <>
+              <h1>Confira seu e-mail</h1>
+              {/* Mesma mensagem exista ou não a conta: não revela quais e-mails estão cadastrados */}
+              <Aviso tipo="sucesso">
+                Se esse e-mail tiver uma conta, o link para criar uma senha nova chega em alguns minutos. Olhe também a
+                caixa de spam.
+              </Aviso>
+              <button type="button" className="botao-texto acesso__link" onClick={() => trocarModo('entrar')}>
+                Voltar para o login
+              </button>
+            </>
+          )}
+
+          <Link to="/" className="acesso__site">
+            Ir para o site
+          </Link>
+        </div>
+      </main>
+    </>
   )
 }

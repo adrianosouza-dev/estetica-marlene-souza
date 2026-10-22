@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { MODO_DEMO } from '../config/demo'
 import { negocio } from '../config/negocio'
 
 /**
@@ -7,8 +8,9 @@ import { negocio } from '../config/negocio'
  */
 export function useTituloPagina(titulo) {
   useEffect(() => {
-    document.title = titulo
+    const base = titulo
       ? `${titulo} · ${negocio.nome}`
       : `${negocio.nome} · ${negocio.especialidade} em ${negocio.endereco.cidade}`
+    document.title = MODO_DEMO ? `${base} (demonstração)` : base
   }, [titulo])
 }

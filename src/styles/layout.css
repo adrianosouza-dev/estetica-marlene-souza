@@ -343,3 +343,12 @@
   }
 }
 
+
+/* Faixa do site de demonstração */
+.faixa-demo {
+  padding: var(--espaco-2) var(--margem-lateral);
+  background: var(--cor-sucesso);
+  color: #fff;
+  font-size: var(--texto-pequeno);
+  text-align: center;
+}

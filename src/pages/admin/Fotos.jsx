@@ -6,6 +6,7 @@ import { Campo } from '../../components/ui/Campo'
 import { EstadoConsulta } from '../../components/ui/EstadoConsulta'
 import { JanelaConfirmacao } from '../../components/ui/JanelaConfirmacao'
 import { Modal } from '../../components/ui/Modal'
+import { MODO_DEMO } from '../../config/demo'
 import { useAcao } from '../../hooks/useAcao'
 import { useConsulta } from '../../hooks/useConsulta'
 import { useTituloPagina } from '../../hooks/useTituloPagina'
@@ -47,7 +48,12 @@ export default function Fotos() {
     <section className="container pagina painel">
       <div className="painel__topo">
         <h1>Fotos</h1>
-        <button type="button" className="botao botao--primario botao--pequeno" onClick={() => setEnviando(true)}>
+        <button
+          type="button"
+          className="botao botao--primario botao--pequeno"
+          onClick={() => setEnviando(true)}
+          disabled={MODO_DEMO}
+        >
           Enviar foto
         </button>
       </div>
@@ -55,6 +61,9 @@ export default function Fotos() {
         Fotos dos seus trabalhos. A ordem daqui é a da galeria do site; a página inicial mostra as mais recentes.
       </p>
 
+      {MODO_DEMO && (
+        <Aviso tipo="info">Na demonstração, dá para editar legendas e a ordem, mas não enviar nem remover fotos.</Aviso>
+      )}
       {retorno && <Aviso tipo={retorno.tipo}>{retorno.texto}</Aviso>}
 
       <EstadoConsulta
@@ -90,9 +99,11 @@ export default function Fotos() {
                   <span aria-hidden="true">→</span>
                   <span className="sr-only">Mover foto {i + 1} para depois</span>
                 </button>
-                <button type="button" className="botao-acao botao-acao--cancelar" onClick={() => setRemovendo(foto)} disabled={ocupado}>
-                  Remover<span className="sr-only"> foto {i + 1}</span>
-                </button>
+                {!MODO_DEMO && (
+                  <button type="button" className="botao-acao botao-acao--cancelar" onClick={() => setRemovendo(foto)} disabled={ocupado}>
+                    Remover<span className="sr-only"> foto {i + 1}</span>
+                  </button>
+                )}
               </div>
             </li>
           ))}

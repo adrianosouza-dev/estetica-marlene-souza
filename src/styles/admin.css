@@ -118,3 +118,27 @@
     white-space: nowrap;
   }
 }
+
+/* Acesso de demonstração na tela de login */
+.acesso__demo {
+  padding: var(--espaco-3) var(--espaco-4);
+  border: 1px dashed var(--cor-sucesso);
+  border-radius: var(--raio);
+  background: var(--cor-sucesso-fundo);
+  color: var(--cor-sucesso);
+}
+
+.acesso__demo > * + * {
+  margin-top: var(--espaco-2);
+}
+
+.acesso__demo code {
+  font-family: var(--fonte-texto);
+  font-weight: 700;
+  word-break: break-all;
+}
+
+.acesso__demo .botao-texto {
+  min-height: var(--altura-toque);
+  color: var(--cor-sucesso);
+}

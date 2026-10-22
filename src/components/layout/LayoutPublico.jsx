@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { negocio } from '../../config/negocio'
 import { Botao } from '../ui/Botao'
+import { FaixaDemonstracao } from './FaixaDemonstracao'
 import { ProvedorNegocio } from './ProvedorNegocio'
 import { Rodape } from './Rodape'
 
@@ -41,6 +42,7 @@ export function LayoutPublico() {
         <a href="#conteudo" className="pular-conteudo">
           Pular para o conteúdo
         </a>
+        <FaixaDemonstracao />
 
         <header className="cabecalho">
           <div className="container">

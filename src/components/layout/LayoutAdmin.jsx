@@ -2,6 +2,7 @@ import { Suspense, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { sair } from '../../lib/auth'
+import { FaixaDemonstracao } from './FaixaDemonstracao'
 
 const LINKS = [
   { para: '/admin', rotulo: 'Início' },
@@ -35,6 +36,7 @@ export function LayoutAdmin() {
       <a href="#conteudo" className="pular-conteudo">
         Pular para o conteúdo
       </a>
+      <FaixaDemonstracao />
 
       <header className="admin__topo">
         <div className="container admin__barra">

@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { ListaAgendamentos } from '../../components/painel/ListaAgendamentos'
 import { Aviso } from '../../components/ui/Aviso'
 import { EstadoConsulta } from '../../components/ui/EstadoConsulta'
+import { MODO_DEMO } from '../../config/demo'
 import { useAoVoltar } from '../../hooks/useAoVoltar'
 import { useAuth } from '../../hooks/useAuth'
 import { useConsulta } from '../../hooks/useConsulta'
@@ -20,7 +21,7 @@ export default function Dashboard() {
   const aviso = useLocation().state?.aviso // ex.: "Senha alterada." vindo de /admin/nova-senha
   // A conta é criada com senha provisória; a marca senha_definida aparece quando ela troca
   const { usuario } = useAuth()
-  const senhaProvisoria = usuario && usuario.user_metadata?.senha_definida !== true
+  const senhaProvisoria = !MODO_DEMO && usuario && usuario.user_metadata?.senha_definida !== true
 
   const [agora, setAgora] = useState(agoraEmManaus)
   const resumo = useConsulta(buscarResumoPainel, {
