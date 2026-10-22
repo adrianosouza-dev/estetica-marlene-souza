@@ -52,10 +52,15 @@
   position: relative;
 }
 
+/* Área de toque de 44px centrada na linha do rótulo, sem mudar o visual do texto */
 .campo-senha__alternar {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: calc((1.6em - var(--altura-toque)) / 2);
+  right: calc(-1 * var(--espaco-2));
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--altura-toque);
+  padding-inline: var(--espaco-2);
   font-size: var(--texto-pequeno);
 }
 
