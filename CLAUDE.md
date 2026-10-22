@@ -24,7 +24,7 @@ Estou aprendendo: ao final de cada fase, me explique em poucas linhas o que foi 
 ## Estrutura de pastas
 
 ```
-src/config            dados do negócio, FAQ
+src/config            dados do negócio (valores de reserva)
 src/lib               cliente do Supabase, cálculo de disponibilidade, formatadores
 src/hooks             useAuth e outros hooks
 src/components/ui     Botao, Campo, Modal, Aviso
@@ -48,7 +48,7 @@ fotos-originais       fotos reais enviadas por mim (não vai para o GitHub)
 - **Sobre (/sobre):** texto sobre a Marlene, editável no painel.
 - **Contato e localização (/contato):** endereço, link do mapa, WhatsApp e horário de funcionamento.
 - **Avaliações:** seção na página inicial mostrando só avaliações aprovadas (nome, nota de 1 a 5 e comentário). Página /avaliar com formulário para a cliente deixar a avaliação; chega como "pendente". Nunca invente avaliações no site real; avaliações fictícias só no seed.sql da demonstração.
-- **FAQ (/perguntas e um resumo na página inicial):** perguntas em formato de acordeão acessível (pode usar `<details>`). As perguntas ficam em src/config/faq.js para facilitar a edição. Perguntas iniciais, com respostas marcadas como CONFIRMAR para eu checar com a Marlene:
+- **FAQ (/perguntas e um resumo na página inicial):** perguntas em formato de acordeão acessível (`<details>`). As perguntas ficam na tabela `perguntas_frequentes` e a Marlene edita no painel (/admin/perguntas); as respostas iniciais do projeto real estão em supabase/faq-inicial-real.sql. Perguntas iniciais:
   - Quanto tempo demora o atendimento?
   - Preciso pagar adiantado?
   - Quais formas de pagamento são aceitas?
@@ -67,12 +67,13 @@ fotos-originais       fotos reais enviadas por mim (não vai para o GitHub)
 - **Fotos (/admin/fotos):** upload para o Supabase Storage, legenda e remoção.
 - **Histórico (/admin/historico):** agendamentos passados, com filtro por período e por cliente.
 - **Avaliações (/admin/avaliacoes):** lista de pendentes e aprovadas, com botões aprovar e remover.
-- **Perfil:** editar o texto do "Sobre" e os dados de contato.
+- **Perguntas frequentes (/admin/perguntas):** criar, editar, esconder, ordenar e apagar.
+- **Perfil:** editar o texto do "Sobre", os dados de contato, a foto, o aviso de cancelamento mostrado na confirmação do agendamento e trocar a senha (com lembrete no início do painel enquanto a senha provisória não for trocada).
 
 ## Regras do banco (muito importante)
 
 - Escreva o SQL em arquivos dentro de supabase/migrations, para eu rodar no SQL Editor do Supabase.
-- Tabelas: servicos, horarios_funcionamento, bloqueios, agendamentos, fotos, avaliacoes, perfil.
+- Tabelas: servicos, horarios_funcionamento, bloqueios, agendamentos, fotos, avaliacoes, perfil, perguntas_frequentes.
 - Ative Row Level Security em todas as tabelas.
 - O público (anon) pode: ler serviços ativos, fotos, horários, bloqueios, perfil e avaliações aprovadas; criar agendamentos para hoje em diante; criar avaliações (sempre como pendente).
 - O público NÃO pode ler a tabela de agendamentos (tem nome e telefone das clientes). Para mostrar os horários livres, crie uma função SQL security definer que retorna só início e fim dos horários ocupados de um dia.

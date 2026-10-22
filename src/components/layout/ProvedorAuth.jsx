@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AuthContexto } from '../../hooks/useAuth'
 import { sair, verificarProfissional } from '../../lib/auth'
 import { supabase } from '../../lib/supabase'
@@ -19,6 +19,9 @@ export function ProvedorAuth({ children }) {
     recuperacao: false,
   })
 
+  // Conta já conferida como profissional nesta sessão (evita verificar de novo)
+  const verificado = useRef(null)
+
   useEffect(() => {
     if (!supabase) return
 
@@ -28,13 +31,16 @@ export function ProvedorAuth({ children }) {
       const recuperacao = evento === 'PASSWORD_RECOVERY'
 
       if (!usuario) {
+        verificado.current = null
         // Mantém a mensagem de "sem acesso" para a tela de login mostrar
         setEstado((e) => ({ ...e, carregando: false, usuario: null, ehProfissional: false, recuperacao: false }))
         return
       }
 
-      // Só a renovação automática do token: a permissão já foi conferida
-      if (evento === 'TOKEN_REFRESHED' || evento === 'USER_UPDATED') {
+      // Renovação do token, dados da conta alterados ou novo login da MESMA conta já
+      // verificada (ex.: "Trocar minha senha" confere a senha atual entrando de novo):
+      // não precisa verificar de novo, e a tela não pisca "Verificando acesso…"
+      if (evento === 'TOKEN_REFRESHED' || evento === 'USER_UPDATED' || verificado.current === usuario.id) {
         setEstado((e) => ({ ...e, usuario }))
         return
       }
@@ -51,6 +57,7 @@ export function ProvedorAuth({ children }) {
             await sair()
             return
           }
+          verificado.current = usuario.id
           setEstado((e) => ({
             ...e,
             carregando: false,

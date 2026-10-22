@@ -31,6 +31,8 @@ function montarNegocio(perfil, horarios) {
     // Regras do agendamento online (mesmos padrões do banco)
     diasMaximos: perfil?.dias_maximos_agendamento ?? 30,
     antecedenciaMinutos: perfil?.antecedencia_minima_minutos ?? 60,
+    // Aviso da confirmação do agendamento (vazio = não aparece)
+    avisoCancelamento: perfil?.aviso_cancelamento?.trim() || null,
   }
 }
 

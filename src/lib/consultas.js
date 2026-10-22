@@ -30,7 +30,6 @@ export function buscarServicosAtivos() {
   )
 }
 
-/** Fotos da galeria, das mais recentes para as mais antigas */
 /**
  * Fotos dos trabalhos.
  *   - com limite (página inicial): as mais recentes;
@@ -52,6 +51,18 @@ export function buscarAvaliacoesAprovadas(limite) {
   return executar(consulta)
 }
 
+/** Perguntas frequentes ativas, na ordem do painel (limite: resumo da página inicial) */
+export function buscarPerguntas(limite) {
+  let consulta = cliente()
+    .from('perguntas_frequentes')
+    .select('id, pergunta, resposta')
+    .eq('ativa', true)
+    .order('ordem')
+    .order('criado_em')
+  if (limite) consulta = consulta.limit(limite)
+  return executar(consulta)
+}
+
 /** Perfil (linha única) e horários de funcionamento, buscados juntos */
 export async function buscarDadosNegocio() {
   const [perfil, horarios] = await Promise.all([
@@ -59,7 +70,7 @@ export async function buscarDadosNegocio() {
       cliente()
         .from('perfil')
         .select(
-          'sobre, whatsapp, instagram, endereco, link_mapa, foto_url, dias_maximos_agendamento, antecedencia_minima_minutos',
+          'sobre, whatsapp, instagram, endereco, link_mapa, foto_url, dias_maximos_agendamento, antecedencia_minima_minutos, aviso_cancelamento',
         )
         .eq('id', 1)
         .maybeSingle(),

@@ -4,6 +4,7 @@ import { ListaAgendamentos } from '../../components/painel/ListaAgendamentos'
 import { Aviso } from '../../components/ui/Aviso'
 import { EstadoConsulta } from '../../components/ui/EstadoConsulta'
 import { useAoVoltar } from '../../hooks/useAoVoltar'
+import { useAuth } from '../../hooks/useAuth'
 import { useConsulta } from '../../hooks/useConsulta'
 import { useTituloPagina } from '../../hooks/useTituloPagina'
 import { jaTerminou, juntarTimestamp, saudacao, semanaDe } from '../../lib/agendaAdmin'
@@ -17,6 +18,9 @@ const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`
 export default function Dashboard() {
   useTituloPagina('Painel')
   const aviso = useLocation().state?.aviso // ex.: "Senha alterada." vindo de /admin/nova-senha
+  // A conta é criada com senha provisória; a marca senha_definida aparece quando ela troca
+  const { usuario } = useAuth()
+  const senhaProvisoria = usuario && usuario.user_metadata?.senha_definida !== true
 
   const [agora, setAgora] = useState(agoraEmManaus)
   const resumo = useConsulta(buscarResumoPainel, {
@@ -34,6 +38,11 @@ export default function Dashboard() {
   return (
     <section className="container pagina painel">
       {aviso && <Aviso tipo="sucesso">{aviso}</Aviso>}
+      {senhaProvisoria && (
+        <p className="painel__lembrete painel__lembrete--senha">
+          Você ainda está com a senha provisória. <Link to="/admin/perfil#senha">Troque sua senha em Perfil</Link>.
+        </p>
+      )}
 
       <div className="painel__topo">
         <div>

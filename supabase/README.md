@@ -22,6 +22,26 @@ Em **SQL Editor > New query**, cole e rode um arquivo por vez, **nesta ordem**:
 | `migrations/006_perfil_foto.sql` | Coluna da foto da profissional no perfil (página Sobre) |
 | `migrations/007_whatsapp_opcional_no_painel.sql` | WhatsApp opcional nos agendamentos criados pelo painel (no site continua obrigatório) |
 | `migrations/008_limites_regras_agendamento.sql` | Limites das regras editáveis no painel: antecedência de 0 a 48h, agenda aberta de 7 a 90 dias |
+| `migrations/009_perguntas_frequentes.sql` | Tabela de perguntas frequentes (editáveis no painel) e aviso de cancelamento no perfil |
+
+**Perguntas frequentes iniciais**
+
+- Projeto **real**: rode `faq-inicial-real.sql` (respostas passadas pela Marlene e o aviso de
+  cancelamento). Só cadastra se ainda não houver perguntas.
+- Projeto de **demonstração**: as perguntas já vêm no `seed.sql` (passo 3).
+
+**Lembrete de senha provisória**
+
+O painel mostra "Você ainda está com a senha provisória" até a conta trocar a senha em
+Perfil. Para uma conta que não precisa do lembrete (ex.: a sua conta de testes), rode:
+
+```sql
+update auth.users
+set raw_user_meta_data = coalesce(raw_user_meta_data, '{}'::jsonb) || '{"senha_definida": true}'
+where email = 'email-da-conta@exemplo.com';
+```
+
+A conta precisa sair e entrar de novo no painel para o lembrete sumir.
 
 ## 3. Só no projeto de demonstração: `seed.sql`
 

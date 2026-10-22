@@ -434,3 +434,9 @@
   gap: var(--espaco-3);
   margin-top: var(--espaco-5);
 }
+
+/* Lembrete da senha provisória no início do painel */
+.painel__lembrete--senha {
+  margin-bottom: var(--espaco-4);
+  border-left-color: var(--cor-destaque-escuro);
+}
