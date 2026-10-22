@@ -6,6 +6,7 @@ import { Aviso } from '../../components/ui/Aviso'
 import { Campo } from '../../components/ui/Campo'
 import { EstadoConsulta } from '../../components/ui/EstadoConsulta'
 import { Modal } from '../../components/ui/Modal'
+import { MODO_DEMO } from '../../config/demo'
 import { useAcao } from '../../hooks/useAcao'
 import { useAuth } from '../../hooks/useAuth'
 import { useConsulta } from '../../hooks/useConsulta'
@@ -145,9 +146,15 @@ export default function Perfil() {
               ) : (
                 <p className="texto-suave">Nenhuma foto ainda.</p>
               )}
-              <button type="button" className="botao botao--secundario botao--pequeno" onClick={() => setTrocandoFoto(true)}>
+              <button
+                type="button"
+                className="botao botao--secundario botao--pequeno"
+                onClick={() => setTrocandoFoto(true)}
+                disabled={MODO_DEMO}
+              >
                 {perfil.dados.foto_url ? 'Trocar foto' : 'Enviar foto'}
               </button>
+              {MODO_DEMO && <p className="cadastro__nota">Na demonstração, a foto não pode ser trocada.</p>}
             </section>
 
             <section className="painel__bloco" aria-labelledby="titulo-dados">
@@ -164,8 +171,14 @@ export default function Perfil() {
 
             <section id="senha" className="painel__bloco" aria-labelledby="titulo-senha">
               <h2 id="titulo-senha">Trocar minha senha</h2>
-              {senha.retorno && <Aviso tipo={senha.retorno.tipo}>{senha.retorno.texto}</Aviso>}
-              <FormTrocarSenha email={usuario?.email ?? ''} executar={senha.executar} ocupado={senha.ocupado} />
+              {MODO_DEMO ? (
+                <p className="texto-suave">Na demonstração, a senha não pode ser trocada: ela é a mesma para todos os visitantes.</p>
+              ) : (
+                <>
+                  {senha.retorno && <Aviso tipo={senha.retorno.tipo}>{senha.retorno.texto}</Aviso>}
+                  <FormTrocarSenha email={usuario?.email ?? ''} executar={senha.executar} ocupado={senha.ocupado} />
+                </>
+              )}
             </section>
           </>
         )}

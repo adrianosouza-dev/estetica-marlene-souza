@@ -23,6 +23,7 @@ Em **SQL Editor > New query**, cole e rode um arquivo por vez, **nesta ordem**:
 | `migrations/007_whatsapp_opcional_no_painel.sql` | WhatsApp opcional nos agendamentos criados pelo painel (no site continua obrigatório) |
 | `migrations/008_limites_regras_agendamento.sql` | Limites das regras editáveis no painel: antecedência de 0 a 48h, agenda aberta de 7 a 90 dias |
 | `migrations/009_perguntas_frequentes.sql` | Tabela de perguntas frequentes (editáveis no painel) e aviso de cancelamento no perfil |
+| `migrations/010_modo_demonstracao.sql` | Modo demonstração (só é ligado no projeto do portfólio) e colunas protegidas do perfil |
 
 **Perguntas frequentes iniciais**
 
@@ -43,10 +44,44 @@ where email = 'email-da-conta@exemplo.com';
 
 A conta precisa sair e entrar de novo no painel para o lembrete sumir.
 
-## 3. Só no projeto de demonstração: `seed.sql`
+## 3. Só no projeto de demonstração
 
-Rode `seed.sql` para preencher agendamentos e avaliações **fictícios**.
-**Nunca rode no projeto real.** As datas são relativas ao dia em que o seed roda.
+O projeto de demonstração é o do portfólio: qualquer visitante entra no painel
+com um usuário de demonstração. Por isso ele tem o **modo demonstração** ligado
+(migration 010), que impede enviar, trocar ou apagar fotos, e é **restaurado toda
+madrugada**. Todos os dados são fictícios. **Nada desta seção vale para o projeto real.**
+
+1. Rode `demo-restaurar.sql` (cria a função de restauração).
+2. Em **Authentication > Users > Add user**, crie o usuário de demonstração
+   (ex.: `demonstracao@example.com`, uma senha simples, **Auto Confirm User**).
+   E-mail e senha ficam públicos na tela de login do site de demonstração.
+3. Ligue esse usuário ao perfil e o modo demonstração (troque o e-mail):
+
+   ```sql
+   update public.perfil
+   set profissional_id = (select id from auth.users where email = 'demonstracao@example.com'),
+       demonstracao = true
+   where id = 1;
+   ```
+
+4. Rode `seed.sql`: ele chama a restauração e preenche agendamentos, avaliações,
+   perguntas, serviços, horários e o perfil fictícios. Rodar de novo **apaga e recria**
+   tudo. No projeto real ele recusa, porque o modo demonstração está desligado.
+5. **Restauração automática toda madrugada:**
+   - em **Database > Extensions**, ative `pg_cron`;
+   - no SQL Editor, agende (troque e-mail e senha pelos da demonstração; eles ficam
+     só neste agendamento, não no GitHub):
+
+   ```sql
+   select cron.schedule(
+     'restaurar-demonstracao',
+     '0 7 * * *',  -- 7h em UTC = 3h em Maués
+     $$select public.restaurar_demonstracao('demonstracao@example.com', 'senha-da-demo')$$
+   );
+   ```
+
+   A senha vai junto para voltar ao normal caso um visitante a troque. Para conferir
+   as execuções: `select * from cron.job_run_details order by start_time desc limit 5;`
 
 ### Conferir se está tudo certo: `testes.sql`
 
