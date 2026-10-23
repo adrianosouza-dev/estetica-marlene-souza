@@ -1,7 +1,43 @@
 # Banco de dados (Supabase)
 
 Passo a passo para preparar um projeto Supabase do zero. Vale para os dois projetos:
-o **real** (da Marlene) e o de **demonstração** (portfólio).
+o **real** (da Marlene) e o de **demonstração** (portfólio). As seções numeradas abaixo
+explicam cada passo; o roteiro a seguir diz a ordem para o projeto real. Para o projeto
+de demonstração, a ordem está na seção 3.
+
+## Roteiro do projeto real
+
+Marque cada item ao terminar. Tudo é feito no painel do Supabase do projeto **real**.
+
+- [ ] **1. Criar o projeto** (seção 1).
+- [ ] **2. Rodar as migrations 001 a 010** (seção 2). O modo demonstração da 010 fica
+  desligado: não rode nenhum comando com `demonstracao = true`.
+- [ ] **3. Rodar `testes.sql`** (fim da seção 2). Deve aparecer "✅ Todos os testes
+  passaram". Ele não grava nada, mas é a única vez que um teste roda no projeto real:
+  depois que a Marlene começar a usar o site, testes só na demonstração.
+- [ ] **4. Fechar o cadastro público** (seção 4).
+- [ ] **5. Fotos da galeria** (seção 7) e **foto da Marlene** (seção 8), com a Project URL
+  do projeto real. Depois, desfaça a troca da URL nos arquivos.
+- [ ] **6. Rodar `faq-inicial-real.sql`**: as 6 perguntas com as respostas da Marlene e o
+  aviso de cancelamento.
+- [ ] **7. Criar a conta da Marlene** (seção 5) com uma **senha provisória**, marcando
+  **Auto Confirm User**, e ligar a conta ao perfil. **Não** rode o comando do lembrete de
+  senha (seção 2) para a conta dela: o painel mostra o lembrete até ela trocar a senha.
+  Passe e-mail e senha provisória para ela pessoalmente, nunca por arquivo do projeto.
+- [ ] **8. Recuperação de senha** (seção 9). Em **Site URL**, use o endereço atual do site
+  na Vercel: na etapa 5 ele passa a ser o site real. O e-mail próprio (SMTP) fica para
+  depois; até lá, redefina a senha da Marlene em **Authentication > Users**.
+- [ ] **9. Rodar `conferir-real.sql`.** Ele só lê o banco e mostra uma tabela de ✅/❌.
+  Todos os itens devem estar ✅. O WhatsApp aparece como ℹ️ vazio: a Marlene preenche em
+  **Perfil** no primeiro acesso e, até lá, os botões do WhatsApp ficam escondidos no site.
+  Pode rodar de novo a qualquer momento, inclusive com o site em uso.
+- [ ] **10. Guardar a Project URL e a chave anon** (seção 6) num lugar seguro. Elas
+  **não** vão para o seu `.env.local`, que continua apontando para a demonstração.
+  Entram só nas variáveis da Vercel, na etapa 5.
+
+**Nunca faça no projeto real:** rodar `seed.sql` ou `demo-restaurar.sql`, ativar o
+`pg_cron`, ligar o modo demonstração ou rodar testes automáticos depois que o site estiver
+em uso. O `seed.sql` e a restauração recusam rodar aqui, mas não conte só com essa trava.
 
 ## 1. Criar o projeto
 
@@ -29,7 +65,7 @@ Em **SQL Editor > New query**, cole e rode um arquivo por vez, **nesta ordem**:
 
 - Projeto **real**: rode `faq-inicial-real.sql` (respostas passadas pela Marlene e o aviso de
   cancelamento). Só cadastra se ainda não houver perguntas.
-- Projeto de **demonstração**: as perguntas já vêm no `seed.sql` (passo 3).
+- Projeto de **demonstração**: as perguntas já vêm no `seed.sql` (seção 3).
 
 **Lembrete de senha provisória**
 
@@ -44,9 +80,16 @@ where email = 'email-da-conta@exemplo.com';
 
 A conta precisa sair e entrar de novo no painel para o lembrete sumir.
 
+**Conferir as regras: `testes.sql`**
+
+Rode `testes.sql` inteiro no SQL Editor. Ele testa as regras de segurança e de
+agendamento como se fosse uma visitante do site e desfaz tudo no final, sem gravar
+nada. Se tudo estiver certo, aparece "✅ Todos os testes passaram". Se algo falhar,
+aparece "❌ Teste X FALHOU", com o resultado esperado e o obtido.
+
 ## 3. Só no projeto de demonstração
 
-> **Nada desta seção vale para o projeto real.** No projeto real, pule direto para o passo 4.
+> **Nada desta seção vale para o projeto real.** No projeto real, siga o roteiro no topo da página.
 
 O projeto de demonstração é o do portfólio: qualquer visitante entra no painel com um
 usuário de demonstração, cujo e-mail e senha aparecem na tela de login. Por isso ele
@@ -89,7 +132,7 @@ fica pública, então use uma senha simples que você não usa em nenhum outro l
    `demonstracao = true`. Se `profissional_id` vier vazio, o e-mail não bate com o do
    passo 2. Se não vier nenhuma linha, confira se a migration 005 foi rodada. A partir
    daqui, essas duas colunas só mudam pelo SQL Editor, nunca pelo site.
-4. **Fotos.** Faça os passos 7 (galeria) e 8 (foto da Marlene) desta página **antes** do
+4. **Fotos.** Faça as seções 7 (galeria) e 8 (foto da Marlene) **antes** do
    seed: a restauração recria a galeria a partir dos arquivos do Storage e do endereço da
    foto da Marlene. O envio pelo painel do Supabase e o SQL Editor continuam funcionando
    no modo demonstração, porque a trava vale só para o site.
@@ -123,10 +166,10 @@ fica pública, então use uma senha simples que você não usa em nenhum outro l
 
    Para restaurar na hora, sem esperar a madrugada:
    `select public.restaurar_demonstracao('demonstracao@example.com', 'senha-da-demo');`
-7. **Conferir.** Rode `testes.sql` (logo abaixo) e entre no painel do site com o usuário
+7. **Conferir.** Rode `testes.sql` (fim da seção 2) e entre no painel do site com o usuário
    de demonstração.
 
-O passo 5 desta página (login da profissional) **não** é feito na demonstração: o usuário de
+A seção 5 (login da profissional) **não** é feita na demonstração: o usuário de
 demonstração faz esse papel.
 
 **Cuidados**
@@ -146,13 +189,6 @@ demonstração faz esse papel.
   Nunca escreva esses valores em arquivos do projeto, commits ou mensagens.
 - Testes automáticos que gravam dados rodam **só** no projeto de demonstração. Antes de
   rodar, confira se o `.env.local` aponta para ele.
-
-### Conferir se está tudo certo: `testes.sql`
-
-Rode `testes.sql` inteiro no SQL Editor. Ele testa as regras de segurança e de
-agendamento como se fosse uma visitante do site e desfaz tudo no final, sem gravar
-nada. Se tudo estiver certo, aparece "✅ Todos os testes passaram". Se algo falhar,
-aparece "❌ Teste X FALHOU", com o resultado esperado e o obtido.
 
 ## 4. Fechar o cadastro público
 
@@ -178,6 +214,9 @@ Essa é a segunda camada de proteção.
 
 Em **Project Settings > API**, copie a **Project URL** e a chave **anon / publishable**
 para o arquivo `.env.local` na raiz do projeto (use `.env.example` como modelo).
+
+O `.env.local` aponta sempre para o projeto de **demonstração**, onde rodam os testes. As
+chaves do projeto **real** ficam só nas variáveis do site real na Vercel.
 
 > A chave `service_role` / `secret` **nunca** vai para o site nem para o GitHub.
 
@@ -234,7 +273,7 @@ A Marlene autorizou o uso da foto e do nome no site e no portfólio, então
 
 1. Abra `foto-perfil.sql` e troque a URL na linha `TROQUE AQUI` pela **Project URL**.
 2. Rode no **SQL Editor**. O resultado mostra a URL da foto. Abra no navegador para conferir.
-3. Desfaça a troca da URL no arquivo, como no passo 7.
+3. Desfaça a troca da URL no arquivo, como na seção 7.
 
 ## 9. Recuperação de senha ("Esqueci minha senha")
 

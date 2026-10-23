@@ -145,7 +145,7 @@ A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de
 
 - [x] **Etapa 1: senha, FAQ e avisos.** FAQ no banco e no painel (migration 009, /admin/perguntas), aviso de cancelamento no Perfil, "Trocar minha senha" e lembrete de senha provisória. Testada e enviada ao GitHub.
 - [x] **Etapa 2: modo demonstração.** Migration 010, demo-restaurar.sql, seed.sql chamando a restauração, VITE_MODO_DEMO no site e passo a passo na seção 3 do supabase/README.md. Supabase de demonstração configurado e testado com o usuário de demonstração (login, Storage e fotos travados, perfil/marlene-souza.webp intacta). Enviada ao GitHub.
-- [ ] **Etapa 3: projeto Supabase real.** Roteiro único no supabase/README.md; o usuário cria o projeto, roda as migrations 001 a 010 (010 com o modo demonstração DESLIGADO), testes.sql, fotos (fotos-iniciais.sql, foto-perfil.sql), faq-inicial-real.sql, cria a conta da Marlene com senha provisória. Sem seed.sql.
+- [ ] **Etapa 3: projeto Supabase real.** Código pronto e commitado: "Roteiro do projeto real" no topo do supabase/README.md (10 itens) e supabase/conferir-real.sql (só leitura, tabela de ✅/❌, pode rodar com o site em uso). **Falta:** o usuário seguir o roteiro no Supabase real e conferir o resultado do conferir-real.sql (tudo ✅; WhatsApp ℹ️ vazio). Sem seed.sql. As chaves do projeto real não vão para o .env.local; só para a Vercel, na etapa 5.
 - [ ] **Etapa 4: e-mail próprio (SMTP).** Adiada (ver decisões).
 - [ ] **Etapa 5: dois sites na Vercel.** O projeto atual da Vercel passa a usar o Supabase real (site da Marlene); um projeto novo da Vercel, do mesmo repositório, vira a demonstração com VITE_MODO_DEMO=true. Até esta etapa, o site publicado usa o Supabase de DEMONSTRAÇÃO.
 - [ ] **Etapa 6: desempenho.** Dividir o JavaScript (React, roteador e Supabase em arquivos próprios) e medir antes/depois (Lighthouse no celular).
@@ -157,6 +157,9 @@ A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de
 - SMTP adiado: a Marlene vai decidir se registra um domínio no nome dela; se sim, Resend com o domínio. Até lá, a senha dela é redefinida pelo painel do Supabase (Authentication > Users).
 - Restauração da demonstração todo dia às 3h de Maués (7h UTC), pelo pg_cron, com a função public.restaurar_demonstracao(email, senha).
 - Usuário de demonstração: demonstracao@example.com.
+- WhatsApp real: a Marlene preenche em Perfil no primeiro acesso (não entra no roteiro). Enquanto estiver vazio, os botões do WhatsApp ficam escondidos no site.
+- Bairro: fica "Donga Micheles" até a Marlene confirmar a grafia; ela corrige pelo Perfil.
+- Site URL do projeto real (Authentication > URL Configuration): o endereço atual da Vercel, que vira o site real na etapa 5.
 - Demonstração com contato fictício: WhatsApp 5592900000000, sem Instagram, só o bairro no endereço. Nenhum visitante do portfólio pode chegar ao WhatsApp real da Marlene.
 - A 5ª foto que aparecia na galeria da demonstração ("Pedicure em marrom...") era um teste e foi apagada.
 - Depois que a Marlene começar a usar o site real, nenhum teste automático roda no projeto real: testes só na demonstração.
