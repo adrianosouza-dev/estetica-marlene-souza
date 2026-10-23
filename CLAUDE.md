@@ -144,9 +144,7 @@ Ao terminar uma fase, marque com [x] aqui.
 A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de começar.
 
 - [x] **Etapa 1: senha, FAQ e avisos.** FAQ no banco e no painel (migration 009, /admin/perguntas), aviso de cancelamento no Perfil, "Trocar minha senha" e lembrete de senha provisória. Testada e enviada ao GitHub.
-- [ ] **Etapa 2: modo demonstração.** Código pronto e commitado (migration 010, demo-restaurar.sql, seed.sql chamando a restauração, VITE_MODO_DEMO no site). A parte do usuário no Supabase de demonstração está feita: 010 e demo-restaurar.sql rodados, usuário de demonstração criado e ligado ao perfil, modo demonstração ligado, seed.sql, pg_cron agendado, login de demonstração funcionando e testes.sql passando. **Falta:**
-  1. melhorar o texto da seção 3 do supabase/README.md (passo a passo do projeto de demonstração), incluindo os cuidados abaixo;
-  2. rodar os testes automáticos da etapa 2 com o usuário de demonstração (login, envio de foto recusado pelo banco, perfil/marlene-souza.webp intacta) e enviar ao GitHub.
+- [x] **Etapa 2: modo demonstração.** Migration 010, demo-restaurar.sql, seed.sql chamando a restauração, VITE_MODO_DEMO no site e passo a passo na seção 3 do supabase/README.md. Supabase de demonstração configurado e testado com o usuário de demonstração (login, Storage e fotos travados, perfil/marlene-souza.webp intacta). Enviada ao GitHub.
 - [ ] **Etapa 3: projeto Supabase real.** Roteiro único no supabase/README.md; o usuário cria o projeto, roda as migrations 001 a 010 (010 com o modo demonstração DESLIGADO), testes.sql, fotos (fotos-iniciais.sql, foto-perfil.sql), faq-inicial-real.sql, cria a conta da Marlene com senha provisória. Sem seed.sql.
 - [ ] **Etapa 4: e-mail próprio (SMTP).** Adiada (ver decisões).
 - [ ] **Etapa 5: dois sites na Vercel.** O projeto atual da Vercel passa a usar o Supabase real (site da Marlene); um projeto novo da Vercel, do mesmo repositório, vira a demonstração com VITE_MODO_DEMO=true. Até esta etapa, o site publicado usa o Supabase de DEMONSTRAÇÃO.

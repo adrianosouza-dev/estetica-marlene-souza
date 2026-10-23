@@ -46,31 +46,59 @@ A conta precisa sair e entrar de novo no painel para o lembrete sumir.
 
 ## 3. Só no projeto de demonstração
 
-O projeto de demonstração é o do portfólio: qualquer visitante entra no painel
-com um usuário de demonstração. Por isso ele tem o **modo demonstração** ligado
-(migration 010), que impede enviar, trocar ou apagar fotos, e é **restaurado toda
-madrugada**. Todos os dados são fictícios. **Nada desta seção vale para o projeto real.**
+> **Nada desta seção vale para o projeto real.** No projeto real, pule direto para o passo 4.
 
-1. Rode `demo-restaurar.sql` (cria a função de restauração).
-2. Em **Authentication > Users > Add user**, crie o usuário de demonstração
-   (ex.: `demonstracao@example.com`, uma senha simples, **Auto Confirm User**).
-   E-mail e senha ficam públicos na tela de login do site de demonstração.
-3. Ligue esse usuário ao perfil e o modo demonstração (troque o e-mail):
+O projeto de demonstração é o do portfólio: qualquer visitante entra no painel com um
+usuário de demonstração, cujo e-mail e senha aparecem na tela de login. Por isso ele
+tem o **modo demonstração** ligado (migration 010) e é **restaurado toda madrugada**.
+Todos os dados são fictícios.
+
+**O que o modo demonstração muda**
+
+- Ninguém envia, troca ou apaga arquivos do Storage pelo site (nem a foto da Marlene).
+- As fotos da galeria não podem ser cadastradas nem removidas; legenda e ordem continuam
+  editáveis. A foto do perfil não pode ser trocada.
+- Todo o resto (agendamentos, serviços, horários, avaliações, perguntas, perfil) pode ser
+  editado pelos visitantes e volta ao original na restauração.
+- O contato é fictício: WhatsApp `5592900000000`, sem Instagram, só o bairro no endereço.
+  Nenhum visitante chega ao WhatsApp real da Marlene.
+
+**Antes de começar**
+
+Os passos 1 e 2 (projeto e migrations 001 a 010) precisam estar feitos. Escolha agora o
+e-mail e a senha do usuário de demonstração (ex.: `demonstracao@example.com`). A senha
+fica pública, então use uma senha simples que você não usa em nenhum outro lugar.
+
+**Passo a passo**
+
+1. **Função de restauração.** No SQL Editor, rode `demo-restaurar.sql`.
+2. **Usuário de demonstração.** Em **Authentication > Users > Add user > Create new user**,
+   informe o e-mail e a senha escolhidos e marque **Auto Confirm User**. Sem essa marcação
+   o usuário fica esperando a confirmação por e-mail e o login não funciona.
+3. **Ligar o usuário ao perfil e o modo demonstração** (troque o e-mail):
 
    ```sql
    update public.perfil
    set profissional_id = (select id from auth.users where email = 'demonstracao@example.com'),
        demonstracao = true
-   where id = 1;
+   where id = 1
+   returning profissional_id, demonstracao;
    ```
 
-4. Rode `seed.sql`: ele chama a restauração e preenche agendamentos, avaliações,
-   perguntas, serviços, horários e o perfil fictícios. Rodar de novo **apaga e recria**
-   tudo. No projeto real ele recusa, porque o modo demonstração está desligado.
-5. **Restauração automática toda madrugada:**
-   - em **Database > Extensions**, ative `pg_cron`;
-   - no SQL Editor, agende (troque e-mail e senha pelos da demonstração; eles ficam
-     só neste agendamento, não no GitHub):
+   O resultado deve mostrar uma linha com `profissional_id` preenchido e
+   `demonstracao = true`. Se `profissional_id` vier vazio, o e-mail não bate com o do
+   passo 2. Se não vier nenhuma linha, confira se a migration 005 foi rodada. A partir
+   daqui, essas duas colunas só mudam pelo SQL Editor, nunca pelo site.
+4. **Fotos.** Faça os passos 7 (galeria) e 8 (foto da Marlene) desta página **antes** do
+   seed: a restauração recria a galeria a partir dos arquivos do Storage e do endereço da
+   foto da Marlene. O envio pelo painel do Supabase e o SQL Editor continuam funcionando
+   no modo demonstração, porque a trava vale só para o site.
+5. **Dados fictícios.** Rode `seed.sql`. Ele chama a restauração e preenche agendamentos,
+   avaliações, perguntas, serviços, horários, fotos e o perfil. Rodar de novo **apaga e
+   recria** tudo. No projeto real ele recusa, porque lá o modo demonstração está desligado.
+6. **Restauração automática toda madrugada.**
+   - Em **Database > Extensions**, ative `pg_cron`.
+   - No SQL Editor, agende a restauração (troque e-mail e senha pelos do passo 2):
 
    ```sql
    select cron.schedule(
@@ -80,8 +108,44 @@ madrugada**. Todos os dados são fictícios. **Nada desta seção vale para o pr
    );
    ```
 
-   A senha vai junto para voltar ao normal caso um visitante a troque. Para conferir
-   as execuções: `select * from cron.job_run_details order by start_time desc limit 5;`
+   A senha vai junto para voltar ao normal caso um visitante a troque pelo Perfil. Ela
+   fica só nesse agendamento, dentro do Supabase, e não no GitHub. Para trocar a senha
+   depois, rode o mesmo comando com a senha nova: o agendamento com o mesmo nome é
+   substituído.
+
+   Para conferir:
+
+   ```sql
+   select jobname, schedule, active from cron.job;                          -- o agendamento existe?
+   select status, return_message, start_time from cron.job_run_details
+   order by start_time desc limit 5;                                        -- as últimas execuções
+   ```
+
+   Para restaurar na hora, sem esperar a madrugada:
+   `select public.restaurar_demonstracao('demonstracao@example.com', 'senha-da-demo');`
+7. **Conferir.** Rode `testes.sql` (logo abaixo) e entre no painel do site com o usuário
+   de demonstração.
+
+O passo 5 desta página (login da profissional) **não** é feito na demonstração: o usuário de
+demonstração faz esse papel.
+
+**Cuidados**
+
+- O e-mail e a senha de demonstração precisam ser **iguais** em três lugares:
+  1. no usuário do Supabase (passo 2);
+  2. no agendamento do `pg_cron` (passo 6);
+  3. no `.env.local` do seu computador (`VITE_DEMO_EMAIL`/`VITE_DEMO_SENHA` e, para os
+     testes automáticos, `TESTE_EMAIL`/`TESTE_SENHA`) e nas variáveis do projeto de
+     demonstração na Vercel.
+
+  Se mudar em um lugar, mude nos outros. Senão, a madrugada volta a senha antiga e o
+  botão de acesso da demonstração para de funcionar.
+- `VITE_MODO_DEMO`, `VITE_DEMO_EMAIL` e `VITE_DEMO_SENHA` existem **só** no projeto de
+  demonstração da Vercel, nunca no site real da Marlene.
+- `TESTE_EMAIL` e `TESTE_SENHA` ficam só no `.env.local` (que não vai para o GitHub).
+  Nunca escreva esses valores em arquivos do projeto, commits ou mensagens.
+- Testes automáticos que gravam dados rodam **só** no projeto de demonstração. Antes de
+  rodar, confira se o `.env.local` aponta para ele.
 
 ### Conferir se está tudo certo: `testes.sql`
 
