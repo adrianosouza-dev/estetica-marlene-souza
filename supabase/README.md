@@ -220,6 +220,60 @@ chaves do projeto **real** ficam só nas variáveis do site real na Vercel.
 
 > A chave `service_role` / `secret` **nunca** vai para o site nem para o GitHub.
 
+### Os dois sites na Vercel
+
+O mesmo repositório do GitHub gera dois sites, cada um num projeto da Vercel. Cada
+envio ao GitHub atualiza os dois.
+
+| | Site real (projeto atual) | Demonstração (`marlene-souza-demo`) |
+|---|---|---|
+| Supabase | real | demonstração |
+| `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` | do projeto real, só em **Production** | do projeto de demonstração, em **Production** e **Preview** |
+| `VITE_MODO_DEMO` | **não existe** | `true` |
+| `VITE_DEMO_EMAIL` e `VITE_DEMO_SENHA` | **não existem** | e-mail e senha de demonstração |
+
+As variáveis ficam em **Settings > Environment Variables** de cada projeto da Vercel.
+
+> **Redeploy depois de mexer nas variáveis.** O Vite grava as variáveis dentro do
+> JavaScript na hora do build. Trocar uma variável não muda o site já publicado: em
+> **Deployments**, abra o menu (⋯) do deploy mais recente e clique em **Redeploy**.
+
+No site real, as chaves ficam só em **Production** de propósito. Os deploys de **Preview**
+(de outros branches) ficam sem banco e não conseguem gravar nada no projeto real.
+
+**Passo a passo (na ordem, para o link do portfólio não sair do ar)**
+
+1. **Criar a demonstração.** Na Vercel, **Add New > Project**, escolha o mesmo
+   repositório e dê o nome `marlene-souza-demo`. Antes de clicar em **Deploy**, abra
+   **Environment Variables** e cadastre as cinco variáveis da coluna "Demonstração".
+   Depois, em **Settings > Environment Variables**, confira se todas valem para
+   Production e Preview.
+2. **Endereços da demonstração no Supabase.** No projeto Supabase de **demonstração**,
+   em **Authentication > URL Configuration**:
+   - **Site URL**: `https://marlene-souza-demo.vercel.app`;
+   - **Redirect URLs**: adicione `https://marlene-souza-demo.vercel.app/admin/nova-senha`,
+     **remova** a do site atual e mantenha a do `localhost`.
+
+   Sem isso, o "Esqueci minha senha" da demonstração levaria ao site da Marlene.
+3. **Conferir a demonstração** antes de mexer no site atual: faixa de demonstração no
+   topo, acesso de demonstração na tela de login, galeria e agenda fictícias.
+4. **Trocar o site atual para o real.** No projeto atual da Vercel, em
+   **Settings > Environment Variables**:
+   - **apague** `VITE_MODO_DEMO`, `VITE_DEMO_EMAIL` e `VITE_DEMO_SENHA` em **todos** os
+     ambientes (Production e Preview; se a mesma variável aparecer mais de uma vez, apague
+     todas);
+   - troque `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` pelos do projeto **real**,
+     marcando só **Production**, e apague as cópias dessas duas que estiverem em Preview;
+   - faça o **Redeploy**.
+5. **Conferir o site real só olhando**, de preferência no celular: sem faixa de
+   demonstração, sem acesso de demonstração no login, galeria com as fotos da Marlene,
+   perguntas frequentes, preços "Consultar" e nenhum botão de WhatsApp até a Marlene
+   preencher o número. **Não** faça agendamento de teste sozinho: o primeiro é feito junto
+   com a Marlene, no treinamento (ela agenda, vê no painel e cancela).
+
+O Supabase real já está com a **Site URL** do site atual (roteiro do projeto real,
+item 8), então não precisa mexer nele.
+
 ## 7. Fotos iniciais da galeria
 
 As fotos ficam no Storage (bucket `galeria`) e são listadas na tabela `fotos`.
