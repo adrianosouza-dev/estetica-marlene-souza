@@ -138,3 +138,34 @@ Fora do escopo das fases atuais; anotadas para depois.
 - [ ] Fase 8: Portfólio
 
 Ao terminar uma fase, marque com [x] aqui.
+
+### Fase 8: estado atual (para continuar em outro chat)
+
+A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de começar.
+
+- [x] **Etapa 1: senha, FAQ e avisos.** FAQ no banco e no painel (migration 009, /admin/perguntas), aviso de cancelamento no Perfil, "Trocar minha senha" e lembrete de senha provisória. Testada e enviada ao GitHub.
+- [ ] **Etapa 2: modo demonstração.** Código pronto e commitado (migration 010, demo-restaurar.sql, seed.sql chamando a restauração, VITE_MODO_DEMO no site). A parte do usuário no Supabase de demonstração está feita: 010 e demo-restaurar.sql rodados, usuário de demonstração criado e ligado ao perfil, modo demonstração ligado, seed.sql, pg_cron agendado, login de demonstração funcionando e testes.sql passando. **Falta:**
+  1. melhorar o texto da seção 3 do supabase/README.md (passo a passo do projeto de demonstração), incluindo os cuidados abaixo;
+  2. rodar os testes automáticos da etapa 2 com o usuário de demonstração (login, envio de foto recusado pelo banco, perfil/marlene-souza.webp intacta) e enviar ao GitHub.
+- [ ] **Etapa 3: projeto Supabase real.** Roteiro único no supabase/README.md; o usuário cria o projeto, roda as migrations 001 a 010 (010 com o modo demonstração DESLIGADO), testes.sql, fotos (fotos-iniciais.sql, foto-perfil.sql), faq-inicial-real.sql, cria a conta da Marlene com senha provisória. Sem seed.sql.
+- [ ] **Etapa 4: e-mail próprio (SMTP).** Adiada (ver decisões).
+- [ ] **Etapa 5: dois sites na Vercel.** O projeto atual da Vercel passa a usar o Supabase real (site da Marlene); um projeto novo da Vercel, do mesmo repositório, vira a demonstração com VITE_MODO_DEMO=true. Até esta etapa, o site publicado usa o Supabase de DEMONSTRAÇÃO.
+- [ ] **Etapa 6: desempenho.** Dividir o JavaScript (React, roteador e Supabase em arquivos próprios) e medir antes/depois (Lighthouse no celular).
+- [ ] **Etapa 7: revisão final e README.** Prints de todas as telas (320 a 1366px), checagem de acessibilidade (axe), varredura do histórico do git atrás de chaves, README do projeto com prints da demonstração e links; marcar a fase 8.
+
+**Decisões já tomadas**
+
+- FAQ fica no banco e a Marlene edita no painel (não em src/config).
+- SMTP adiado: a Marlene vai decidir se registra um domínio no nome dela; se sim, Resend com o domínio. Até lá, a senha dela é redefinida pelo painel do Supabase (Authentication > Users).
+- Restauração da demonstração todo dia às 3h de Maués (7h UTC), pelo pg_cron, com a função public.restaurar_demonstracao(email, senha).
+- Usuário de demonstração: demonstracao@example.com.
+- Demonstração com contato fictício: WhatsApp 5592900000000, sem Instagram, só o bairro no endereço. Nenhum visitante do portfólio pode chegar ao WhatsApp real da Marlene.
+- A 5ª foto que aparecia na galeria da demonstração ("Pedicure em marrom...") era um teste e foi apagada.
+- Depois que a Marlene começar a usar o site real, nenhum teste automático roda no projeto real: testes só na demonstração.
+
+**Cuidados**
+
+- Ao criar o usuário de demonstração no Supabase, marcar **Auto Confirm User**.
+- O e-mail e a senha de demonstração precisam ser **iguais** em três lugares: no usuário do Supabase, no agendamento do pg_cron e no .env.local (TESTE_EMAIL/TESTE_SENHA e VITE_DEMO_EMAIL/VITE_DEMO_SENHA).
+- VITE_MODO_DEMO, VITE_DEMO_EMAIL e VITE_DEMO_SENHA só existem no projeto de demonstração da Vercel, nunca no site real.
+- Credenciais de teste (TESTE_*) nunca vão para arquivos do repositório nem para mensagens.
