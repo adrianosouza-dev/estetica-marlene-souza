@@ -148,7 +148,12 @@ A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de
 - [x] **Etapa 3: projeto Supabase real.** "Roteiro do projeto real" no topo do supabase/README.md (10 itens) e supabase/conferir-real.sql (só leitura, tabela de ✅/❌, pode rodar com o site em uso). Projeto real montado pelo usuário seguindo o roteiro; conferir-real.sql todo ✅. Sem seed.sql. As chaves do projeto real não vão para o .env.local; só para a Vercel, na etapa 5.
 - [ ] **Etapa 4: e-mail próprio (SMTP).** Adiada (ver decisões).
 - [x] **Etapa 5: dois sites na Vercel.** Passo a passo na seção 6 do supabase/README.md; site real em https://estetica-marlene-souza.vercel.app (Supabase real, variáveis só em Production, sem variáveis de demonstração) e demonstração em https://marlene-souza-demo.vercel.app (projeto Vercel marlene-souza-demo, Supabase de demonstração, VITE_MODO_DEMO=true). Os dois conferidos lendo o JavaScript publicado; testes da etapa 2 passando na demonstração; leitura pública do banco real conferida. Conferência visual do site real no celular feita pelo usuário.
-- [ ] **Etapa 6: desempenho.** Dividir o JavaScript (React, roteador e Supabase em arquivos próprios) e medir antes/depois (Lighthouse no celular).
+- [x] **Etapa 6: desempenho.** Área /admin inteira (rotas, login, sessão e CSS do painel) carregada sob demanda em src/pages/admin/RotasAdmin.jsx; React, roteador e Supabase em arquivos próprios (codeSplitting no vite.config.js); cache de 1 ano em /assets no vercel.json. Medido no site de demonstração (Chrome real, kB transferidos):
+  - site público, 1ª visita: JS 151,9 → 151,1 kB; CSS 7,5 → 5,3 kB; nada do painel é baixado;
+  - 2ª visita: arquivos de JS que vão ao servidor 2 de 2 → 0 de 5;
+  - painel: tela de login 155,9 kB de JS (o público + módulo do painel); ao entrar, +6 kB;
+  - Lighthouse celular (mediana de 5, antes e depois alternados no mesmo computador): / 79 → 87, /agendar 78 → 82, /galeria 61 → 63. Diferenças dentro da oscilação: a 1ª visita não mudou; o ganho está na 2ª visita e nos deploys.
+  - Encontrado: CLS de 0,31 na /galeria e 0,11 na /agendar, causado pelo rodapé empurrado quando os dados chegam (correção proposta ao usuário).
 - [ ] **Etapa 7: revisão final e README.** Prints de todas as telas (320 a 1366px), checagem de acessibilidade (axe), varredura do histórico do git atrás de chaves, README do projeto com prints da demonstração e links; marcar a fase 8.
 
 **Decisões já tomadas**
