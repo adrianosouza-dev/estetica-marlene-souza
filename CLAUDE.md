@@ -117,13 +117,14 @@ Se tiver dúvida sobre alguma regra do negócio, me pergunte em vez de inventar.
 6. **Painel parte 1:** dashboard, agenda e histórico
 7. **Painel parte 2:** serviços, horários, fotos, avaliações e perfil
 8. **Portfólio:** README com descrição, prints, tecnologias, como rodar e link do deploy; revisão de responsividade; checagem de que nenhuma chave secreta vai para o GitHub
-   - No projeto Supabase real, configurar um serviço de e-mail próprio (SMTP, como o Resend). Sem isso, o "Esqueci minha senha" não chega para a Marlene: o e-mail padrão do Supabase só envia para a equipe do projeto.
 
 ## Melhorias futuras
 
 Fora do escopo das fases atuais; anotadas para depois.
 
 - **Agenda em tempo real (Supabase Realtime):** hoje o painel recarrega ao voltar para ele e tem o botão "Atualizar". Com Realtime, um agendamento feito pelo site apareceria na hora (exige migration ativando a publicação da tabela e mais configuração).
+- **E-mail próprio (SMTP) no projeto real:** configurar um serviço de e-mail próprio (como o Resend) no Supabase real. Sem isso, o "Esqueci minha senha" não chega para a Marlene: o e-mail padrão do Supabase só envia para a equipe do projeto. Depende de a Marlene decidir se registra um domínio no nome dela (ver decisões). Até lá, a senha dela é redefinida em Authentication > Users.
+- **Links do autor no README:** acrescentar LinkedIn e portfólio na seção "Autor" quando o usuário pedir (hoje só o GitHub).
 - **Guardar o preço no agendamento:** gravar o preço do serviço no momento do agendamento, para o histórico e os valores não mudarem quando a Marlene atualizar os preços. Depois disso, mostrar o total em reais dos atendimentos concluídos no histórico.
 
 ## Andamento
@@ -135,18 +136,18 @@ Fora do escopo das fases atuais; anotadas para depois.
 - [x] Fase 5: Login
 - [x] Fase 6: Painel parte 1
 - [x] Fase 7: Painel parte 2
-- [ ] Fase 8: Portfólio
+- [x] Fase 8: Portfólio
 
 Ao terminar uma fase, marque com [x] aqui.
 
 ### Fase 8: estado atual (para continuar em outro chat)
 
-A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de começar.
+A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de começar. Fase concluída (a etapa 4 ficou em "Melhorias futuras").
 
 - [x] **Etapa 1: senha, FAQ e avisos.** FAQ no banco e no painel (migration 009, /admin/perguntas), aviso de cancelamento no Perfil, "Trocar minha senha" e lembrete de senha provisória. Testada e enviada ao GitHub.
 - [x] **Etapa 2: modo demonstração.** Migration 010, demo-restaurar.sql, seed.sql chamando a restauração, VITE_MODO_DEMO no site e passo a passo na seção 3 do supabase/README.md. Supabase de demonstração configurado e testado com o usuário de demonstração (login, Storage e fotos travados, perfil/marlene-souza.webp intacta). Enviada ao GitHub.
 - [x] **Etapa 3: projeto Supabase real.** "Roteiro do projeto real" no topo do supabase/README.md (10 itens) e supabase/conferir-real.sql (só leitura, tabela de ✅/❌, pode rodar com o site em uso). Projeto real montado pelo usuário seguindo o roteiro; conferir-real.sql todo ✅. Sem seed.sql. As chaves do projeto real não vão para o .env.local; só para a Vercel, na etapa 5.
-- [ ] **Etapa 4: e-mail próprio (SMTP).** Adiada (ver decisões).
+- **Etapa 4: e-mail próprio (SMTP).** Adiada e movida para "Melhorias futuras" (ver decisões).
 - [x] **Etapa 5: dois sites na Vercel.** Passo a passo na seção 6 do supabase/README.md; site real em https://estetica-marlene-souza.vercel.app (Supabase real, variáveis só em Production, sem variáveis de demonstração) e demonstração em https://marlene-souza-demo.vercel.app (projeto Vercel marlene-souza-demo, Supabase de demonstração, VITE_MODO_DEMO=true). Os dois conferidos lendo o JavaScript publicado; testes da etapa 2 passando na demonstração; leitura pública do banco real conferida. Conferência visual do site real no celular feita pelo usuário.
 - [x] **Etapa 6: desempenho.** Área /admin inteira (rotas, login, sessão e CSS do painel) carregada sob demanda em src/pages/admin/RotasAdmin.jsx; React, roteador e Supabase em arquivos próprios (codeSplitting no vite.config.js); cache de 1 ano em /assets no vercel.json. Medido no site de demonstração (Chrome real, kB transferidos):
   - site público, 1ª visita: JS 151,9 → 151,1 kB; CSS 7,5 → 5,3 kB; nada do painel é baixado;
@@ -154,12 +155,13 @@ A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de
   - painel: tela de login 155,9 kB de JS (o público + módulo do painel); ao entrar, +6 kB;
   - Lighthouse celular (mediana de 5, antes e depois alternados no mesmo computador): / 79 → 87, /agendar 78 → 82, /galeria 61 → 63. Diferenças dentro da oscilação: a 1ª visita não mudou; o ganho está na 2ª visita e nos deploys.
   - Salto de layout (CLS, Lighthouse celular, mediana de 3, site de demonstração): /galeria 0,308 → 0,022; /agendar 0,119 → 0; / 0,016 → 0,016 (bom: abaixo de 0,1). Causa: o rodapé era empurrado quando os dados chegavam. Correção: área de conteúdo com altura mínima da tela (layout.css) e fotos da galeria e do início com width/height + aspect-ratio + height: auto. O 0,022 que sobra na galeria é o botão "Agendar meu horário" descendo quando as fotos substituem o "Carregando…".
-- [ ] **Etapa 7: revisão final e README.** Prints de todas as telas (320 a 1366px), checagem de acessibilidade (axe), varredura do histórico do git atrás de chaves, README do projeto com prints da demonstração e links; marcar a fase 8. Feito até agora:
+- [x] **Etapa 7: revisão final e README.** Prints de todas as telas (320 a 1366px), checagem de acessibilidade (axe), varredura do histórico do git atrás de chaves, README do projeto com prints da demonstração e links:
   - 2 primeiras fotos da galeria sem lazy (a 1ª com fetchpriority alta): LCP da /galeria 4,28 → 4,14 s, nota 62 → 74 (mediana de 7, antes e depois alternados). Ganho pequeno: o gargalo é a foto só começar a baixar depois do JavaScript e da consulta ao banco.
   - Responsividade (18 telas × 320, 390, 768 e 1366px): corrigidos o menu do painel em 768px (rolagem lateral) e o cabeçalho público em 320px. Nenhuma rolagem lateral restante.
   - axe (18 telas × 390 e 1366px): nada crítico nem sério. Restam 2 itens leves (faixa da demonstração fora das regiões da página; alt da foto igual à legenda na galeria), mostrados ao usuário.
   - Histórico do git (27 commits): nenhum .env, foto original, chave ou valor do .env.local; só falsos positivos (URL de exemplo e código que trata senha).
-  - README.md e docs/prints (5 prints .webp da demonstração) prontos localmente, não commitados: faltam os links de LinkedIn e portfólio do usuário. Sem link do site real, só português, sem licença.
+  - README.md com docs/prints (5 prints .webp da demonstração). Sem link do site real (só a demonstração), só português, sem licença; seção "Como o projeto foi desenvolvido" no texto do usuário; "Autor" só com o GitHub por enquanto.
+  - Os 2 itens leves do axe ficam como estão (decisão do usuário).
 
 **Decisões já tomadas**
 
