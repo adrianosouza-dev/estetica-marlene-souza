@@ -153,7 +153,7 @@ A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de
   - 2ª visita: arquivos de JS que vão ao servidor 2 de 2 → 0 de 5;
   - painel: tela de login 155,9 kB de JS (o público + módulo do painel); ao entrar, +6 kB;
   - Lighthouse celular (mediana de 5, antes e depois alternados no mesmo computador): / 79 → 87, /agendar 78 → 82, /galeria 61 → 63. Diferenças dentro da oscilação: a 1ª visita não mudou; o ganho está na 2ª visita e nos deploys.
-  - Encontrado: CLS de 0,31 na /galeria e 0,11 na /agendar, causado pelo rodapé empurrado quando os dados chegam (correção proposta ao usuário).
+  - Salto de layout (CLS, Lighthouse celular, mediana de 3, site de demonstração): /galeria 0,308 → 0,022; /agendar 0,119 → 0; / 0,016 → 0,016 (bom: abaixo de 0,1). Causa: o rodapé era empurrado quando os dados chegavam. Correção: área de conteúdo com altura mínima da tela (layout.css) e fotos da galeria e do início com width/height + aspect-ratio + height: auto. O 0,022 que sobra na galeria é o botão "Agendar meu horário" descendo quando as fotos substituem o "Carregando…".
 - [ ] **Etapa 7: revisão final e README.** Prints de todas as telas (320 a 1366px), checagem de acessibilidade (axe), varredura do histórico do git atrás de chaves, README do projeto com prints da demonstração e links; marcar a fase 8.
 
 **Decisões já tomadas**
