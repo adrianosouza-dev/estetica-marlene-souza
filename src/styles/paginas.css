@@ -108,9 +108,12 @@
   scroll-snap-align: start;
 }
 
+/* O espaço de cada foto fica reservado antes de ela carregar (aspect-ratio).
+   height: auto anula a altura fixa do atributo height da <img>. */
 .faixa-fotos img,
 .galeria__item img {
   width: 100%;
+  height: auto;
   aspect-ratio: 3 / 5;
   object-fit: cover;
   border-radius: var(--raio-grande);

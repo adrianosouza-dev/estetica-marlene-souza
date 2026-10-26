@@ -56,7 +56,14 @@ export default function Inicio() {
             <ul className="faixa-fotos" role="list" tabIndex={0} aria-label="Fotos de trabalhos recentes">
               {fotos.dados?.map((foto) => (
                 <li key={foto.id} className="faixa-fotos__item">
-                  <img src={foto.url} alt={foto.legenda || 'Trabalho feito pela Marlene'} loading="lazy" decoding="async" />
+                  <img
+                    src={foto.url}
+                    alt={foto.legenda || 'Trabalho feito pela Marlene'}
+                    width="360"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </li>
               ))}
             </ul>

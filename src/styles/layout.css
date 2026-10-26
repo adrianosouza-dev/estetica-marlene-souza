@@ -6,8 +6,12 @@
   min-height: 100dvh;
 }
 
+/* Pelo menos a altura da tela: o rodapé começa fora da vista e não "pula"
+   quando os dados do banco chegam e a página cresce. */
 .layout__conteudo {
   flex: 1;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* ---------- Cabeçalho público ---------- */

@@ -26,6 +26,8 @@ export default function Galeria() {
                 <img
                   src={foto.url}
                   alt={foto.legenda || 'Trabalho feito pela Marlene'}
+                  width="360"
+                  height="600"
                   loading="lazy"
                   decoding="async"
                 />
