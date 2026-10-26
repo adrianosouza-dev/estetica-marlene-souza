@@ -20,15 +20,17 @@ export default function Galeria() {
         mensagemVazio="As fotos dos trabalhos aparecem aqui em breve."
       >
         <ul className="galeria" role="list">
-          {fotos?.map((foto) => (
+          {fotos?.map((foto, i) => (
             <li key={foto.id}>
               <figure className="galeria__item">
+                {/* As 2 primeiras já aparecem na tela do celular: carregam na hora */}
                 <img
                   src={foto.url}
                   alt={foto.legenda || 'Trabalho feito pela Marlene'}
                   width="360"
                   height="600"
-                  loading="lazy"
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                  fetchPriority={i === 0 ? 'high' : 'auto'}
                   decoding="async"
                 />
                 {foto.legenda && <figcaption>{foto.legenda}</figcaption>}
