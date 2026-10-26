@@ -29,8 +29,11 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0 var(--espaco-3);
+  /* Em telas de 320px a barra quebra em duas linhas: o espaço entre elas
+     evita que o subtítulo da marca encoste nos botões */
+  gap: var(--espaco-2) var(--espaco-3);
   min-height: 4rem;
+  padding-block: var(--espaco-2);
 }
 
 .marca {
@@ -335,8 +338,11 @@
 }
 
 @media (min-width: 48rem) {
+  /* Em tablets (768px) os 9 itens não cabem numa linha: quebram em vez de
+     sair da tela */
   .admin__nav-lista {
     display: flex;
+    flex-wrap: wrap;
   }
 
   .admin__nav-link {
