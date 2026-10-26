@@ -154,7 +154,12 @@ A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de
   - painel: tela de login 155,9 kB de JS (o público + módulo do painel); ao entrar, +6 kB;
   - Lighthouse celular (mediana de 5, antes e depois alternados no mesmo computador): / 79 → 87, /agendar 78 → 82, /galeria 61 → 63. Diferenças dentro da oscilação: a 1ª visita não mudou; o ganho está na 2ª visita e nos deploys.
   - Salto de layout (CLS, Lighthouse celular, mediana de 3, site de demonstração): /galeria 0,308 → 0,022; /agendar 0,119 → 0; / 0,016 → 0,016 (bom: abaixo de 0,1). Causa: o rodapé era empurrado quando os dados chegavam. Correção: área de conteúdo com altura mínima da tela (layout.css) e fotos da galeria e do início com width/height + aspect-ratio + height: auto. O 0,022 que sobra na galeria é o botão "Agendar meu horário" descendo quando as fotos substituem o "Carregando…".
-- [ ] **Etapa 7: revisão final e README.** Prints de todas as telas (320 a 1366px), checagem de acessibilidade (axe), varredura do histórico do git atrás de chaves, README do projeto com prints da demonstração e links; marcar a fase 8.
+- [ ] **Etapa 7: revisão final e README.** Prints de todas as telas (320 a 1366px), checagem de acessibilidade (axe), varredura do histórico do git atrás de chaves, README do projeto com prints da demonstração e links; marcar a fase 8. Feito até agora:
+  - 2 primeiras fotos da galeria sem lazy (a 1ª com fetchpriority alta): LCP da /galeria 4,28 → 4,14 s, nota 62 → 74 (mediana de 7, antes e depois alternados). Ganho pequeno: o gargalo é a foto só começar a baixar depois do JavaScript e da consulta ao banco.
+  - Responsividade (18 telas × 320, 390, 768 e 1366px): corrigidos o menu do painel em 768px (rolagem lateral) e o cabeçalho público em 320px. Nenhuma rolagem lateral restante.
+  - axe (18 telas × 390 e 1366px): nada crítico nem sério. Restam 2 itens leves (faixa da demonstração fora das regiões da página; alt da foto igual à legenda na galeria), mostrados ao usuário.
+  - Histórico do git (27 commits): nenhum .env, foto original, chave ou valor do .env.local; só falsos positivos (URL de exemplo e código que trata senha).
+  - README.md e docs/prints (5 prints .webp da demonstração) prontos localmente, não commitados: faltam os links de LinkedIn e portfólio do usuário. Sem link do site real, só português, sem licença.
 
 **Decisões já tomadas**
 
