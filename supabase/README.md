@@ -10,7 +10,7 @@ de demonstração, a ordem está na seção 3.
 Marque cada item ao terminar. Tudo é feito no painel do Supabase do projeto **real**.
 
 - [ ] **1. Criar o projeto** (seção 1).
-- [ ] **2. Rodar as migrations 001 a 010** (seção 2). O modo demonstração da 010 fica
+- [ ] **2. Rodar as migrations 001 a 011** (seção 2). O modo demonstração da 010 fica
   desligado: não rode nenhum comando com `demonstracao = true`.
 - [ ] **3. Rodar `testes.sql`** (fim da seção 2). Deve aparecer "✅ Todos os testes
   passaram". Ele não grava nada, mas é a única vez que um teste roda no projeto real:
@@ -60,6 +60,21 @@ Em **SQL Editor > New query**, cole e rode um arquivo por vez, **nesta ordem**:
 | `migrations/008_limites_regras_agendamento.sql` | Limites das regras editáveis no painel: antecedência de 0 a 48h, agenda aberta de 7 a 90 dias |
 | `migrations/009_perguntas_frequentes.sql` | Tabela de perguntas frequentes (editáveis no painel) e aviso de cancelamento no perfil |
 | `migrations/010_modo_demonstracao.sql` | Modo demonstração (só é ligado no projeto do portfólio) e colunas protegidas do perfil |
+| `migrations/011_redes_sociais_certificados.sql` | TikTok e Facebook no perfil e tabela de certificados (imagem opcional na pasta `certificados/` do bucket) |
+
+**Migration nova num projeto que já está no ar**
+
+Uma migration nova sempre vem junto com código novo do site, que lê as colunas e tabelas
+dela. Por isso a ordem é:
+
+1. rodar a migration no projeto de **demonstração** (e, se for o caso, o `demo-restaurar.sql`
+   atualizado) e testar;
+2. rodar a mesma migration no projeto **real** e o `conferir-real.sql`;
+3. **só então** publicar o código (enviar ao GitHub). Se o código chegar antes, o site real
+   tenta ler o que ainda não existe e fica sem dados.
+
+As migrations só acrescentam coisas, então o site antigo continua funcionando entre os
+passos 2 e 3.
 
 **Perguntas frequentes iniciais**
 
@@ -101,14 +116,15 @@ Todos os dados são fictícios.
 - Ninguém envia, troca ou apaga arquivos do Storage pelo site (nem a foto da Marlene).
 - As fotos da galeria não podem ser cadastradas nem removidas; legenda e ordem continuam
   editáveis. A foto do perfil não pode ser trocada.
-- Todo o resto (agendamentos, serviços, horários, avaliações, perguntas, perfil) pode ser
-  editado pelos visitantes e volta ao original na restauração.
-- O contato é fictício: WhatsApp `5592900000000`, sem Instagram, só o bairro no endereço.
-  Nenhum visitante chega ao WhatsApp real da Marlene.
+- Certificados podem ser criados, editados e removidos, mas sempre **sem imagem**.
+- Todo o resto (agendamentos, serviços, horários, avaliações, perguntas, certificados,
+  perfil) pode ser editado pelos visitantes e volta ao original na restauração.
+- O contato é fictício: WhatsApp `5592900000000`, sem Instagram, TikTok nem Facebook, só o
+  bairro no endereço. Nenhum visitante chega ao contato real da Marlene.
 
 **Antes de começar**
 
-Os passos 1 e 2 (projeto e migrations 001 a 010) precisam estar feitos. Escolha agora o
+Os passos 1 e 2 (projeto e migrations 001 a 011) precisam estar feitos. Escolha agora o
 e-mail e a senha do usuário de demonstração (ex.: `demonstracao@example.com`). A senha
 fica pública, então use uma senha simples que você não usa em nenhum outro lugar.
 
@@ -381,7 +397,7 @@ redefinida por você em **Authentication > Users**.
 | | Visitante | Profissional |
 |---|---|---|
 | Serviços | vê os ativos | tudo |
-| Horários, bloqueios, fotos, perfil | vê | tudo |
+| Horários, bloqueios, fotos, certificados, perfil | vê | tudo |
 | Agendamentos | só cria (sempre `pendente`) | tudo |
 | Avaliações | vê as aprovadas e envia (sempre `pendente`) | tudo |
 

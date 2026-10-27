@@ -24,6 +24,8 @@ function montarNegocio(perfil, horarios) {
       `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`,
     whatsapp: perfil?.whatsapp || negocio.whatsapp,
     instagram: perfil?.instagram || negocio.instagram,
+    tiktok: perfil?.tiktok || null,
+    facebook: perfil?.facebook || null,
     sobre: perfil?.sobre || '',
     fotoUrl: perfil?.foto_url || null,
     horarios: horarios ?? [],

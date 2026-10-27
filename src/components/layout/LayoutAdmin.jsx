@@ -13,6 +13,7 @@ const LINKS = [
   { para: '/admin/fotos', rotulo: 'Fotos' },
   { para: '/admin/avaliacoes', rotulo: 'Avaliações' },
   { para: '/admin/perguntas', rotulo: 'Dúvidas' },
+  { para: '/admin/certificados', rotulo: 'Certificados' },
   { para: '/admin/perfil', rotulo: 'Perfil' },
 ]
 

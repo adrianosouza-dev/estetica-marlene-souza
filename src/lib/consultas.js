@@ -41,6 +41,11 @@ export function buscarFotos(limite) {
   return executar(consulta.order('ordem').order('criado_em', { ascending: false }))
 }
 
+/** Certificados e cursos da Marlene (página Sobre), na ordem escolhida no painel */
+export function buscarCertificados() {
+  return executar(cliente().from('certificados').select('id, titulo, instituicao, ano, imagem_url').order('ordem').order('criado_em'))
+}
+
 export function buscarAvaliacoesAprovadas(limite) {
   let consulta = cliente()
     .from('avaliacoes')
@@ -70,7 +75,7 @@ export async function buscarDadosNegocio() {
       cliente()
         .from('perfil')
         .select(
-          'sobre, whatsapp, instagram, endereco, link_mapa, foto_url, dias_maximos_agendamento, antecedencia_minima_minutos, aviso_cancelamento',
+          'sobre, whatsapp, instagram, tiktok, facebook, endereco, link_mapa, foto_url, dias_maximos_agendamento, antecedencia_minima_minutos, aviso_cancelamento',
         )
         .eq('id', 1)
         .maybeSingle(),

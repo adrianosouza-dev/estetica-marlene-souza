@@ -45,8 +45,8 @@ fotos-originais       fotos reais enviadas por mim (não vai para o GitHub)
 - **Serviços e preços (/servicos):** lista vinda do banco, só serviços ativos, com duração e preço.
 - **Galeria (/galeria):** fotos cadastradas pela profissional.
 - **Agendamento (/agendar):** 4 passos (serviço, dia, horário livre, nome + WhatsApp) e tela de confirmação com botão para avisar a profissional no WhatsApp.
-- **Sobre (/sobre):** texto sobre a Marlene, editável no painel.
-- **Contato e localização (/contato):** endereço, link do mapa, WhatsApp e horário de funcionamento.
+- **Sobre (/sobre):** texto sobre a Marlene, editável no painel, e a seção "Certificados e cursos" (some quando não há nenhum).
+- **Contato e localização (/contato):** endereço, link do mapa, WhatsApp, redes sociais (Instagram, TikTok e Facebook, com ícone, só as preenchidas) e horário de funcionamento.
 - **Avaliações:** seção na página inicial mostrando só avaliações aprovadas (nome, nota de 1 a 5 e comentário). Página /avaliar com formulário para a cliente deixar a avaliação; chega como "pendente". Nunca invente avaliações no site real; avaliações fictícias só no seed.sql da demonstração.
 - **FAQ (/perguntas e um resumo na página inicial):** perguntas em formato de acordeão acessível (`<details>`). As perguntas ficam na tabela `perguntas_frequentes` e a Marlene edita no painel (/admin/perguntas); as respostas iniciais do projeto real estão em supabase/faq-inicial-real.sql. Perguntas iniciais:
   - Quanto tempo demora o atendimento?
@@ -55,7 +55,7 @@ fotos-originais       fotos reais enviadas por mim (não vai para o GitHub)
   - Como faço para cancelar ou remarcar?
   - O que acontece se eu me atrasar?
   - Atende em domicílio?
-- **Footer em todas as páginas públicas:** nome, endereço, horário de funcionamento, links para WhatsApp e Instagram, links rápidos (Serviços, Agendar, FAQ) e ano atual com "Todos os direitos reservados". Discreto, sem ser poluído.
+- **Footer em todas as páginas públicas:** nome, endereço, horário de funcionamento, links para WhatsApp e redes sociais (Instagram, TikTok e Facebook, só as preenchidas), links rápidos (Serviços, Agendar, FAQ) e ano atual com "Todos os direitos reservados". Discreto, sem ser poluído.
 
 ## Parte administrativa (para a profissional)
 
@@ -68,18 +68,20 @@ fotos-originais       fotos reais enviadas por mim (não vai para o GitHub)
 - **Histórico (/admin/historico):** agendamentos passados, com filtro por período e por cliente.
 - **Avaliações (/admin/avaliacoes):** lista de pendentes e aprovadas, com botões aprovar e remover.
 - **Perguntas frequentes (/admin/perguntas):** criar, editar, esconder, ordenar e apagar.
-- **Perfil:** editar o texto do "Sobre", os dados de contato, a foto, o aviso de cancelamento mostrado na confirmação do agendamento e trocar a senha (com lembrete no início do painel enquanto a senha provisória não for trocada).
+- **Certificados (/admin/certificados):** criar, editar, ordenar e remover; título e instituição obrigatórios, ano e imagem opcionais. A imagem passa pelo mesmo preparo das fotos e a tela avisa para cobrir CPF, RG e outros dados pessoais. Ao remover, o arquivo sai do Storage.
+- **Perfil:** editar o texto do "Sobre", os dados de contato (WhatsApp, Instagram, TikTok e Facebook; as redes aceitam @usuario ou o link e guardam só o usuário), a foto, o aviso de cancelamento mostrado na confirmação do agendamento e trocar a senha (com lembrete no início do painel enquanto a senha provisória não for trocada).
 
 ## Regras do banco (muito importante)
 
 - Escreva o SQL em arquivos dentro de supabase/migrations, para eu rodar no SQL Editor do Supabase.
-- Tabelas: servicos, horarios_funcionamento, bloqueios, agendamentos, fotos, avaliacoes, perfil, perguntas_frequentes.
+- Tabelas: servicos, horarios_funcionamento, bloqueios, agendamentos, fotos, avaliacoes, perfil, perguntas_frequentes, certificados.
 - Ative Row Level Security em todas as tabelas.
-- O público (anon) pode: ler serviços ativos, fotos, horários, bloqueios, perfil e avaliações aprovadas; criar agendamentos para hoje em diante; criar avaliações (sempre como pendente).
+- O público (anon) pode: ler serviços ativos, fotos, horários, bloqueios, perfil, certificados e avaliações aprovadas; criar agendamentos para hoje em diante; criar avaliações (sempre como pendente).
 - O público NÃO pode ler a tabela de agendamentos (tem nome e telefone das clientes). Para mostrar os horários livres, crie uma função SQL security definer que retorna só início e fim dos horários ocupados de um dia.
 - Impeça dois agendamentos no mesmo horário direto no banco, com uma exclusion constraint em tsrange, ignorando os cancelados. No site, trate esse erro (código 23P01) com uma mensagem amigável.
 - Tabela avaliacoes: nome, nota de 1 a 5, comentario, status (pendente/aprovada), criado_em.
-- Só o usuário autenticado (a profissional) pode editar serviços, horários, bloqueios, fotos, perfil, agendamentos e avaliações.
+- Só o usuário autenticado (a profissional) pode editar serviços, horários, bloqueios, fotos, perfil, agendamentos, avaliações, perguntas e certificados.
+- Migration nova com o site no ar: rodar na demonstração e testar, depois rodar no real, e SÓ ENTÃO enviar o código ao GitHub (o código novo lê o que a migration cria). Ordem descrita no supabase/README.md.
 - Crie um seed.sql com dados fictícios para a versão de demonstração do portfólio.
 
 ## Fotos
@@ -117,6 +119,7 @@ Se tiver dúvida sobre alguma regra do negócio, me pergunte em vez de inventar.
 6. **Painel parte 1:** dashboard, agenda e histórico
 7. **Painel parte 2:** serviços, horários, fotos, avaliações e perfil
 8. **Portfólio:** README com descrição, prints, tecnologias, como rodar e link do deploy; revisão de responsividade; checagem de que nenhuma chave secreta vai para o GitHub
+9. **Redes e certificados (pedido da Marlene):** TikTok e Facebook no Perfil, ícones no rodapé e no Contato, e certificados (tabela, tela no painel e seção no Sobre)
 
 ## Melhorias futuras
 
@@ -137,10 +140,19 @@ Fora do escopo das fases atuais; anotadas para depois.
 - [x] Fase 6: Painel parte 1
 - [x] Fase 7: Painel parte 2
 - [x] Fase 8: Portfólio
+- [ ] Fase 9: Redes e certificados
 
 Ao terminar uma fase, marque com [x] aqui.
 
-### Fase 8: estado atual (para continuar em outro chat)
+### Fase 9: estado atual (para continuar em outro chat)
+
+- Código: migration 011 (tiktok e facebook no perfil; tabela certificados com RLS, imagem só na pasta certificados/, gatilho com o limite do ano e a trava da demonstração), Perfil, ícones (src/components/ui/ItensRedes.jsx e src/lib/redes.js), tela /admin/certificados, seção no Sobre, testes de unidade (incluindo src/lib/certificados.test.js com Supabase simulado), testes.sql (7a a 7e, 8a, 8b), conferir-real.sql, demo-restaurar.sql (3 certificados fictícios sem imagem; TikTok e Facebook vazios) e supabase/README.md.
+- Demonstração: 011, demo-restaurar.sql, restauração e testes.sql rodados pelo usuário; testes automáticos contra a demonstração passando.
+- Real: 011 rodada pelo usuário e conferir-real.sql todo ✅ (9 de 9 tabelas, RLS com certificados, 0 certificados).
+- **Falta:** enviar ao GitHub e conferir a demonstração primeiro e o real depois (só leitura); marcar a fase 9.
+- Decisões: título e instituição obrigatórios, ano opcional; ícones também no Instagram; TikTok e Facebook vazios na demonstração.
+
+### Fase 8: estado atual
 
 A fase 8 foi dividida em 7 etapas; cada etapa é aprovada pelo usuário antes de começar. Fase concluída (a etapa 4 ficou em "Melhorias futuras").
 

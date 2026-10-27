@@ -236,3 +236,24 @@ textarea.campo__entrada {
   padding: var(--espaco-6) 0;
   color: var(--cor-texto-suave);
 }
+
+/* ---------- Links das redes sociais (rodapé e Contato) ---------- */
+.link-rede {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-2);
+}
+
+.link-rede__icone {
+  flex: none;
+}
+
+.contato__redes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--espaco-5);
+}
+
+.contato__redes .link-rede {
+  min-height: var(--altura-toque);
+}

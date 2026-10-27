@@ -10,7 +10,7 @@
 --   ✅ certo   ❌ precisa corrigir (a coluna "detalhe" diz o quê)   ℹ️ só informação
 --
 -- Se aparecer erro de tabela ou coluna inexistente, falta rodar alguma migration
--- (001 a 010).
+-- (001 a 011).
 -- =============================================================================
 
 with
@@ -24,7 +24,7 @@ base as (
 ),
 tabelas (nome) as (
   values ('servicos'), ('horarios_funcionamento'), ('bloqueios'), ('agendamentos'),
-         ('fotos'), ('avaliacoes'), ('perfil'), ('perguntas_frequentes')
+         ('fotos'), ('avaliacoes'), ('perfil'), ('perguntas_frequentes'), ('certificados')
 ),
 conta as (
   select u.email, u.email_confirmed_at
@@ -38,10 +38,11 @@ fotos as (
 ),
 resultado (ordem, item, ok, detalhe) as (
 
-  select 1, 'Migrations 001 a 010',
-         (select count(*) from tabelas where to_regclass('public.' || nome) is not null) = 8
-           and (select j ? 'demonstracao' and j ? 'aviso_cancelamento' and j ? 'foto_url' from p),
-         'Tabelas encontradas: ' || (select count(*) from tabelas where to_regclass('public.' || nome) is not null) || ' de 8'
+  select 1, 'Migrations 001 a 011',
+         (select count(*) from tabelas where to_regclass('public.' || nome) is not null) = 9
+           and (select j ? 'demonstracao' and j ? 'aviso_cancelamento' and j ? 'foto_url' and j ? 'tiktok' and j ? 'facebook' from p),
+         'Tabelas encontradas: ' || (select count(*) from tabelas where to_regclass('public.' || nome) is not null) || ' de 9'
+           || case when (select j ? 'tiktok' from p) then '' else '; falta a migration 011 (TikTok, Facebook e certificados)' end
 
   union all
   select 2, 'Row Level Security ativo em todas as tabelas',
@@ -158,6 +159,20 @@ resultado (ordem, item, ok, detalhe) as (
   select 16, 'Avaliações', null,
          (select count(*) filter (where status = 'aprovada') from public.avaliacoes) || ' aprovada(s), '
            || (select count(*) filter (where status = 'pendente') from public.avaliacoes) || ' pendente(s)'
+
+  union all
+  select 17, 'Redes sociais', null,
+         coalesce(nullif(concat_ws(', ',
+           case when (select j ->> 'instagram' from p) is not null then 'Instagram' end,
+           case when (select j ->> 'tiktok' from p) is not null then 'TikTok' end,
+           case when (select j ->> 'facebook' from p) is not null then 'Facebook' end), ''),
+           'nenhuma preenchida (os ícones não aparecem no site)')
+
+  union all
+  select 18, 'Certificados', null,
+         (select count(*) from public.certificados) || ' cadastrado(s), '
+           || (select count(*) from public.certificados where caminho_storage is not null) || ' com imagem'
+           || case when (select count(*) from public.certificados) = 0 then ' (a seção some da página Sobre)' else '' end
 )
 select case when ordem >= 14 then 'ℹ️' when coalesce(ok, false) then '✅' else '❌' end as situacao,
        item,

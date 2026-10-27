@@ -277,6 +277,64 @@
   }
 }
 
+/* Certificados e cursos: lista simples com linhas, a miniatura abre a imagem inteira */
+.certificados {
+  padding-bottom: var(--espaco-8);
+}
+
+.certificados h2 {
+  font-size: var(--titulo-2);
+}
+
+.certificados__lista {
+  margin-top: var(--espaco-4);
+  border-top: 1px solid var(--cor-borda-forte);
+}
+
+.certificado {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-4);
+  padding-block: var(--espaco-4);
+  border-bottom: 1px solid var(--cor-borda-forte);
+}
+
+.certificado__imagem {
+  flex: none;
+  width: 6.5rem;
+  border-radius: var(--raio);
+}
+
+/* Espaço reservado antes de a imagem carregar (aspect-ratio + height: auto) */
+.certificado__imagem img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+
+.certificado__titulo {
+  font-size: var(--texto-medio);
+  line-height: 1.3;
+}
+
+.certificado__detalhe {
+  margin-top: var(--espaco-1);
+  color: var(--cor-texto-suave);
+}
+
+@media (min-width: 48rem) {
+  .certificados__lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--espaco-7);
+    border-top: 0;
+  }
+}
+
 /* ---------- Contato ---------- */
 .contato > * + * {
   margin-top: var(--espaco-7);

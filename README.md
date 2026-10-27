@@ -27,8 +27,9 @@ original toda madrugada.
   avisa a profissional pelo WhatsApp com a mensagem já escrita.
 - Só aparecem horários realmente livres: o sistema reserva o tempo máximo de cada serviço,
   respeita o expediente, o almoço, as folgas e a antecedência mínima.
-- Serviços e preços, galeria de trabalhos, página "Sobre", contato com mapa, dúvidas
-  frequentes e avaliações de outras clientes.
+- Serviços e preços, galeria de trabalhos, página "Sobre" com os certificados e cursos da
+  profissional, contato com mapa e redes sociais, dúvidas frequentes e avaliações de outras
+  clientes.
 - Formulário para deixar uma avaliação, que só aparece no site depois de aprovada.
 
 **Para a profissional** (painel com login)
@@ -38,7 +39,10 @@ original toda madrugada.
   um atendimento marcado por fora.
 - Histórico com filtro por período e por cliente.
 - Cadastro de serviços (preço e duração), horários de funcionamento, almoço, folgas e
-  feriados, fotos da galeria, dúvidas frequentes, avaliações e perfil.
+  feriados, fotos da galeria, certificados, dúvidas frequentes, avaliações e perfil (com
+  Instagram, TikTok e Facebook).
+- Fotos e certificados são reduzidos, convertidos para `.webp` e perdem a localização no
+  próprio celular, antes do envio.
 
 <img src="docs/prints/computador-painel-agenda.webp" alt="Agenda do dia no painel, no computador" width="720">
 
@@ -121,7 +125,7 @@ Você vai precisar do Node.js 22.12 ou mais novo e de um projeto gratuito no
 3. Outros comandos:
 
    ```bash
-   npm test         # 64 testes (horários livres, formatadores, agenda, login...)
+   npm test         # 84 testes (horários livres, formatadores, agenda, certificados...)
    npm run lint     # revisão automática do código
    npm run build    # versão de produção em dist/
    ```
