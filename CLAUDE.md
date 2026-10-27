@@ -140,7 +140,7 @@ Fora do escopo das fases atuais; anotadas para depois.
 - [x] Fase 6: Painel parte 1
 - [x] Fase 7: Painel parte 2
 - [x] Fase 8: Portfólio
-- [ ] Fase 9: Redes e certificados
+- [x] Fase 9: Redes e certificados
 
 Ao terminar uma fase, marque com [x] aqui.
 
@@ -149,7 +149,8 @@ Ao terminar uma fase, marque com [x] aqui.
 - Código: migration 011 (tiktok e facebook no perfil; tabela certificados com RLS, imagem só na pasta certificados/, gatilho com o limite do ano e a trava da demonstração), Perfil, ícones (src/components/ui/ItensRedes.jsx e src/lib/redes.js), tela /admin/certificados, seção no Sobre, testes de unidade (incluindo src/lib/certificados.test.js com Supabase simulado), testes.sql (7a a 7e, 8a, 8b), conferir-real.sql, demo-restaurar.sql (3 certificados fictícios sem imagem; TikTok e Facebook vazios) e supabase/README.md.
 - Demonstração: 011, demo-restaurar.sql, restauração e testes.sql rodados pelo usuário; testes automáticos contra a demonstração passando.
 - Real: 011 rodada pelo usuário e conferir-real.sql todo ✅ (9 de 9 tabelas, RLS com certificados, 0 certificados).
-- **Falta:** enviar ao GitHub e conferir a demonstração primeiro e o real depois (só leitura); marcar a fase 9.
+- Enviada ao GitHub (commit 3d1d087). Demonstração conferida (navegação, fluxo das telas novas, travas no banco) e real conferido só com leitura (páginas públicas, consulta do perfil, 0 certificados, agendamentos protegidos). Fase concluída.
+- Pendente fora do código: o primeiro envio de imagem de certificado no real (Storage + .webp + apagar o antigo) não pôde ser testado ponta a ponta; acompanhar o primeiro envio da Marlene.
 - Decisões: título e instituição obrigatórios, ano opcional; ícones também no Instagram; TikTok e Facebook vazios na demonstração.
 
 ### Fase 8: estado atual
