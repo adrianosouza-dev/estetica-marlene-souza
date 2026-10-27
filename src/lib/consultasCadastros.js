@@ -3,7 +3,7 @@ import { supabase } from './supabase'
 
 /*
  * Consultas das telas de cadastro do painel: serviços, horários, folgas,
- * fotos, avaliações e perfil. Só funcionam com a profissional logada
+ * fotos, avaliações, perguntas, certificados e perfil. Só funcionam com a profissional logada
  * (Row Level Security no banco).
  */
 
@@ -146,16 +146,19 @@ async function enviarArquivo(pasta, { blob, tipo, extensao }) {
 
 /**
  * Apaga um arquivo do Storage, com uma proteção por tipo:
- *   - 'galeria': qualquer foto de trabalho, mas NUNCA um arquivo da pasta perfil/
+ *   - 'galeria': qualquer foto de trabalho, mas NUNCA um arquivo das pastas perfil/ ou certificados/
  *     (as fotos iniciais ficam na raiz do bucket; as enviadas pelo painel, em trabalhos/);
- *   - 'perfil': só arquivos da pasta perfil/.
+ *   - 'perfil': só arquivos da pasta perfil/;
+ *   - 'certificados': só arquivos da pasta certificados/.
  * Assim um caminho errado nunca apaga a foto da Marlene pela tela da galeria, e vice-versa.
  */
 async function apagarArquivo(caminho, tipo) {
   if (!caminho) return
   const ehDoPerfil = caminho.startsWith('perfil/')
-  if (tipo === 'galeria' && ehDoPerfil) return
+  const ehCertificado = caminho.startsWith('certificados/')
+  if (tipo === 'galeria' && (ehDoPerfil || ehCertificado)) return
   if (tipo === 'perfil' && !ehDoPerfil) return
+  if (tipo === 'certificados' && !ehCertificado) return
   const { error } = await cliente().storage.from(BUCKET).remove([caminho])
   if (error) console.warn('Arquivo não apagado do Storage:', caminho, error) // a foto já saiu do site
 }
@@ -243,4 +246,60 @@ export async function salvarPergunta({ id, pergunta, resposta, ativa, ordem }) {
 
 export async function removerPergunta(id) {
   exigirAlteracao(await executar(cliente().from('perguntas_frequentes').delete().eq('id', id).select('id')))
+}
+
+// ============================================================================
+// Certificados (tabela certificados + imagem opcional no Storage, pasta certificados/)
+// ============================================================================
+
+export function buscarCertificadosAdmin() {
+  return executar(
+    cliente()
+      .from('certificados')
+      .select('id, titulo, instituicao, ano, imagem_url, caminho_storage, ordem')
+      .order('ordem')
+      .order('criado_em'),
+  )
+}
+
+/**
+ * Cria (sem id) ou atualiza (com id) um certificado.
+ * imagem: { foto } com uma imagem nova já preparada (imagens.js), { remover: true }
+ * para tirar a imagem, ou nada para manter como está.
+ * A imagem nova é enviada primeiro; a antiga só é apagada depois que o cadastro deu certo.
+ */
+export async function salvarCertificado({ id, titulo, instituicao, ano, ordem, caminhoAntigo }, imagem = {}) {
+  const campos = { titulo: titulo.trim(), instituicao: instituicao.trim(), ano: ano || null }
+  let nova = null
+  if (imagem.foto) {
+    nova = await enviarArquivo('certificados', imagem.foto)
+    campos.imagem_url = nova.url
+    campos.caminho_storage = nova.caminho
+  } else if (imagem.remover) {
+    campos.imagem_url = null
+    campos.caminho_storage = null
+  }
+
+  try {
+    const consulta = id
+      ? cliente().from('certificados').update(campos).eq('id', id).select('id')
+      : cliente().from('certificados').insert({ ...campos, ordem }).select('id')
+    const { data, error } = await consulta
+    // P0001: regra do banco (ano depois deste ano, trava da demonstração), já em português
+    if (error) throw error.code === 'P0001' ? erroAmigavel(error.message) : error
+    if (id) exigirAlteracao(data)
+  } catch (erro) {
+    if (nova) await apagarArquivo(nova.caminho, 'certificados') // não deixa arquivo solto
+    throw erro
+  }
+
+  if ((imagem.foto || imagem.remover) && caminhoAntigo) await apagarArquivo(caminhoAntigo, 'certificados')
+}
+
+/** Tira o certificado do site e apaga a imagem dele do Storage, se tiver */
+export async function removerCertificado(certificado) {
+  const { data, error } = await cliente().from('certificados').delete().eq('id', certificado.id).select('id')
+  if (error) throw error.code === 'P0001' ? erroAmigavel(error.message) : error
+  exigirAlteracao(data)
+  await apagarArquivo(certificado.caminho_storage, 'certificados')
 }

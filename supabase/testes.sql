@@ -316,6 +316,110 @@ begin
     raise notice '✅ Teste 6b passou: avaliação "aprovada" recusada e nada gravado';
 
 
+    -- =========================================================================
+    -- TESTE 7 · Certificados (migration 011)
+    --
+    -- 7a: como anon, lê a tabela certificados. Esperado: sem erro.
+    -- 7b: como anon, tenta cadastrar um certificado. Esperado: erro 42501 (RLS)
+    --     e nada gravado.
+    -- 7c: como administrador, ano depois do ano atual. Esperado: recusado pelo
+    --     gatilho (P0001).
+    -- 7d: como administrador, imagem fora da pasta certificados/ (ex.: a foto
+    --     da Marlene). Esperado: recusado pelo CHECK (23514).
+    -- 7e: como administrador, certificado válido sem ano e sem imagem.
+    --     Esperado: gravado (e desfeito no final, como tudo aqui).
+    -- =========================================================================
+    v_estado   := 'ok';
+    v_estado_b := 'nenhum erro (o visitante cadastrou um certificado!)';
+    set local role anon;
+    begin
+      perform count(*) from public.certificados;
+    exception when others then
+      v_estado := sqlstate || ' - ' || sqlerrm;
+    end;
+    begin
+      insert into public.certificados (titulo, instituicao) values ('Certificado Teste Anon', 'Teste');
+    exception when others then
+      v_estado_b := sqlstate || ' - ' || sqlerrm;
+    end;
+    reset role;
+    select count(*) into n_obtido from public.certificados where titulo = 'Certificado Teste Anon';
+
+    if v_estado <> 'ok' then
+      raise exception E'❌ Teste 7a FALHOU\nEsperado: o visitante lê os certificados\nObtido: %', v_estado;
+    end if;
+    raise notice '✅ Teste 7a passou: visitante lê os certificados';
+
+    if v_estado_b not like '42501%' or n_obtido <> 0 then
+      raise exception E'❌ Teste 7b FALHOU\nEsperado: erro 42501 e nada gravado\nObtido: %; % registro(s) gravado(s)', v_estado_b, n_obtido;
+    end if;
+    raise notice '✅ Teste 7b passou: visitante não cadastra certificado';
+
+    v_estado := 'nenhum erro (aceitou ano no futuro!)';
+    begin
+      insert into public.certificados (titulo, instituicao, ano)
+      values ('Certificado Teste Futuro', 'Teste', extract(year from public.agora_local())::smallint + 1);
+    exception when others then
+      v_estado := sqlstate || ' - ' || sqlerrm;
+    end;
+    if v_estado not like 'P0001%' then
+      raise exception E'❌ Teste 7c FALHOU\nEsperado: erro P0001 (ano depois deste ano)\nObtido: %', v_estado;
+    end if;
+    raise notice '✅ Teste 7c passou: ano no futuro recusado';
+
+    v_estado := 'nenhum erro (aceitou imagem fora da pasta certificados/!)';
+    begin
+      insert into public.certificados (titulo, instituicao, imagem_url, caminho_storage)
+      values ('Certificado Teste Caminho', 'Teste', 'https://exemplo.com/x.webp', 'perfil/marlene-souza.webp');
+    exception when others then
+      v_estado := sqlstate || ' - ' || sqlerrm;
+    end;
+    if v_estado not like '23514%' then
+      raise exception E'❌ Teste 7d FALHOU\nEsperado: erro 23514 (imagem só na pasta certificados/)\nObtido: %', v_estado;
+    end if;
+    raise notice '✅ Teste 7d passou: imagem fora da pasta certificados/ recusada';
+
+    v_estado := 'ok';
+    begin
+      insert into public.certificados (titulo, instituicao) values ('Certificado Teste Válido', 'Teste');
+    exception when others then
+      v_estado := sqlstate || ' - ' || sqlerrm;
+    end;
+    if v_estado <> 'ok' then
+      raise exception E'❌ Teste 7e FALHOU\nEsperado: certificado sem ano e sem imagem gravado\nObtido: %', v_estado;
+    end if;
+    raise notice '✅ Teste 7e passou: certificado sem ano e sem imagem aceito';
+
+
+    -- =========================================================================
+    -- TESTE 8 · TikTok e Facebook no perfil (migration 011)
+    --
+    -- 8a: TikTok com espaço. Esperado: recusado pelo CHECK (23514).
+    -- 8b: Facebook no formato profile.php?id=. Esperado: aceito.
+    -- =========================================================================
+    v_estado := 'nenhum erro (aceitou TikTok com espaço!)';
+    begin
+      update public.perfil set tiktok = 'marlene souza' where id = 1;
+    exception when others then
+      v_estado := sqlstate || ' - ' || sqlerrm;
+    end;
+    if v_estado not like '23514%' then
+      raise exception E'❌ Teste 8a FALHOU\nEsperado: erro 23514 (usuário do TikTok inválido)\nObtido: %', v_estado;
+    end if;
+    raise notice '✅ Teste 8a passou: TikTok inválido recusado';
+
+    v_estado := 'ok';
+    begin
+      update public.perfil set facebook = 'profile.php?id=100012345678' where id = 1;
+    exception when others then
+      v_estado := sqlstate || ' - ' || sqlerrm;
+    end;
+    if v_estado <> 'ok' then
+      raise exception E'❌ Teste 8b FALHOU\nEsperado: Facebook profile.php?id= aceito\nObtido: %', v_estado;
+    end if;
+    raise notice '✅ Teste 8b passou: Facebook profile.php?id= aceito';
+
+
     -- Fim: dispara o erro sentinela para desfazer TUDO o que os testes criaram.
     raise exception using errcode = 'TST00', message = 'desfazer testes';
 
@@ -327,4 +431,4 @@ end
 $testes$;
 
 -- Só chega aqui se nenhum teste falhou (um teste com falha interrompe a execução).
-select '✅ Todos os testes passaram (1a, 1b, 1c, 2a, 2b, 3, 4, 5, 6a, 6b). Nada foi gravado no banco.' as resultado;
+select '✅ Todos os testes passaram (1a, 1b, 1c, 2a, 2b, 3, 4, 5, 6a, 6b, 7a a 7e, 8a, 8b). Nada foi gravado no banco.' as resultado;

@@ -26,6 +26,7 @@ const Fotos = lazy(() => import('./Fotos'))
 const Avaliacoes = lazy(() => import('./Avaliacoes'))
 const Perfil = lazy(() => import('./Perfil'))
 const Perguntas = lazy(() => import('./Perguntas'))
+const Certificados = lazy(() => import('./Certificados'))
 
 export default function RotasAdmin() {
   return (
@@ -54,6 +55,7 @@ export default function RotasAdmin() {
               <Route path="fotos" element={<Fotos />} />
               <Route path="avaliacoes" element={<Avaliacoes />} />
               <Route path="perguntas" element={<Perguntas />} />
+              <Route path="certificados" element={<Certificados />} />
               <Route path="perfil" element={<Perfil />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>

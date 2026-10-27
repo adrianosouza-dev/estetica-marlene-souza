@@ -3,7 +3,7 @@
 --
 -- Cria a função public.restaurar_demonstracao(), que volta TODO o conteúdo da
 -- demonstração ao estado inicial (agendamentos, avaliações, folgas, perguntas,
--- serviços, horários, perfil e fotos). Os visitantes do portfólio mexem em tudo;
+-- certificados, serviços, horários, perfil e fotos). Os visitantes do portfólio mexem em tudo;
 -- a restauração roda toda madrugada pelo pg_cron (passo a passo no README).
 --
 -- Segurança:
@@ -11,7 +11,7 @@
 --     real ela RECUSA e não apaga nada;
 --   * só o banco (SQL Editor e pg_cron) pode chamá-la; o site não;
 --   * todos os nomes, telefones e avaliações são FICTÍCIOS;
---   * WhatsApp e Instagram fictícios ou vazios e só o bairro no endereço:
+--   * WhatsApp fictício, Instagram, TikTok e Facebook vazios e só o bairro no endereço:
 --     nenhum visitante chega ao contato real da Marlene;
 --   * a foto do perfil e os arquivos do Storage não são tocados.
 --
@@ -19,7 +19,7 @@
 -- volta a senha do usuário de demonstração (caso um visitante a troque).
 -- Esses valores ficam só no agendamento do pg_cron, nunca neste arquivo.
 --
--- Rode este arquivo depois das migrations 001 a 010. Pode rodar mais de uma vez.
+-- Rode este arquivo depois das migrations 001 a 011. Pode rodar mais de uma vez.
 -- =============================================================================
 
 
@@ -65,6 +65,7 @@ begin
   delete from public.avaliacoes;
   delete from public.bloqueios;
   delete from public.perguntas_frequentes;
+  delete from public.certificados;
 
   -- Serviços: os 4 iniciais, preço "Consultar" ------------------------------------
   delete from public.servicos
@@ -106,6 +107,8 @@ begin
               || 'valoriza no atendimento. Ela edita este texto pelo painel.',
          whatsapp = '5592900000000',
          instagram = null,
+         tiktok = null,
+         facebook = null,
          endereco = 'Bairro Donga Micheles, Maués-AM',
          link_mapa = null,
          aviso_cancelamento = 'Se precisar cancelar, há taxa de R$ 5,00. Remarcar é grátis.',
@@ -140,6 +143,13 @@ begin
      'É só avisar pelo WhatsApp. Remarcar é grátis; se precisar cancelar, há uma taxa de R$ 5,00.', 4),
     ('O que acontece se eu me atrasar?', 'A tolerância é de 5 minutos. Se for se atrasar, avise pelo WhatsApp.', 5),
     ('Atende em domicílio?', 'Sim. Para atendimento em domicílio, combine pelo WhatsApp.', 6);
+
+  -- Certificados fictícios, sem imagem (na demonstração não se enviam arquivos) ------
+  insert into public.certificados (titulo, instituicao, ano, ordem)
+  values
+    ('Manicure e pedicure profissional', 'Escola de Beleza (exemplo)',   2018, 1),
+    ('Design de sobrancelhas',           'Instituto de Estética (exemplo)', 2021, 2),
+    ('Biossegurança no salão de beleza', 'Curso on-line (exemplo)',       null, 3);
 
   -- Agendamentos fictícios (o fim é calculado pelo gatilho) ---------------------------
   insert into public.agendamentos (servico_id, cliente_nome, cliente_whatsapp, inicio, status)

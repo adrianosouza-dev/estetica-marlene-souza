@@ -12,7 +12,16 @@ import { useAuth } from '../../hooks/useAuth'
 import { useConsulta } from '../../hooks/useConsulta'
 import { useTituloPagina } from '../../hooks/useTituloPagina'
 import { buscarPerfilAdmin, salvarPerfil, trocarFotoPerfil } from '../../lib/consultasCadastros'
-import { limparInstagram, linkValido, whatsappDoPerfil, whatsappParaPerfil } from '../../lib/edicao'
+import {
+  FACEBOOK_VALIDO,
+  limparFacebook,
+  limparInstagram,
+  limparTiktok,
+  linkValido,
+  TIKTOK_VALIDO,
+  whatsappDoPerfil,
+  whatsappParaPerfil,
+} from '../../lib/edicao'
 import { mascararTelefone } from '../../lib/formatadores'
 
 /** Formulário com os dados atuais do perfil */
@@ -21,6 +30,8 @@ function FormPerfil({ perfil, executar, ocupado, aoSalvar }) {
     sobre: perfil.sobre ?? '',
     telefone: mascararTelefone(whatsappDoPerfil(perfil.whatsapp)),
     instagram: perfil.instagram ? `@${perfil.instagram}` : '',
+    tiktok: perfil.tiktok ? `@${perfil.tiktok}` : '',
+    facebook: perfil.facebook ? (perfil.facebook.startsWith('profile.php') ? `facebook.com/${perfil.facebook}` : `@${perfil.facebook}`) : '',
     endereco: perfil.endereco ?? '',
     link_mapa: perfil.link_mapa ?? '',
     aviso_cancelamento: perfil.aviso_cancelamento ?? '',
@@ -35,8 +46,14 @@ function FormPerfil({ perfil, executar, ocupado, aoSalvar }) {
   async function salvar(evento) {
     evento.preventDefault()
     const digitos = dados.telefone.replace(/\D/g, '')
+    const tiktok = limparTiktok(dados.tiktok)
+    const facebook = limparFacebook(dados.facebook)
     const encontrados = {}
     if (digitos && digitos.length < 10) encontrados.telefone = 'Digite o WhatsApp com DDD, ou deixe em branco.'
+    if (tiktok === null) encontrados.tiktok = 'Este link não mostra o perfil. Abra o seu perfil no TikTok, copie o link da página do perfil e cole aqui.'
+    else if (tiktok && !TIKTOK_VALIDO.test(tiktok)) encontrados.tiktok = 'Confira o usuário do TikTok (de 2 a 24 letras, números, ponto ou _).'
+    if (facebook === null) encontrados.facebook = 'Este link não mostra o perfil. Abra o seu perfil no Facebook, copie o link da página do perfil e cole aqui.'
+    else if (facebook && !FACEBOOK_VALIDO.test(facebook)) encontrados.facebook = 'Confira o usuário do Facebook (pelo menos 3 letras ou números).'
     if (!linkValido(dados.link_mapa)) encontrados.link_mapa = 'Cole o link completo do mapa (começa com https://), ou deixe em branco.'
     setErros(encontrados)
     if (Object.keys(encontrados).length) return
@@ -47,6 +64,8 @@ function FormPerfil({ perfil, executar, ocupado, aoSalvar }) {
           sobre: dados.sobre.trim() || null,
           whatsapp: whatsappParaPerfil(dados.telefone),
           instagram: limparInstagram(dados.instagram) || null,
+          tiktok: tiktok || null,
+          facebook: facebook || null,
           endereco: dados.endereco.trim() || null,
           link_mapa: dados.link_mapa.trim() || null,
           aviso_cancelamento: dados.aviso_cancelamento.trim() || null,
@@ -83,6 +102,24 @@ function FormPerfil({ perfil, executar, ocupado, aoSalvar }) {
         dica="O @ ou o link do perfil."
         value={dados.instagram}
         onChange={(e) => alterar('instagram', e.target.value)}
+        autoCapitalize="none"
+      />
+      <Campo
+        rotulo="TikTok"
+        opcional
+        dica="O @ ou o link do perfil."
+        value={dados.tiktok}
+        onChange={(e) => alterar('tiktok', e.target.value)}
+        erro={erros.tiktok}
+        autoCapitalize="none"
+      />
+      <Campo
+        rotulo="Facebook"
+        opcional
+        dica="O nome de usuário ou o link do perfil."
+        value={dados.facebook}
+        onChange={(e) => alterar('facebook', e.target.value)}
+        erro={erros.facebook}
         autoCapitalize="none"
       />
       <Campo rotulo="Endereço" maxLength={200} value={dados.endereco} onChange={(e) => alterar('endereco', e.target.value)} />

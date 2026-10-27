@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useNegocio } from '../../hooks/useNegocio'
 import { linkWhatsApp } from '../../lib/whatsapp'
+import { ItensRedes } from '../ui/ItensRedes'
 
 const ano = new Date().getFullYear()
 
 export function Rodape() {
-  const { nome, especialidade, endereco, horarioResumo, whatsapp, instagram } = useNegocio()
+  const { nome, especialidade, endereco, horarioResumo, whatsapp, instagram, tiktok, facebook } = useNegocio()
   const linkZap = linkWhatsApp(whatsapp, 'Olá, Marlene! Vim pelo site.')
 
   return (
@@ -29,13 +30,7 @@ export function Rodape() {
                   </a>
                 </li>
               )}
-              {instagram && (
-                <li>
-                  <a href={`https://instagram.com/${instagram}`} target="_blank" rel="noopener noreferrer">
-                    Instagram
-                  </a>
-                </li>
-              )}
+              <ItensRedes instagram={instagram} tiktok={tiktok} facebook={facebook} />
               <li>
                 <Link to="/contato">Como chegar</Link>
               </li>

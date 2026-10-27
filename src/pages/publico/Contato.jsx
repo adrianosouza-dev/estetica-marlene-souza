@@ -1,4 +1,5 @@
 import { Botao } from '../../components/ui/Botao'
+import { ItensRedes } from '../../components/ui/ItensRedes'
 import { useNegocio } from '../../hooks/useNegocio'
 import { useTituloPagina } from '../../hooks/useTituloPagina'
 import {
@@ -12,7 +13,7 @@ import { linkWhatsApp } from '../../lib/whatsapp'
 
 export default function Contato() {
   useTituloPagina('Contato e localização')
-  const { endereco, linkMapa, whatsapp, instagram, horarios, horarioResumo } = useNegocio()
+  const { endereco, linkMapa, whatsapp, instagram, tiktok, facebook, horarios, horarioResumo } = useNegocio()
   const linkZap = linkWhatsApp(whatsapp, 'Olá, Marlene! Vim pelo site.')
   const semana = ordenarSemana(horarios)
 
@@ -39,12 +40,10 @@ export default function Contato() {
           ) : (
             <p className="texto-suave">O número do WhatsApp será publicado em breve.</p>
           )}
-          {instagram && (
-            <p>
-              <a href={`https://instagram.com/${instagram}`} target="_blank" rel="noopener noreferrer">
-                Instagram @{instagram}
-              </a>
-            </p>
+          {(instagram || tiktok || facebook) && (
+            <ul className="contato__redes" role="list" aria-label="Redes sociais">
+              <ItensRedes instagram={instagram} tiktok={tiktok} facebook={facebook} comUsuario />
+            </ul>
           )}
         </div>
       </div>
